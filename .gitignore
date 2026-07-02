@@ -1,0 +1,23 @@
+# Node
+frontend/node_modules
+
+# Python
+backend/venv
+__pycache__/
+*.pyc
+
+# Environment
+backend/.env
+
+# Uploads
+backend/uploads
+
+# Vector Database
+backend/vector_store
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
