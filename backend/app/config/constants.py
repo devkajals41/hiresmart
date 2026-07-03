@@ -1,0 +1,5 @@
+TOKEN_TYPE = "bearer"
+
+DEFAULT_ATS_SCORE = None
+
+DEFAULT_RESUME_STATUS = False
