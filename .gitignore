@@ -1,23 +1,41 @@
-# Node
-frontend/node_modules
+# =========================
+# Frontend
+# =========================
+frontend/node_modules/
 
-# Python
-backend/venv
-__pycache__/
-*.pyc
-
-# Environment
+# =========================
+# Backend
+# =========================
+backend/venv/
+backend/__pycache__/
 backend/.env
+backend/uploads/
+backend/vector_store/
 
-# Uploads
-backend/uploads
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
 
-# Vector Database
-backend/vector_store
+# =========================
+# Environment Files
+# =========================
+.env
 
+# =========================
 # Logs
+# =========================
 *.log
 
-# OS
+# =========================
+# IDE
+# =========================
+.vscode/
+
+# =========================
+# Operating System
+# =========================
 .DS_Store
 Thumbs.db

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.routes.auth_routes import router as auth_router
 from app.routes.profile_routes import router as profile_router
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database.mongodb import (
     connect_to_mongo,
@@ -21,6 +22,15 @@ app = FastAPI(
     description="AI-powered Interview Preparation Platform",
     version="1.0.0",
     lifespan=lifespan,
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(auth_router)
