@@ -1,11 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --font-serif: "Playfair Display", Georgia, serif;
+}
+
+/* =========================
+   DESIGN TOKENS
+========================= */
+
 :root {
+  /* Typography */
+
   font-family: "Inter", sans-serif;
+
+  /* Brand */
+
+  --primary: #0F766E;
+  --primary-hover: #115E59;
+
+  --accent: #14B8A6;
+
+  /* Background */
+
+  --background: #FCFCFB;
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+
+  /* Text */
+
+  --heading: #0F172A;
+  --body: #475569;
+  --muted: #94A3B8;
+
+  /* Borders */
+
+  --border: #E2E8F0;
+
+  /* Status */
+
+  --success: #22C55E;
+
+  /* Radius */
+
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
+
+  /* Shadows */
+
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 25px 60px rgba(15, 23, 42, 0.08);
+}
+
+/* =========================
+   BASE
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background: #fafaf8;
-  color: #111827;
+  background: var(--background);
+  color: var(--body);
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.15) translate(-10px, 15px);
+  }
+}
+
+@keyframes pulse-slow-reverse {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(1.1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.9) translate(15px, -10px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 12s infinite ease-in-out;
+}
+
+.animate-pulse-slow-reverse {
+  animation: pulse-slow-reverse 15s infinite ease-in-out;
 }

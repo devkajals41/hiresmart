@@ -1,8 +1,7 @@
 import Navbar from "../../components/layout/Navbar";
-import HeroSection from "./HeroSection";
+import Hero from "../../components/hero/Hero";
 import FeatureSection from "./FeatureSection";
 import JourneySection from "./JourneySection";
-import TestimonialSection from "./TestimonialSection";
 import CTASection from "./CTASection";
 import Footer from "../../components/layout/Footer";
 
@@ -10,10 +9,9 @@ function Landing() {
   return (
     <>
       <Navbar />
-      <HeroSection />
+      <Hero />
       <FeatureSection />
       <JourneySection />
-      <TestimonialSection />
       <CTASection />
       <Footer />
     </>

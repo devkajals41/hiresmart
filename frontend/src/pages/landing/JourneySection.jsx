@@ -1,103 +1,155 @@
 import Container from "../../components/layout/Container";
 import {
-  Upload,
-  FileSearch,
-  BrainCircuit,
-  MessageSquareText,
-  BarChart3,
-  Briefcase,
+  Shield,
+  Brain,
+  MessageSquare,
+  Mic,
+  Star,
+  TrendingUp
 } from "lucide-react";
 
-const steps = [
+import resumeana1 from "../../assets/illustrations/resumeana1.png";
+import image2interviewgraphic from "../../assets/illustrations/image2interviewgraphic.png";
+import mockinterviewgraphic from "../../assets/illustrations/mockinterviewgraphic.png";
+import feedbackdashboardgraphic from "../../assets/illustrations/feedbackdashboardgraphic.png";
+import linechartgraphic from "../../assets/illustrations/linechartgraphic.png";
+
+const features = [
   {
-    icon: Upload,
-    title: "Upload Resume",
-    description: "Upload your latest resume in PDF format.",
+    icon: Shield,
+    iconColor: "text-emerald-700",
+    bgColor: "bg-emerald-50",
+    title: "AI Resume Analysis",
+    description: "Get ATS score, keyword match, strengths, weaknesses and improvement tips.",
+    hasTags: false,
+    illustration: resumeana1
   },
   {
-    icon: FileSearch,
-    title: "ATS Analysis",
-    description: "Receive an ATS score and keyword insights.",
+    icon: Brain,
+    iconColor: "text-emerald-700",
+    bgColor: "bg-emerald-50",
+    title: "NLP Skill Extraction",
+    description: "Extract programming languages, frameworks, tools and soft skills using advanced NLP.",
+    hasTags: true,
+    tags: [
+      { name: "Python", style: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
+      { name: "SQL", style: "bg-blue-50 text-blue-800 border border-blue-100" },
+      { name: "JavaScript", style: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
+      { name: "Docker", style: "bg-slate-50 text-slate-800 border border-slate-100" }
+    ]
   },
   {
-    icon: BrainCircuit,
-    title: "Skill Extraction",
-    description: "AI identifies your technical and soft skills.",
+    icon: MessageSquare,
+    iconColor: "text-blue-600",
+    bgColor: "bg-blue-50",
+    title: "AI Interview Prep",
+    description: "Generate role-specific interview questions tailored to your resume and target role.",
+    hasTags: false,
+    illustration: image2interviewgraphic
   },
   {
-    icon: MessageSquareText,
-    title: "AI Interview",
-    description: "Practice personalized interview questions.",
+    icon: Mic,
+    iconColor: "text-pink-600",
+    bgColor: "bg-pink-50",
+    title: "Mock Interviews",
+    description: "Practice real interviews with AI and improve your confidence and communication.",
+    hasTags: false,
+    illustration: mockinterviewgraphic
   },
   {
-    icon: BarChart3,
+    icon: Star,
+    iconColor: "text-orange-500",
+    bgColor: "bg-orange-50",
     title: "AI Feedback",
-    description: "Improve with detailed performance analysis.",
+    description: "Get detailed feedback on your answers, communication and technical approach.",
+    hasTags: false,
+    illustration: feedbackdashboardgraphic
   },
   {
-    icon: Briefcase,
-    title: "Land Your Job",
-    description: "Apply confidently with an optimized profile.",
-  },
+    icon: TrendingUp,
+    iconColor: "text-violet-600",
+    bgColor: "bg-violet-50",
+    title: "Career Dashboard",
+    description: "Track your progress, interview history, ATS history and skill growth over time.",
+    hasTags: false,
+    illustration: linechartgraphic
+  }
 ];
 
 function JourneySection() {
   return (
-    <section
-      id="journey"
-      className="bg-[#FAFAF8] py-24"
-    >
-      <Container>
+    <section id="journey" className="relative bg-[#FAFAF8]/50 py-16 overflow-hidden">
+      {/* Subtle Dotted Grid Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(15,118,110,0.03)_1.5px,transparent_1.5px)] [background-size:24px_24px] pointer-events-none" />
 
-        <div className="text-center">
+      {/* Decorative Glow Blobs */}
+      <div className="absolute -left-20 top-20 h-[300px] w-[300px] rounded-full bg-emerald-50/20 blur-3xl pointer-events-none animate-pulse-slow" />
+      <div className="absolute -right-20 bottom-10 h-[320px] w-[320px] rounded-full bg-indigo-50/20 blur-3xl pointer-events-none animate-pulse-slow-reverse" />
 
-          <span className="inline-block rounded-full bg-emerald-100 px-4 py-2 text-sm font-medium text-emerald-700">
-            YOUR JOURNEY
+      <Container className="relative z-10">
+
+        {/* Header */}
+        <div className="text-center mb-12">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#064e3b]">
+            Powerful Features
           </span>
-
-          <h2 className="mt-5 text-4xl font-bold text-gray-900">
-            Your Journey to Success
-          </h2>
-
-          <p className="mx-auto mt-4 max-w-2xl text-gray-600">
-            HireSmart guides you through every stage of interview preparation,
-            from uploading your resume to landing your dream job.
-          </p>
-
         </div>
 
-        <div className="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-
-          {steps.map((step, index) => {
-            const Icon = step.icon;
+        {/* 6 Features Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-6">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
 
             return (
               <div
                 key={index}
-                className="relative rounded-3xl border border-gray-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                className="flex flex-col justify-between rounded-[24px] border border-slate-100 bg-white p-5 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
               >
-                <div className="absolute -top-4 left-8 flex h-9 w-9 items-center justify-center rounded-full bg-emerald-700 text-sm font-bold text-white">
-                  {index + 1}
+                <div>
+                  {/* Icon Circle */}
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-full ${feature.bgColor} ${feature.iconColor}`}>
+                    <Icon size={20} />
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="mt-4 text-sm font-bold text-slate-800 leading-tight">
+                    {feature.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="mt-2.5 text-xs text-slate-500 font-medium leading-relaxed">
+                    {feature.description}
+                  </p>
                 </div>
 
-                <div className="mt-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100">
-                  <Icon
-                    size={30}
-                    className="text-emerald-700"
-                  />
+                {/* Bottom Graphic / Tags Space */}
+                <div className="mt-6">
+                  {feature.hasTags ? (
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      {feature.tags.map((tag, tIdx) => (
+                        <div
+                          key={tIdx}
+                          className={`rounded-lg py-1.5 text-center text-[10px] font-bold ${tag.style}`}
+                        >
+                          {tag.name}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    /* Illustration Image rendering */
+                    <div className="w-full flex items-center justify-center">
+                      <img
+                        src={feature.illustration}
+                        alt={feature.title}
+                        className="w-full h-24 object-contain rounded-xl transition-transform duration-300 hover:scale-[1.03]"
+                      />
+                    </div>
+                  )}
                 </div>
 
-                <h3 className="mt-6 text-xl font-semibold text-gray-900">
-                  {step.title}
-                </h3>
-
-                <p className="mt-3 leading-7 text-gray-600">
-                  {step.description}
-                </p>
               </div>
             );
           })}
-
         </div>
 
       </Container>
