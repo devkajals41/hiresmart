@@ -1,0 +1,209 @@
+
+
+/* Inputs — elegant focus ring */
+.auth-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  padding: 0 20px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-input-group:hover {
+  border-color: #cbd5e1;
+}
+
+.auth-input-group:focus-within {
+  border-color: #0f766e;
+  box-shadow:
+    0 0 0 3px rgba(15, 118, 110, 0.08),
+    0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.auth-input-group input {
+  height: 52px;
+  width: 100%;
+  background: transparent;
+  padding: 0 16px;
+  outline: none;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}
+
+.auth-input-group input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+/* Labels */
+.auth-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #334155;
+  letter-spacing: 0.01em;
+}
+
+/* Primary CTA */
+.auth-btn-primary {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 0;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #0f766e 0%, #115e59 100%);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.18);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-btn-primary:hover {
+  background: linear-gradient(135deg, #115e59 0%, #134e4a 100%);
+  box-shadow: 0 6px 20px rgba(15, 118, 110, 0.28);
+  transform: translateY(-1px);
+}
+
+.auth-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(15, 118, 110, 0.18);
+}
+
+/* Social button */
+.auth-btn-social {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  padding: 14px 0;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-btn-social:hover {
+  border-color: #0f766e;
+  background: #f8fffe;
+  box-shadow: 0 2px 12px rgba(15, 118, 110, 0.06);
+}
+
+/* Checkbox */
+.auth-checkbox {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.auth-checkbox:checked {
+  background: #0f766e;
+  border-color: #0f766e;
+}
+
+.auth-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 9px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Heading styles */
+.auth-heading {
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #0f172a;
+}
+
+.auth-subheading {
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-weight: 400;
+  color: #64748b;
+  letter-spacing: -0.005em;
+}
+
+/* Logo brand name */
+.auth-brand {
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 28px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.auth-divider span {
+  margin: 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: lowercase;
+}
+
+/* Link styles */
+.auth-link {
+  color: #0f766e;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: #115e59;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Illustration heading */
+.illustration-heading {
+  font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: #0f172a;
+}
