@@ -60,7 +60,9 @@ async def view_user_resume(
     if ext == ".pdf":
         media_type = "application/pdf"
     elif ext == ".docx":
-        media_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        media_type = (
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
     elif ext == ".doc":
         media_type = "application/msword"
 

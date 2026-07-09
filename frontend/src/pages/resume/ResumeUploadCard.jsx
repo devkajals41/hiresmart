@@ -86,9 +86,7 @@ export default function ResumeUploadCard() {
 
           {/* Selected File */}
           <div className="mt-2 text-center">
-            <p className="text-xs text-slate-400">
-              PDF, DOCX only (Max. 5MB)
-            </p>
+            <p className="text-xs text-slate-400">PDF, DOCX only (Max. 5MB)</p>
 
             {selectedFile && (
               <div className="mt-2 flex items-center justify-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-2 max-w-[250px] mx-auto">
@@ -103,7 +101,9 @@ export default function ResumeUploadCard() {
           {/* Error message inside container */}
           {error && (
             <div className="mt-3 flex items-center gap-2 rounded-xl border border-red-100 bg-red-50 px-4 py-2 text-red-700 text-xs font-semibold">
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 font-bold">!</span>
+              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-700 font-bold">
+                !
+              </span>
               <span>{error}</span>
             </div>
           )}
@@ -142,7 +142,16 @@ export default function ResumeUploadCard() {
           {/* Status Header */}
           <div className="flex flex-col items-center text-center mt-2">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </div>
@@ -167,15 +176,21 @@ export default function ResumeUploadCard() {
                 <p className="text-xs text-slate-400">Document File</p>
               </div>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-2 pt-3 text-center">
               <div className="border-r border-slate-100">
-                <p className="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Status</p>
+                <p className="text-[10px] uppercase tracking-wider font-semibold text-slate-400">
+                  Status
+                </p>
                 <p className="mt-1 text-xs font-bold text-emerald-600">Ready</p>
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-wider font-semibold text-slate-400">Analysis</p>
-                <p className="mt-1 text-xs font-bold text-slate-700">100% Parsed</p>
+                <p className="text-[10px] uppercase tracking-wider font-semibold text-slate-400">
+                  Analysis
+                </p>
+                <p className="mt-1 text-xs font-bold text-slate-700">
+                  100% Parsed
+                </p>
               </div>
             </div>
           </div>

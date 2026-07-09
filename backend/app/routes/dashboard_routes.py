@@ -18,17 +18,14 @@ async def get_dashboard(
 
     return {
         "message": "Dashboard loaded successfully.",
-
         "user": {
             "name": current_user["name"],
             "email": current_user["email"],
         },
-
         "resume": {
             "uploaded": current_user["resume_uploaded"],
             "ats_score": current_user["ats_score"],
         },
-
         "stats": {
             "mock_interviews": 0,
             "feedback_reports": 0,

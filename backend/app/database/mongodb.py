@@ -14,7 +14,6 @@ async def connect_to_mongo():
     # Verification
     await client.admin.command("ping")
     print("✅ Connected to MongoDB")
-   
 
 
 async def close_mongo_connection():

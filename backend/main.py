@@ -40,8 +40,7 @@ app.include_router(profile_router)
 app.include_router(dashboard_router)
 app.include_router(resume_router)
 
+
 @app.get("/")
 async def root():
-    return {
-        "message": "Welcome to HireSmart API"
-    }
+    return {"message": "Welcome to HireSmart API"}

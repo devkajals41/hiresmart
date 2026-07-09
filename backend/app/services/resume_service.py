@@ -4,8 +4,6 @@ import aiofiles
 
 from fastapi import UploadFile, HTTPException, status
 
-
-
 UPLOAD_FOLDER = "uploads"
 
 ALLOWED_EXTENSIONS = [
@@ -54,6 +52,6 @@ async def upload_resume(
     )
 
     return {
-    "message": "Resume uploaded successfully.",
-    "filename": file.filename,
-     }
+        "message": "Resume uploaded successfully.",
+        "filename": file.filename,
+    }
