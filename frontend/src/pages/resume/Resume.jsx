@@ -6,7 +6,7 @@ import ResumeTipsCard from "./ResumeTipsCard";
 
 import resumeBanner from "../../assets/illustrations/resumebanner.png";
 
-import { FileText, Rocket, Star, Zap } from "lucide-react";
+import { FileText, Star, Rocket, Zap } from "lucide-react";
 
 const floatKeyframes = `
 @keyframes float1 {
@@ -36,19 +36,21 @@ export default function Resume() {
   return (
     <DashboardLayout>
       <style>{floatKeyframes}</style>
-      <div className="space-y-2">
+      <div className="space-y-8">
         {/* Header */}
-        <div className="flex items-start justify-between">
+        <div className="flex items-center justify-between pb-2">
           <div>
-            <div className="mb-2 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50">
-                <FileText size={20} className="text-emerald-700" />
+            <div className="mb-2 flex items-center gap-4">
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100">
+                <FileText size={24} className="text-emerald-700" />
               </div>
 
-              <h1 className="text-3xl font-bold text-slate-900">My Resume</h1>
+              <h1 className="text-[44px] font-extrabold tracking-tight text-slate-900">
+                My Resume
+              </h1>
             </div>
 
-            <p className="text-base text-slate-500">
+            <p className="mt-2 text-[17px] leading-7 text-slate-500">
               Upload your resume to get AI-powered analysis and improve your
               profile.
             </p>
@@ -57,36 +59,36 @@ export default function Resume() {
           <img
             src={resumeBanner}
             alt="Resume Banner"
-            className="h-40 object-contain"
+            className="h-[170px] object-contain select-none"
           />
         </div>
 
         {/* Main Grid */}
 
-        <div className="grid grid-cols-12 gap-4">
+        <div className="grid grid-cols-12 gap-6">
           {/* Upload */}
 
-          <div className="col-span-8">
+          <div className="col-span-8 h-full">
             <ResumeUploadCard />
           </div>
 
           {/* Right Card */}
 
-          <div className="col-span-4">
+          <div className="col-span-4 h-full">
             <ResumeFeaturesCard />
           </div>
 
-          {/* Bottom Left - Tips */}
+          {/* Bottom Left */}
 
-          <div className="col-span-8">
+          <div className="col-span-8 h-full">
             <ResumeTipsCard />
           </div>
 
           {/* Bottom Right - Decorative Animated Card */}
 
-          <div className="col-span-4">
+          <div className="col-span-4 h-full">
             <div
-              className="relative h-full overflow-hidden rounded-3xl shadow-[0_8px_40px_rgba(15,23,42,0.06)]"
+              className="relative h-full min-h-[430px] overflow-hidden rounded-3xl shadow-[0_8px_40px_rgba(15,23,42,0.06)]"
               style={{
                 background:
                   "linear-gradient(135deg, #065f46 0%, #059669 40%, #34d399 70%, #a7f3d0 100%)",

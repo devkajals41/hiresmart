@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -7,9 +7,7 @@
   --font-body: "DM Sans", "Inter", sans-serif;
 }
 
-/* =========================
-   DESIGN TOKENS
-========================= */
+/*  DESIGN TOKENS */
 
 :root {
   /* Typography */
@@ -18,30 +16,30 @@
 
   /* Brand */
 
-  --primary: #0f766e;
-  --primary-hover: #115e59;
+  --primary: #0F766E;
+  --primary-hover: #115E59;
 
-  --accent: #14b8a6;
+  --accent: #14B8A6;
 
   /* Background */
 
-  --background: #fcfcfb;
-  --surface: #ffffff;
-  --surface-alt: #f8fafc;
+  --background: #FCFCFB;
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
 
   /* Text */
 
-  --heading: #0f172a;
+  --heading: #0F172A;
   --body: #475569;
-  --muted: #94a3b8;
+  --muted: #94A3B8;
 
   /* Borders */
 
-  --border: #e2e8f0;
+  --border: #E2E8F0;
 
   /* Status */
 
-  --success: #22c55e;
+  --success: #22C55E;
 
   /* Radius */
 
@@ -110,8 +108,7 @@ button {
 }
 
 @keyframes pulse-slow {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 0.35;
     transform: scale(1) translate(0, 0);
   }
@@ -122,8 +119,7 @@ button {
 }
 
 @keyframes pulse-slow-reverse {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 0.25;
     transform: scale(1.1) translate(0, 0);
   }

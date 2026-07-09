@@ -14,3 +14,13 @@ export const uploadResume = async (file, token) => {
 
   return response.data;
 };
+
+export const viewResume = async (token) => {
+  const response = await api.get("/resume/view", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    responseType: "blob",
+  });
+  return response.data;
+};

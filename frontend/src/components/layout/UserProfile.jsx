@@ -17,11 +17,11 @@ export default function UserProfile() {
 
   // Use dynamic user name, fallback to "Kajal Sharma"
   const displayName =
-  reduxUser?.name ||
-  localUser?.name ||
-  reduxUser?.username ||
-  localUser?.username ||
-  "User";
+    reduxUser?.name ||
+    localUser?.name ||
+    reduxUser?.username ||
+    localUser?.username ||
+    "User";
 
   // Initial letter of the first name
   const initial = displayName.charAt(0).toUpperCase();

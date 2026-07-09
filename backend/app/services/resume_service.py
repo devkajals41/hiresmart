@@ -54,6 +54,6 @@ async def upload_resume(
     )
 
     return {
-        "message": "Resume uploaded successfully.",
-        "filename": filename,
-    }
+    "message": "Resume uploaded successfully.",
+    "filename": file.filename,
+     }

@@ -34,25 +34,22 @@ export default function Dashboard() {
     console.error("Error reading user details:", error);
   }
 
-const [dashboardData, setDashboardData] = useState(null);
+  const [dashboardData, setDashboardData] = useState(null);
 
-const displayName =
-  dashboardData?.user?.name ||
-  reduxUser?.name ||
-  localUser?.name ||
-  "User";
+  const displayName =
+    dashboardData?.user?.name || reduxUser?.name || localUser?.name || "User";
   useEffect(() => {
     loadDashboard();
   }, []);
   useEffect(() => {
-  if (
-    dashboardData &&
-    dashboardData.resume &&
-    !dashboardData.resume.uploaded
-  ) {
-    navigate("/resume");
-  }
-}, [dashboardData, navigate]);
+    if (
+      dashboardData &&
+      dashboardData.resume &&
+      !dashboardData.resume.uploaded
+    ) {
+      navigate("/resume");
+    }
+  }, [dashboardData, navigate]);
 
   const loadDashboard = async () => {
     try {
