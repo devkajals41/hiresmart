@@ -7,8 +7,6 @@ from fastapi import (
     status,
 )
 from fastapi.responses import FileResponse
-from app.repositories.user_repository import get_user_by_id
-from fastapi.responses import FileResponse
 import os
 
 from app.dependencies.auth_dependency import (

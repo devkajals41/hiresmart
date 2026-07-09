@@ -1,4 +1,3 @@
-from fastapi import HTTPException, status
 
 from app.models.user_model import create_user_document
 from app.repositories.user_repository import (
