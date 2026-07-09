@@ -1,41 +1,36 @@
-# =========================
 # Frontend
-# =========================
 frontend/node_modules/
 
-# =========================
+
 # Backend
-# =========================
 backend/venv/
 backend/__pycache__/
 backend/.env
 backend/uploads/
 backend/vector_store/
 
-# =========================
+
 # Python
-# =========================
 __pycache__/
 *.py[cod]
 *.pyo
 
-# =========================
+
 # Environment Files
-# =========================
 .env
 
-# =========================
+
 # Logs
-# =========================
 *.log
 
-# =========================
+
 # IDE
-# =========================
 .vscode/
 
-# =========================
+
 # Operating System
-# =========================
 .DS_Store
 Thumbs.db
+
+uploads/*
+!uploads/.gitkeep

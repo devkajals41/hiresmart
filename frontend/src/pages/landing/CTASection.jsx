@@ -13,10 +13,8 @@ function CTASection() {
       <div className="absolute top-1/2 left-1/4 h-[250px] w-[350px] rounded-full bg-emerald-100/10 blur-3xl pointer-events-none animate-pulse-slow" />
 
       <Container className="relative z-10">
-
         <div className="overflow-hidden rounded-[32px] bg-gradient-to-br from-white to-emerald-50/40 border border-slate-100 shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-[0.7fr_1fr] items-center">
-
             {/* LEFT: Illustration */}
             <div className="flex items-center justify-center p-8 lg:p-10 shrink-0">
               <img
@@ -46,14 +44,15 @@ function CTASection() {
               </Link>
 
               <div className="mt-4 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
-                <CheckCircle2 size={14} className="text-emerald-600 fill-emerald-600/10" />
+                <CheckCircle2
+                  size={14}
+                  className="text-emerald-600 fill-emerald-600/10"
+                />
                 No credit card required
               </div>
             </div>
-
           </div>
         </div>
-
       </Container>
     </section>
   );

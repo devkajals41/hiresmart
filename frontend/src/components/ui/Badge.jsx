@@ -1,9 +1,6 @@
 import { Sparkles } from "lucide-react";
 
-function Badge({
-  children,
-  className = "",
-}) {
+function Badge({ children, className = "" }) {
   return (
     <div
       className={`

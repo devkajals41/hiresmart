@@ -1,8 +1,4 @@
-function Card({
-  children,
-  className = "",
-  hover = true,
-}) {
+function Card({ children, className = "", hover = true }) {
   return (
     <div
       className={`
@@ -12,11 +8,7 @@ function Card({
         shadow-[var(--shadow-sm)]
         transition-all duration-300
 
-        ${
-          hover
-            ? "hover:-translate-y-1 hover:shadow-[var(--shadow-md)]"
-            : ""
-        }
+        ${hover ? "hover:-translate-y-1 hover:shadow-[var(--shadow-md)]" : ""}
 
         ${className}
       `}

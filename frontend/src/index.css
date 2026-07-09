@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -18,30 +18,30 @@
 
   /* Brand */
 
-  --primary: #0F766E;
-  --primary-hover: #115E59;
+  --primary: #0f766e;
+  --primary-hover: #115e59;
 
-  --accent: #14B8A6;
+  --accent: #14b8a6;
 
   /* Background */
 
-  --background: #FCFCFB;
-  --surface: #FFFFFF;
-  --surface-alt: #F8FAFC;
+  --background: #fcfcfb;
+  --surface: #ffffff;
+  --surface-alt: #f8fafc;
 
   /* Text */
 
-  --heading: #0F172A;
+  --heading: #0f172a;
   --body: #475569;
-  --muted: #94A3B8;
+  --muted: #94a3b8;
 
   /* Borders */
 
-  --border: #E2E8F0;
+  --border: #e2e8f0;
 
   /* Status */
 
-  --success: #22C55E;
+  --success: #22c55e;
 
   /* Radius */
 
@@ -110,7 +110,8 @@ button {
 }
 
 @keyframes pulse-slow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.35;
     transform: scale(1) translate(0, 0);
   }
@@ -121,7 +122,8 @@ button {
 }
 
 @keyframes pulse-slow-reverse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.25;
     transform: scale(1.1) translate(0, 0);
   }

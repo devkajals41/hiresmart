@@ -14,12 +14,8 @@ function Navbar() {
     <nav className="sticky top-5 z-50">
       <Container>
         <div className="mx-auto flex h-[72px] items-center justify-between rounded-full border border-slate-200/80 bg-white/80 px-8 shadow-lg shadow-emerald-100/40 backdrop-blur-xl transition-all duration-300">
-
           {/* Logo */}
-          <Link
-            to="/"
-            className="group flex items-center gap-3"
-          >
+          <Link to="/" className="group flex items-center gap-3">
             <BrainCircuit
               size={30}
               strokeWidth={2.2}
@@ -39,7 +35,6 @@ function Navbar() {
 
           {/* Navigation */}
           <div className="hidden items-center gap-10 lg:flex">
-
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -58,18 +53,15 @@ function Navbar() {
             </Link>
 
             <Link to="/register">
-  <Button className="group">
-    Get Started
-
-    <ArrowRight
-      size={18}
-      className="transition-transform duration-300 group-hover:translate-x-1"
-    />
-  </Button>
-</Link>
-
+              <Button className="group">
+                Get Started
+                <ArrowRight
+                  size={18}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Button>
+            </Link>
           </div>
-
         </div>
       </Container>
     </nav>

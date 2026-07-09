@@ -24,25 +24,16 @@ export default function Login() {
         password: formData.password,
       });
 
-      localStorage.setItem(
-        "accessToken",
-        response.token.access_token
-      );
+      localStorage.setItem("accessToken", response.token.access_token);
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(response.user)
-      );
+      localStorage.setItem("user", JSON.stringify(response.user));
 
       navigate("/dashboard");
     } catch (err) {
       if (Array.isArray(err.response?.data?.detail)) {
         setError(err.response.data.detail[0].msg);
       } else {
-        setError(
-          err.response?.data?.detail ||
-          "Invalid email or password."
-        );
+        setError(err.response?.data?.detail || "Invalid email or password.");
       }
     } finally {
       setLoading(false);
@@ -51,11 +42,7 @@ export default function Login() {
 
   return (
     <AuthLayout illustration={<AuthIllustration />}>
-      <LoginForm
-        onSubmit={handleLogin}
-        loading={loading}
-        error={error}
-      />
+      <LoginForm onSubmit={handleLogin} loading={loading} error={error} />
 
       <SocialLogin isRegister={false} />
 

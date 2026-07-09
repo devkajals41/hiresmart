@@ -5,7 +5,7 @@ import {
   MessageSquare,
   Mic,
   Star,
-  TrendingUp
+  TrendingUp,
 } from "lucide-react";
 
 import resumeana1 from "../../assets/illustrations/resumeana1.png";
@@ -20,65 +20,83 @@ const features = [
     iconColor: "text-emerald-700",
     bgColor: "bg-emerald-50",
     title: "AI Resume Analysis",
-    description: "Get ATS score, keyword match, strengths, weaknesses and improvement tips.",
+    description:
+      "Get ATS score, keyword match, strengths, weaknesses and improvement tips.",
     hasTags: false,
-    illustration: resumeana1
+    illustration: resumeana1,
   },
   {
     icon: Brain,
     iconColor: "text-emerald-700",
     bgColor: "bg-emerald-50",
     title: "NLP Skill Extraction",
-    description: "Extract programming languages, frameworks, tools and soft skills using advanced NLP.",
+    description:
+      "Extract programming languages, frameworks, tools and soft skills using advanced NLP.",
     hasTags: true,
     tags: [
-      { name: "Python", style: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
+      {
+        name: "Python",
+        style: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+      },
       { name: "SQL", style: "bg-blue-50 text-blue-800 border border-blue-100" },
-      { name: "JavaScript", style: "bg-emerald-50 text-emerald-800 border border-emerald-100" },
-      { name: "Docker", style: "bg-slate-50 text-slate-800 border border-slate-100" }
-    ]
+      {
+        name: "JavaScript",
+        style: "bg-emerald-50 text-emerald-800 border border-emerald-100",
+      },
+      {
+        name: "Docker",
+        style: "bg-slate-50 text-slate-800 border border-slate-100",
+      },
+    ],
   },
   {
     icon: MessageSquare,
     iconColor: "text-blue-600",
     bgColor: "bg-blue-50",
     title: "AI Interview Prep",
-    description: "Generate role-specific interview questions tailored to your resume and target role.",
+    description:
+      "Generate role-specific interview questions tailored to your resume and target role.",
     hasTags: false,
-    illustration: image2interviewgraphic
+    illustration: image2interviewgraphic,
   },
   {
     icon: Mic,
     iconColor: "text-pink-600",
     bgColor: "bg-pink-50",
     title: "Mock Interviews",
-    description: "Practice real interviews with AI and improve your confidence and communication.",
+    description:
+      "Practice real interviews with AI and improve your confidence and communication.",
     hasTags: false,
-    illustration: mockinterviewgraphic
+    illustration: mockinterviewgraphic,
   },
   {
     icon: Star,
     iconColor: "text-orange-500",
     bgColor: "bg-orange-50",
     title: "AI Feedback",
-    description: "Get detailed feedback on your answers, communication and technical approach.",
+    description:
+      "Get detailed feedback on your answers, communication and technical approach.",
     hasTags: false,
-    illustration: feedbackdashboardgraphic
+    illustration: feedbackdashboardgraphic,
   },
   {
     icon: TrendingUp,
     iconColor: "text-violet-600",
     bgColor: "bg-violet-50",
     title: "Career Dashboard",
-    description: "Track your progress, interview history, ATS history and skill growth over time.",
+    description:
+      "Track your progress, interview history, ATS history and skill growth over time.",
     hasTags: false,
-    illustration: linechartgraphic
-  }
+    illustration: linechartgraphic,
+  },
 ];
 
 function JourneySection() {
   return (
-    <section id="journey" className="relative bg-[#FAFAF8]/50 py-16 overflow-hidden">
+    <section
+      id="journey"
+      className="relative bg-[#FAFAF8]/50 py-16 overflow-hidden"
+    >
       {/* Subtle Dotted Grid Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(rgba(15,118,110,0.03)_1.5px,transparent_1.5px)] [background-size:24px_24px] pointer-events-none" />
 
@@ -87,7 +105,6 @@ function JourneySection() {
       <div className="absolute -right-20 bottom-10 h-[320px] w-[320px] rounded-full bg-indigo-50/20 blur-3xl pointer-events-none animate-pulse-slow-reverse" />
 
       <Container className="relative z-10">
-
         {/* Header */}
         <div className="text-center mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-[#064e3b]">
@@ -107,7 +124,9 @@ function JourneySection() {
               >
                 <div>
                   {/* Icon Circle */}
-                  <div className={`flex h-11 w-11 items-center justify-center rounded-full ${feature.bgColor} ${feature.iconColor}`}>
+                  <div
+                    className={`flex h-11 w-11 items-center justify-center rounded-full ${feature.bgColor} ${feature.iconColor}`}
+                  >
                     <Icon size={20} />
                   </div>
 
@@ -146,12 +165,10 @@ function JourneySection() {
                     </div>
                   )}
                 </div>
-
               </div>
             );
           })}
         </div>
-
       </Container>
     </section>
   );

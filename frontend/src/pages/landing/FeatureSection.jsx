@@ -5,7 +5,7 @@ import {
   Target,
   Grid,
   MessageSquare,
-  Trophy
+  Trophy,
 } from "lucide-react";
 
 const steps = [
@@ -14,43 +14,43 @@ const steps = [
     title: "Upload Resume",
     descriptionLine1: "Upload your resume",
     descriptionLine2: "in PDF or DOCX.",
-    icon: UploadCloud
+    icon: UploadCloud,
   },
   {
     number: 2,
     title: "AI Parsing",
     descriptionLine1: "We extract your details",
     descriptionLine2: "and key information.",
-    icon: FileText
+    icon: FileText,
   },
   {
     number: 3,
     title: "ATS Analysis",
     descriptionLine1: "Get your ATS score &",
     descriptionLine2: "improvement insights.",
-    icon: Target
+    icon: Target,
   },
   {
     number: 4,
     title: "Skill Extraction",
     descriptionLine1: "NLP extracts skills,",
     descriptionLine2: "tech & soft skills.",
-    icon: Grid
+    icon: Grid,
   },
   {
     number: 5,
     title: "AI Interview",
     descriptionLine1: "Practice with AI-generated",
     descriptionLine2: "interview questions.",
-    icon: MessageSquare
+    icon: MessageSquare,
   },
   {
     number: 6,
     title: "Feedback & Improve",
     descriptionLine1: "Get feedback and track",
     descriptionLine2: "your improvement.",
-    icon: Trophy
-  }
+    icon: Trophy,
+  },
 ];
 
 function FeatureSection() {
@@ -64,7 +64,6 @@ function FeatureSection() {
 
       <Container>
         <div className="flex flex-col relative z-10">
-          
           {/* Header */}
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-[#064e3b]">
@@ -82,15 +81,24 @@ function FeatureSection() {
             {steps.map((step, idx) => {
               const Icon = step.icon;
               return (
-                <div key={idx} className="flex flex-col items-center text-center relative group">
-                  
+                <div
+                  key={idx}
+                  className="flex flex-col items-center text-center relative group"
+                >
                   {/* Circle containing Icon */}
                   <div className="relative flex h-14 w-14 items-center justify-center rounded-full bg-white border border-slate-100 shadow-md group-hover:scale-105 transition-all duration-300">
-                    <Icon size={24} className={idx === 5 ? "text-violet-600" : "text-emerald-700"} />
+                    <Icon
+                      size={24}
+                      className={
+                        idx === 5 ? "text-violet-600" : "text-emerald-700"
+                      }
+                    />
                   </div>
 
                   {/* Step Number Badge */}
-                  <div className={`mt-4 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ${idx === 5 ? "bg-violet-600" : "bg-[#064e3b]"}`}>
+                  <div
+                    className={`mt-4 flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm ${idx === 5 ? "bg-violet-600" : "bg-[#064e3b]"}`}
+                  >
                     {step.number}
                   </div>
 
@@ -109,7 +117,14 @@ function FeatureSection() {
                   {/* Dotted Arrow Connector (visible on lg screens, hidden for the last item) */}
                   {idx < 5 && (
                     <div className="hidden lg:block absolute top-7 left-[calc(50%+28px)] w-[calc(100%-56px)] pointer-events-none translate-y-[-50%]">
-                      <svg className="w-full text-emerald-600/30" viewBox="0 0 100 20" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="3,3">
+                      <svg
+                        className="w-full text-emerald-600/30"
+                        viewBox="0 0 100 20"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeDasharray="3,3"
+                      >
                         <path d="M0 10 H90" />
                         <path d="M85 5 L90 10 L85 15" strokeDasharray="none" />
                       </svg>
@@ -119,7 +134,6 @@ function FeatureSection() {
               );
             })}
           </div>
-
         </div>
       </Container>
     </section>

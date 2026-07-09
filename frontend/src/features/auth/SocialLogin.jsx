@@ -3,7 +3,6 @@ import "./auth.css";
 export default function SocialLogin({ isRegister }) {
   return (
     <>
-
       {/* Divider */}
 
       <div className="auth-divider">
@@ -20,11 +19,7 @@ export default function SocialLogin({ isRegister }) {
         />
 
         {isRegister ? "Sign up with Google" : "Continue with Google"}
-
       </button>
-
-     
-
     </>
   );
 }

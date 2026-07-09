@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { getDashboardData } from "../../services/dashboardService";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   Upload,
@@ -19,6 +22,7 @@ import topIllustration from "../../assets/illustrations/topillusdash.png";
 import bottomIllustration from "../../assets/illustrations/bottomillusdash.png";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const reduxUser = useSelector(selectUser);
 
   // Parse active user name from localStorage
@@ -30,9 +34,47 @@ export default function Dashboard() {
     console.error("Error reading user details:", error);
   }
 
-  const displayName = localUser?.name || reduxUser?.name || localUser?.username || reduxUser?.username || "Kajal Sharma";
+const [dashboardData, setDashboardData] = useState(null);
 
+const displayName =
+  dashboardData?.user?.name ||
+  reduxUser?.name ||
+  localUser?.name ||
+  "User";
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+  useEffect(() => {
+  if (
+    dashboardData &&
+    dashboardData.resume &&
+    !dashboardData.resume.uploaded
+  ) {
+    navigate("/resume");
+  }
+}, [dashboardData, navigate]);
 
+  const loadDashboard = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const data = await getDashboardData(token);
+
+      setDashboardData(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (!dashboardData) {
+    return (
+      <DashboardLayout>
+        <div className="flex h-[80vh] items-center justify-center">
+          <p className="text-slate-500">Loading dashboard...</p>
+        </div>
+      </DashboardLayout>
+    );
+  }
   return (
     <DashboardLayout>
       {/* 1. Header greeting area with illustration */}
@@ -61,12 +103,18 @@ export default function Dashboard() {
           <div className="flex flex-col justify-between h-full">
             <div className="flex items-center gap-2 text-slate-400">
               <TrendingUp size={16} className="text-emerald-600" />
-              <span className="text-[12px] font-semibold tracking-wide">ATS Score</span>
+              <span className="text-[12px] font-semibold tracking-wide">
+                ATS Score
+              </span>
             </div>
             <div>
               <div className="flex items-baseline gap-1.5 mt-1">
-                <span className="text-[28px] font-extrabold text-slate-800 leading-none">78</span>
-                <span className="text-[14px] font-semibold text-slate-400">/ 100</span>
+                <span className="text-[28px] font-extrabold text-slate-800 leading-none">
+                  {dashboardData.resume.ats_score ?? "--"}
+                </span>
+                <span className="text-[14px] font-semibold text-slate-400">
+                  / 100
+                </span>
               </div>
               <span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 rounded-full">
                 ● Good Score
@@ -96,7 +144,9 @@ export default function Dashboard() {
                 strokeLinecap="round"
               />
             </svg>
-            <span className="absolute text-[12px] font-bold text-slate-700">78%</span>
+            <span className="absolute text-[12px] font-bold text-slate-700">
+              {dashboardData.resume.ats_score ?? "--"}%
+            </span>
           </div>
         </div>
 
@@ -105,13 +155,24 @@ export default function Dashboard() {
           <div className="flex flex-col justify-between h-full">
             <div className="flex items-center gap-2 text-slate-400">
               <FileText size={16} className="text-teal-600" />
-              <span className="text-[12px] font-semibold tracking-wide">Resume Uploaded</span>
+              <span className="text-[12px] font-semibold tracking-wide">
+                Resume Uploaded
+              </span>
             </div>
             <div>
-              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">1</span>
+              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
+                {dashboardData.resume.uploaded ? 1 : 0}
+              </span>
               <div className="flex items-center gap-1.5 mt-2.5">
-                <span className="text-[10px] text-slate-400 font-medium">Last updated 2 days ago</span>
-                <CheckCircle size={12} className="text-emerald-500 fill-emerald-50" />
+                <span className="text-[10px] text-slate-400 font-medium">
+                  {dashboardData.resume.uploaded
+                    ? "Resume uploaded"
+                    : "No resume uploaded"}
+                </span>
+                <CheckCircle
+                  size={12}
+                  className="text-emerald-500 fill-emerald-50"
+                />
               </div>
             </div>
           </div>
@@ -129,11 +190,17 @@ export default function Dashboard() {
           <div className="flex flex-col justify-between h-full">
             <div className="flex items-center gap-2 text-slate-400">
               <Mic size={16} className="text-orange-500" />
-              <span className="text-[12px] font-semibold tracking-wide">Mock Interviews</span>
+              <span className="text-[12px] font-semibold tracking-wide">
+                Mock Interviews
+              </span>
             </div>
             <div>
-              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">2</span>
-              <span className="text-[10px] text-slate-400 font-medium block mt-2.5">Interviews taken</span>
+              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
+                {dashboardData.stats.mock_interviews}
+              </span>
+              <span className="text-[10px] text-slate-400 font-medium block mt-2.5">
+                Interviews taken
+              </span>
             </div>
           </div>
 
@@ -146,7 +213,13 @@ export default function Dashboard() {
                 strokeWidth="2.5"
                 strokeLinecap="round"
               />
-              <circle cx="65" cy="10" r="3.5" className="fill-orange-500 stroke-white" strokeWidth="1" />
+              <circle
+                cx="65"
+                cy="10"
+                r="3.5"
+                className="fill-orange-500 stroke-white"
+                strokeWidth="1"
+              />
             </svg>
           </div>
         </div>
@@ -156,11 +229,17 @@ export default function Dashboard() {
           <div className="flex flex-col justify-between h-full">
             <div className="flex items-center gap-2 text-slate-400">
               <MessageSquare size={16} className="text-cyan-500" />
-              <span className="text-[12px] font-semibold tracking-wide">AI Feedback</span>
+              <span className="text-[12px] font-semibold tracking-wide">
+                AI Feedback
+              </span>
             </div>
             <div>
-              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">1</span>
-              <span className="text-[10px] text-slate-400 font-medium block mt-2.5">Feedback received</span>
+              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
+                {dashboardData.stats.feedback_reports}
+              </span>
+              <span className="text-[10px] text-slate-400 font-medium block mt-2.5">
+                Feedback received
+              </span>
             </div>
           </div>
 
@@ -173,7 +252,13 @@ export default function Dashboard() {
                 strokeWidth="2.5"
                 strokeLinecap="round"
               />
-              <circle cx="65" cy="12" r="3.5" className="fill-emerald-500 stroke-white" strokeWidth="1" />
+              <circle
+                cx="65"
+                cy="12"
+                r="3.5"
+                className="fill-emerald-500 stroke-white"
+                strokeWidth="1"
+              />
             </svg>
           </div>
         </div>
@@ -186,7 +271,9 @@ export default function Dashboard() {
           <div>
             <div className="flex items-center gap-2 mb-3 border-b border-slate-50 pb-2.5">
               <Calendar size={18} className="text-emerald-700" />
-              <h3 className="text-[15px] font-bold text-slate-800">Recent Activity</h3>
+              <h3 className="text-[15px] font-bold text-slate-800">
+                Recent Activity
+              </h3>
             </div>
 
             {/* List entries (Shows last 4-5 items as per mockups) */}
@@ -198,11 +285,17 @@ export default function Dashboard() {
                     <Upload size={15} />
                   </div>
                   <div>
-                    <h5 className="font-bold text-slate-700 leading-none">Resume uploaded</h5>
-                    <p className="text-[11px] text-slate-400 mt-1">Frontend Developer Resume.pdf</p>
+                    <h5 className="font-bold text-slate-700 leading-none">
+                      Resume uploaded
+                    </h5>
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      Frontend Developer Resume.pdf
+                    </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">2 days ago</span>
+                <span className="text-[11px] font-medium text-slate-400 mr-1">
+                  2 days ago
+                </span>
               </div>
 
               {/* Item 2 */}
@@ -212,11 +305,17 @@ export default function Dashboard() {
                     <Sparkles size={15} />
                   </div>
                   <div>
-                    <h5 className="font-bold text-slate-700 leading-none">AI feedback generated</h5>
-                    <p className="text-[11px] text-slate-400 mt-1">Resume review completed</p>
+                    <h5 className="font-bold text-slate-700 leading-none">
+                      AI feedback generated
+                    </h5>
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      Resume review completed
+                    </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">2 days ago</span>
+                <span className="text-[11px] font-medium text-slate-400 mr-1">
+                  2 days ago
+                </span>
               </div>
 
               {/* Item 3 */}
@@ -226,11 +325,17 @@ export default function Dashboard() {
                     <Mic size={15} />
                   </div>
                   <div>
-                    <h5 className="font-bold text-slate-700 leading-none">Mock interview completed</h5>
-                    <p className="text-[11px] text-slate-400 mt-1">System Design Round</p>
+                    <h5 className="font-bold text-slate-700 leading-none">
+                      Mock interview completed
+                    </h5>
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      System Design Round
+                    </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">3 days ago</span>
+                <span className="text-[11px] font-medium text-slate-400 mr-1">
+                  3 days ago
+                </span>
               </div>
 
               {/* Item 4 */}
@@ -240,11 +345,17 @@ export default function Dashboard() {
                     <TrendingUp size={15} />
                   </div>
                   <div>
-                    <h5 className="font-bold text-slate-700 leading-none">ATS score improved</h5>
-                    <p className="text-[11px] text-slate-400 mt-1">Previous score: 72 → New score: 78</p>
+                    <h5 className="font-bold text-slate-700 leading-none">
+                      ATS score improved
+                    </h5>
+                    <p className="text-[11px] text-slate-400 mt-1">
+                      Previous score: 72 → New score: 78
+                    </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">3 days ago</span>
+                <span className="text-[11px] font-medium text-slate-400 mr-1">
+                  3 days ago
+                </span>
               </div>
             </div>
           </div>
@@ -266,8 +377,12 @@ export default function Dashboard() {
                   <FileText size={15} />
                 </div>
                 <div>
-                  <h6 className="text-[12.5px] font-bold text-slate-700">Improve Your Resume</h6>
-                  <p className="text-[10px] text-slate-400 leading-tight">Get AI suggestions to make your resume stronger.</p>
+                  <h6 className="text-[12.5px] font-bold text-slate-700">
+                    Improve Your Resume
+                  </h6>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Get AI suggestions to make your resume stronger.
+                  </p>
                 </div>
               </div>
               <button className="flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-white border border-slate-200 hover:bg-emerald-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
@@ -283,8 +398,12 @@ export default function Dashboard() {
                   <Mic size={15} />
                 </div>
                 <div>
-                  <h6 className="text-[12.5px] font-bold text-slate-700">Practice Interviews</h6>
-                  <p className="text-[10px] text-slate-400 leading-tight">Take mock interviews and improve confidence.</p>
+                  <h6 className="text-[12.5px] font-bold text-slate-700">
+                    Practice Interviews
+                  </h6>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Take mock interviews and improve confidence.
+                  </p>
                 </div>
               </div>
               <button className="flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
@@ -300,8 +419,12 @@ export default function Dashboard() {
                   <TrendingUp size={15} />
                 </div>
                 <div>
-                  <h6 className="text-[12.5px] font-bold text-slate-700">Track Your Progress</h6>
-                  <p className="text-[10px] text-slate-400 leading-tight">Keep improving and boost your placement rates.</p>
+                  <h6 className="text-[12.5px] font-bold text-slate-700">
+                    Track Your Progress
+                  </h6>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    Keep improving and boost your placement rates.
+                  </p>
                 </div>
               </div>
               <button className="flex items-center gap-1 text-[11px] font-bold text-indigo-800 bg-white border border-slate-200 hover:bg-indigo-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">

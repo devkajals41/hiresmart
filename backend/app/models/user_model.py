@@ -18,6 +18,12 @@ def create_user_document(
         "password": hashed_password,
 
         "resume_uploaded": False,
+        
+        "resume_filename": None,
+
+        "resume_path": None,
+
+        "uploaded_at": None,
 
         "ats_score": None,
 

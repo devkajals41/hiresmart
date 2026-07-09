@@ -1,19 +1,8 @@
 import { useState } from "react";
-import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  Home,
-  ArrowRight,
-} from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Home, ArrowRight } from "lucide-react";
 import "./auth.css";
 
-export default function LoginForm({
-  onSubmit,
-  loading,
-  error,
-}) {
+export default function LoginForm({ onSubmit, loading, error }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -34,8 +23,6 @@ export default function LoginForm({
     onSubmit(formData);
   };
 
-
-
   return (
     <form onSubmit={handleSubmit}>
       {/* Logo */}
@@ -46,9 +33,7 @@ export default function LoginForm({
         </div>
 
         <div>
-          <h1 className="auth-brand text-[22px]">
-            HireSmart
-          </h1>
+          <h1 className="auth-brand text-[22px]">HireSmart</h1>
 
           <p className="text-[11px] font-medium tracking-wide text-slate-400">
             Analyze. Practice. Improve.
@@ -59,10 +44,7 @@ export default function LoginForm({
       {/* Heading */}
 
       <div className="mb-8">
-        <h2 className="auth-heading text-[36px]">
-          Welcome back
-          
-        </h2>
+        <h2 className="auth-heading text-[36px]">Welcome back</h2>
 
         <p className="auth-subheading mt-2 text-[16px]">
           Log in to continue your journey
@@ -78,15 +60,10 @@ export default function LoginForm({
       {/* Email */}
 
       <div className="mb-5">
-        <label className="auth-label">
-          Email address
-        </label>
+        <label className="auth-label">Email address</label>
 
         <div className="auth-input-group">
-          <Mail
-            size={18}
-            className="text-slate-400 shrink-0"
-          />
+          <Mail size={18} className="text-slate-400 shrink-0" />
 
           <input
             type="email"
@@ -103,23 +80,15 @@ export default function LoginForm({
 
       <div className="mb-4">
         <div className="mb-2 flex items-center justify-between">
-          <label className="auth-label mb-0!">
-            Password
-          </label>
+          <label className="auth-label mb-0!">Password</label>
 
-          <button
-            type="button"
-            className="auth-link text-[13px]"
-          >
+          <button type="button" className="auth-link text-[13px]">
             Forgot password?
           </button>
         </div>
 
         <div className="auth-input-group">
-          <Lock
-            size={18}
-            className="text-slate-400 shrink-0"
-          />
+          <Lock size={18} className="text-slate-400 shrink-0" />
 
           <input
             type={showPassword ? "text" : "password"}
@@ -133,20 +102,12 @@ export default function LoginForm({
           <button
             type="button"
             className="ml-2 shrink-0 p-1 rounded-lg transition hover:bg-slate-100"
-            onClick={() =>
-              setShowPassword(!showPassword)
-            }
+            onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
-              <EyeOff
-                size={18}
-                className="text-slate-400"
-              />
+              <EyeOff size={18} className="text-slate-400" />
             ) : (
-              <Eye
-                size={18}
-                className="text-slate-400"
-              />
+              <Eye size={18} className="text-slate-400" />
             )}
           </button>
         </div>
@@ -155,23 +116,14 @@ export default function LoginForm({
       {/* Remember */}
 
       <div className="mb-7 flex items-center gap-3">
-        <input
-          type="checkbox"
-          className="auth-checkbox"
-        />
+        <input type="checkbox" className="auth-checkbox" />
 
-        <span className="text-[14px] text-slate-500">
-          Remember me
-        </span>
+        <span className="text-[14px] text-slate-500">Remember me</span>
       </div>
 
       {/* Button */}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="auth-btn-primary"
-      >
+      <button type="submit" disabled={loading} className="auth-btn-primary">
         {loading ? (
           "Logging in..."
         ) : (

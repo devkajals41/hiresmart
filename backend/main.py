@@ -3,6 +3,8 @@ from contextlib import asynccontextmanager
 from app.routes.auth_routes import router as auth_router
 from app.routes.profile_routes import router as profile_router
 from fastapi.middleware.cors import CORSMiddleware
+from app.routes.dashboard_routes import router as dashboard_router
+from app.routes.resume_routes import router as resume_router
 
 from app.database.mongodb import (
     connect_to_mongo,
@@ -35,6 +37,8 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(profile_router)
+app.include_router(dashboard_router)
+app.include_router(resume_router)
 
 @app.get("/")
 async def root():
