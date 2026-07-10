@@ -1,40 +1,95 @@
-from rapidfuzz import fuzz
+import re
 
 from app.utils.skills.skill_database import SKILL_DATABASE
 
+# ---------------------------------------------------
+# Manual aliases
+# ---------------------------------------------------
 
-SIMILARITY_THRESHOLD = 90
+MANUAL_ALIASES = {
+
+    "reactjs": "React",
+    "react.js": "React",
+
+    "nodejs": "Node.js",
+    "node js": "Node.js",
+    "node": "Node.js",
+
+    "express": "Express.js",
+    "expressjs": "Express.js",
+
+    "js": "JavaScript",
+
+    "ts": "TypeScript",
+
+    "tailwind": "Tailwind CSS",
+
+    "mui": "Material UI",
+
+    "gcp": "Google Cloud Platform",
+
+    "aws": "Amazon Web Services",
+
+    "ml": "Machine Learning",
+
+    "dl": "Deep Learning",
+
+    "nlp": "Natural Language Processing",
+
+    "cv": "Computer Vision",
+
+    "rag": "Retrieval Augmented Generation",
+
+    "llm": "Large Language Models",
+
+    "oop": "Object Oriented Programming",
+
+    "dbms": "Database Management System",
+
+    "os": "Operating Systems",
+
+    "cn": "Computer Networks",
+
+}
+
+
+# ---------------------------------------------------
+# Auto-generated aliases
+# ---------------------------------------------------
+
+AUTO_ALIASES = {}
+
+for category in SKILL_DATABASE.values():
+
+    for skill in category:
+
+        lower = skill.lower()
+
+        AUTO_ALIASES[lower] = skill
+
+        AUTO_ALIASES[lower.replace(".", "")] = skill
+
+        AUTO_ALIASES[lower.replace("-", " ")] = skill
+
+        AUTO_ALIASES[lower.replace("/", " ")] = skill
+
+        AUTO_ALIASES[re.sub(r"\s+", " ", lower)] = skill
+
+
+ALIASES = {
+
+    **AUTO_ALIASES,
+
+    **MANUAL_ALIASES,
+
+}
 
 
 def normalize_skill(skill: str) -> str:
     """
-    Normalize a detected skill to the closest skill
-    in our database using fuzzy matching.
+    Normalize a skill to its canonical form.
     """
 
-    skill = skill.strip()
+    skill = skill.strip().lower()
 
-    best_match = skill
-
-    highest_score = 0
-
-    for category in SKILL_DATABASE.values():
-
-        for db_skill in category:
-
-            score = fuzz.ratio(
-                skill.lower(),
-                db_skill.lower(),
-            )
-
-            if score > highest_score:
-
-                highest_score = score
-
-                best_match = db_skill
-
-    if highest_score >= SIMILARITY_THRESHOLD:
-
-        return best_match
-
-    return skill
+    return ALIASES.get(skill, skill.title())

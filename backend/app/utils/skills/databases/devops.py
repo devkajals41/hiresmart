@@ -1,0 +1,30 @@
+DEVOPS_SKILLS = [
+
+    "Docker",
+    "Docker Compose",
+
+    "Kubernetes",
+
+    "Git",
+
+    "GitHub",
+
+    "GitLab",
+
+    "GitHub Actions",
+
+    "CI/CD",
+
+    "Jenkins",
+
+    "Terraform",
+
+    "Ansible",
+
+    "Linux",
+
+    "Ubuntu",
+
+    "Nginx",
+
+]

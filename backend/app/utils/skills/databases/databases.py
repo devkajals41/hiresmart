@@ -1,0 +1,20 @@
+DATABASE_SKILLS = [
+
+    "MongoDB",
+    "MySQL",
+    "PostgreSQL",
+    "SQLite",
+    "MariaDB",
+    "Oracle",
+    "SQL Server",
+    "Redis",
+    "Firebase",
+    "Firestore",
+    "DynamoDB",
+    "Cassandra",
+    "Neo4j",
+    "CouchDB",
+    "Supabase",
+    "Elasticsearch",
+    "InfluxDB",
+]

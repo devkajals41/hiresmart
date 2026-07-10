@@ -1,0 +1,43 @@
+TOOLS_SKILLS = [
+
+    "Git",
+
+    "GitHub",
+
+    "GitLab",
+
+    "Bitbucket",
+
+    "VS Code",
+
+    "Visual Studio",
+
+    "IntelliJ IDEA",
+
+    "PyCharm",
+
+    "Eclipse",
+
+    "Android Studio",
+
+    "Postman",
+
+    "Figma",
+
+    "Canva",
+
+    "Notion",
+
+    "Jira",
+
+    "Slack",
+
+    "Trello",
+
+    "Discord",
+
+    "Docker Desktop",
+
+    "MongoDB Compass",
+
+]

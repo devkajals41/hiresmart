@@ -1,0 +1,29 @@
+OPERATING_SYSTEM_SKILLS = [
+
+    "Operating Systems",
+
+    "Linux",
+
+    "Ubuntu",
+
+    "Windows",
+
+    "macOS",
+
+    "Unix",
+
+    "Shell Scripting",
+
+    "Bash",
+
+    "PowerShell",
+
+    "Process Management",
+
+    "Memory Management",
+
+    "Threading",
+
+    "Synchronization",
+
+]

@@ -29,11 +29,19 @@ from app.utils.sections.certifications.certification_parser import (
     parse_certifications,
 )
 
+from app.utils.sections.achievements.achievement_parser import (
+    parse_achievements,
+)
+
+from app.utils.sections.positions.position_parser import (
+    parse_positions,
+)
+
 # ----------------------------
 # Skill Engine
 # ----------------------------
 
-from app.utils.skills.skill_matcher import parse_skills
+from app.utils.skills.skill_engine import parse_skills
 
 
 def parse_resume(resume_text: str) -> dict:
@@ -100,6 +108,14 @@ def parse_resume(resume_text: str) -> dict:
         document.skills,
         cleaned_text,
     )
+    
+    achievements = parse_achievements(
+        document.achievements
+    )
+
+    positions = parse_positions(
+        document.positions
+    )
 
     # ----------------------------
     # Final Structured Resume
@@ -146,6 +162,10 @@ def parse_resume(resume_text: str) -> dict:
         "skills": skills,
 
         "certifications": certifications,
+        
+        "achievements": achievements,
+
+        "positions": positions,
 
     }
 

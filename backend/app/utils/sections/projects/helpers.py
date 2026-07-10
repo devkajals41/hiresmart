@@ -4,7 +4,7 @@ from .patterns import (
     DATE_PATTERN,
 )
 
-from app.utils.skills.skill_matcher import parse_skills
+from app.utils.skills.skill_engine import parse_skills
 
 
 def parse_title(lines: list[str]) -> str:

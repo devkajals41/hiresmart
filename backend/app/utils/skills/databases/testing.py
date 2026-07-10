@@ -1,0 +1,37 @@
+TESTING_SKILLS = [
+
+    "Unit Testing",
+
+    "Integration Testing",
+
+    "System Testing",
+
+    "Regression Testing",
+
+    "Automation Testing",
+
+    "Manual Testing",
+
+    "JUnit",
+
+    "Mockito",
+
+    "PyTest",
+
+    "Selenium",
+
+    "Cypress",
+
+    "Playwright",
+
+    "Postman",
+
+    "JUnit5",
+
+    "JMeter",
+
+    "Load Testing",
+
+    "API Testing",
+
+]

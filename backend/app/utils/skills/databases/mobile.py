@@ -1,0 +1,31 @@
+MOBILE_SKILLS = [
+
+    "Android",
+
+    "Android Studio",
+
+    "Java",
+
+    "Kotlin",
+
+    "Swift",
+
+    "Objective-C",
+
+    "Flutter",
+
+    "Dart",
+
+    "React Native",
+
+    "Expo",
+
+    "Xamarin",
+
+    "Ionic",
+
+    "Firebase",
+
+    "Jetpack Compose",
+
+]

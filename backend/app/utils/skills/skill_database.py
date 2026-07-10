@@ -1,88 +1,100 @@
+from app.utils.skills.databases.programming_languages import (
+    PROGRAMMING_LANGUAGES,
+)
+
+from app.utils.skills.databases.frontend import (
+    FRONTEND_SKILLS,
+)
+
+from app.utils.skills.databases.backend import (
+    BACKEND_SKILLS,
+)
+
+from app.utils.skills.databases.databases import (
+    DATABASE_SKILLS,
+)
+
+from app.utils.skills.databases.cloud import (
+    CLOUD_SKILLS,
+)
+
+from app.utils.skills.databases.devops import (
+    DEVOPS_SKILLS,
+)
+
+from app.utils.skills.databases.ai_ml import (
+    AI_ML_SKILLS,
+)
+
+from app.utils.skills.databases.data_science import (
+    DATA_SCIENCE_SKILLS,
+)
+
+from app.utils.skills.databases.blockchain import (
+    BLOCKCHAIN_SKILLS,
+)
+
+from app.utils.skills.databases.mobile import (
+    MOBILE_SKILLS,
+)
+
+from app.utils.skills.databases.testing import (
+    TESTING_SKILLS,
+)
+
+from app.utils.skills.databases.cybersecurity import (
+    CYBERSECURITY_SKILLS,
+)
+
+from app.utils.skills.databases.networking import (
+    NETWORKING_SKILLS,
+)
+
+from app.utils.skills.databases.operating_systems import (
+    OPERATING_SYSTEM_SKILLS,
+)
+
+from app.utils.skills.databases.tools import (
+    TOOLS_SKILLS,
+)
+
+from app.utils.skills.databases.soft_skills import (
+    SOFT_SKILLS,
+)
+
+
 SKILL_DATABASE = {
 
-    "Programming Languages": [
-        "Python",
-        "Java",
-        "C",
-        "C++",
-        "C#",
-        "JavaScript",
-        "TypeScript",
-        "Go",
-        "Rust",
-        "Kotlin",
-        "Swift",
-    ],
+    "Programming Languages": PROGRAMMING_LANGUAGES,
 
-    "Frontend": [
-        "HTML",
-        "CSS",
-        "React",
-        "Next.js",
-        "Redux",
-        "Tailwind CSS",
-        "Bootstrap",
-        "Material UI",
-        "Chakra UI",
-        "Vue",
-        "Angular",
-    ],
+    "Frontend": FRONTEND_SKILLS,
 
-    "Backend": [
-        "Node.js",
-        "Express",
-        "FastAPI",
-        "Django",
-        "Flask",
-        "Spring Boot",
-    ],
+    "Backend": BACKEND_SKILLS,
 
-    "Database": [
-        "MongoDB",
-        "MySQL",
-        "PostgreSQL",
-        "SQLite",
-        "Redis",
-        "Firebase",
-    ],
+    "Database": DATABASE_SKILLS,
 
-    "Cloud": [
-        "AWS",
-        "Azure",
-        "Google Cloud",
-    ],
+    "Cloud": CLOUD_SKILLS,
 
-    "DevOps": [
-        "Docker",
-        "Kubernetes",
-        "Git",
-        "GitHub",
-        "CI/CD",
-    ],
+    "DevOps": DEVOPS_SKILLS,
 
-    "AI / ML": [
-        "Machine Learning",
-        "Deep Learning",
-        "Artificial Intelligence",
-        "TensorFlow",
-        "PyTorch",
-        "Scikit-learn",
-        "OpenCV",
-        "spaCy",
-        "Pandas",
-        "NumPy",
-    ],
+    "AI / ML": AI_ML_SKILLS,
 
-    "Blockchain": [
-        "Solidity",
-        "Ethereum",
-        "Web3",
-    ],
+    "Data Science": DATA_SCIENCE_SKILLS,
 
-    "Tools": [
-        "Postman",
-        "Figma",
-        "VS Code",
-        "Linux",
-    ]
+    "Blockchain": BLOCKCHAIN_SKILLS,
+
+    "Mobile": MOBILE_SKILLS,
+
+    "Testing": TESTING_SKILLS,
+
+    "Cybersecurity": CYBERSECURITY_SKILLS,
+
+    "Networking": NETWORKING_SKILLS,
+
+    "Operating Systems": OPERATING_SYSTEM_SKILLS,
+
+    "Tools": TOOLS_SKILLS,
+
+    "Soft Skills": SOFT_SKILLS,
+
 }
