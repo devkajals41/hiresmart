@@ -1,8 +1,17 @@
+import re
+
 SECTION_HEADERS = {
+    "personal_information": [
+        "personal information",
+        "contact",
+        "contact information",
+        "profile",
+        "about me",
+    ],
     "education": [
         "education",
         "academic background",
-        "qualification",
+        "academic qualifications",
         "qualifications",
     ],
     "experience": [
@@ -10,6 +19,8 @@ SECTION_HEADERS = {
         "work experience",
         "professional experience",
         "employment",
+        "employment history",
+        "internship",
         "internships",
     ],
     "projects": [
@@ -17,69 +28,104 @@ SECTION_HEADERS = {
         "project",
         "academic projects",
         "personal projects",
+        "major projects",
+        "selected projects",
+        "key projects",
     ],
     "skills": [
         "skills",
         "technical skills",
+        "technical skills and interests",
         "technical expertise",
-        "core skills",
+        "core competencies",
+        "technology stack",
+        "technologies",
     ],
     "certifications": [
         "certifications",
         "certificates",
         "licenses",
+        "professional certifications",
+    ],
+    "achievements": [
+        "achievements",
+        "awards",
+        "honors",
+    ],
+    "positions": [
+        "positions of responsibility",
+        "leadership",
+        "leadership experience",
+        "responsibility",
+    ],
+    "languages": [
+        "languages",
+        "language proficiency",
+    ],
+    "interests": [
+        "interests",
+        "areas of interest",
+        "hobbies",
     ],
 }
 
+
+def normalize_heading(text: str) -> str:
+    """
+    Normalize section headings for comparison.
+    """
+
+    text = text.lower().strip()
+
+    text = re.sub(r"[:\-|]", "", text)
+
+    text = re.sub(r"\s+", " ", text)
+
+    return text
+
+
 def detect_sections(text: str) -> dict:
     """
-    Split resume into logical sections.
+    Detect and split a resume into logical sections.
 
     Returns:
         {
-            "education": "...",
-            "experience": "...",
+            "education": [...],
+            "projects": [...],
             ...
         }
     """
 
     sections = {
-        "education": "",
-        "experience": "",
-        "projects": "",
-        "skills": "",
-        "certifications": "",
+        key: []
+        for key in SECTION_HEADERS
     }
 
-    lines = [
-        line.strip()
-        for line in text.split("\n")
-        if line.strip()
-    ]
+    current_section = "personal_information"
 
-    current_section = None
+    for raw_line in text.splitlines():
 
-    for line in lines:
+        line = raw_line.strip()
 
-        lower = line.lower()
-
-        found = False
-
-        for section_name, keywords in SECTION_HEADERS.items():
-
-            if lower in keywords:
-
-                current_section = section_name
-
-                found = True
-
-                break
-
-        if found:
+        if not line:
             continue
 
-        if current_section:
+        normalized = normalize_heading(line)
 
-            sections[current_section] += line + "\n"
+        matched_section = None
+
+        for section_name, headings in SECTION_HEADERS.items():
+
+            if normalized in headings:
+
+                matched_section = section_name
+                break
+
+        if matched_section:
+
+            current_section = matched_section
+            continue
+
+        sections[current_section].append(line)
 
     return sections

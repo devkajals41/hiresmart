@@ -1,24 +1,23 @@
-from app.utils.nlp.nlp_engine import process_text
+from app.utils.nlp.nlp_engine import create_doc
 
 
 def extract_entities(text: str) -> dict:
     """
-    Extract named entities using spaCy.
+    Extract named entities from resume text.
     """
 
-    doc = process_text(text)
+    doc = create_doc(text)
 
-    entities = {
-        "PERSON": [],
-        "ORG": [],
-        "DATE": [],
-        "GPE": [],
-    }
+    entities = {}
 
     for entity in doc.ents:
 
-        if entity.label_ in entities:
+        label = entity.label_
 
-            entities[entity.label_].append(entity.text)
+        entities.setdefault(label, [])
+
+        if entity.text not in entities[label]:
+
+            entities[label].append(entity.text)
 
     return entities

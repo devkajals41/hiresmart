@@ -1,13 +1,12 @@
 import spacy
 
-# Load the NLP model once
+# Load spaCy model only once
 nlp = spacy.load("en_core_web_sm")
 
 
-def process_text(text: str):
+def create_doc(text: str):
     """
-    Process resume text using spaCy.
-    Returns a spaCy Doc object.
+    Convert raw text into a spaCy Doc object.
     """
 
     return nlp(text)

@@ -1,64 +1,137 @@
 import re
 
-EDUCATION_KEYWORDS = [
+
+DEGREE_KEYWORDS = [
     "b.tech",
     "btech",
+    "b.e",
+    "be",
     "bachelor",
     "m.tech",
     "mtech",
+    "m.e",
+    "me",
     "master",
     "phd",
-    "diploma",
-    "higher secondary",
-    "secondary",
-    "12th",
-    "10th",
-    "ssc",
-    "hsc",
+    "mba",
+    "b.sc",
+    "bsc",
+    "m.sc",
+    "msc",
+]
+
+COLLEGE_KEYWORDS = [
     "college",
     "university",
     "institute",
+    "iit",
+    "nit",
+    "iiit",
 ]
 
+BRANCH_KEYWORDS = [
+    "computer science",
+    "electronics",
+    "electrical",
+    "communication",
+    "information technology",
+    "mechanical",
+    "civil",
+    "ece",
+    "cse",
+    "it",
+]
 
-def parse_education(education_text: str) -> list:
+CGPA_PATTERN = re.compile(
+    r"\b(\d\.\d{1,2}|\d{1,2}\.\d{1,2})\b"
+)
+
+YEAR_PATTERN = re.compile(
+    r"(19|20)\d{2}\s*[-–]\s*(19|20)\d{2}"
+)
+
+
+def parse_education(lines: list[str]) -> list:
     """
-    Extract education entries from the Education section.
-    """
+    Parse Education section.
 
-    education = []
+    Returns:
 
-    if not education_text:
-        return education
-
-    lines = [
-        line.strip()
-        for line in education_text.split("\n")
-        if line.strip()
+    [
+        {
+            "degree":"",
+            "branch":"",
+            "college":"",
+            "cgpa":"",
+            "duration":""
+        }
     ]
+    """
+
+    if not lines:
+        return []
+
+    education = {
+        "degree": "",
+        "branch": "",
+        "college": "",
+        "cgpa": "",
+        "duration": "",
+    }
 
     for line in lines:
 
         lower = line.lower()
 
-        if any(keyword in lower for keyword in EDUCATION_KEYWORDS):
+        # Degree
+        if not education["degree"]:
 
-            entry = {
-                "degree": line,
-                "year": "",
-                "cgpa": "",
-            }
+            for degree in DEGREE_KEYWORDS:
 
-            year = re.search(r"(19|20)\d{2}", line)
+                if degree in lower:
 
-            if year:
-                entry["year"] = year.group()
+                    education["degree"] = line
 
-            cgpa = re.search(r"\d+\.\d+", line)
+                    break
 
-            if cgpa:
-                entry["cgpa"] = cgpa.group()
+        # College
+        if not education["college"]:
 
-            education.append(entry)
+            for keyword in COLLEGE_KEYWORDS:
 
-    return education
+                if keyword in lower:
+
+                    education["college"] = line
+
+                    break
+
+        # Branch
+        if not education["branch"]:
+
+            for branch in BRANCH_KEYWORDS:
+
+                if branch in lower:
+
+                    education["branch"] = line
+
+                    break
+
+        # CGPA
+        if not education["cgpa"]:
+
+            match = CGPA_PATTERN.search(line)
+
+            if match:
+
+                education["cgpa"] = match.group()
+
+        # Duration
+        if not education["duration"]:
+
+            match = YEAR_PATTERN.search(line)
+
+            if match:
+
+                education["duration"] = match.group()
+
+    return [education]
