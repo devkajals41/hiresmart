@@ -1,16 +1,37 @@
 from app.utils.text_cleaner import clean_text
 from app.utils.resume_document import ResumeDocument
 
+# ----------------------------
+# Entity Parsers
+# ----------------------------
+
 from app.utils.entities.name_parser import parse_name
 from app.utils.entities.contact_parser import parse_contact
 from app.utils.entities.social_parser import parse_social
 
-from app.utils.sections.education_parser import parse_education
-from app.utils.sections.project_parser import parse_projects
-from app.utils.sections.experience_parser import parse_experience
-from app.utils.sections.certification_parser import (
+# ----------------------------
+# Section Parsers
+# ----------------------------
+
+from app.utils.sections.education.education_parser import (
+    parse_education,
+)
+
+from app.utils.sections.experience.experience_parser import (
+    parse_experience,
+)
+
+from app.utils.sections.projects.project_parser import (
+    parse_projects,
+)
+
+from app.utils.sections.certifications.certification_parser import (
     parse_certifications,
 )
+
+# ----------------------------
+# Skill Engine
+# ----------------------------
 
 from app.utils.skills.skill_matcher import parse_skills
 

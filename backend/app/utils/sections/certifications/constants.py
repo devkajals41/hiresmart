@@ -1,0 +1,18 @@
+ISSUER_KEYWORDS = [
+    "coursera",
+    "udemy",
+    "edx",
+    "nptel",
+    "linkedin learning",
+    "google",
+    "microsoft",
+    "aws",
+    "oracle",
+    "ibm",
+    "meta",
+    "cisco",
+    "infosys",
+    "accenture",
+    "simplilearn",
+    "great learning",
+]
