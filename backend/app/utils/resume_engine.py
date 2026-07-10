@@ -4,6 +4,7 @@ from app.utils.entities.name_parser import parse_name
 from app.utils.entities.contact_parser import parse_contact
 from app.utils.sections.education_parser import parse_education
 from app.utils.entities.social_parser import parse_social
+from app.utils.skills.skill_matcher import parse_skills
 
 
 def parse_resume(resume_text: str) -> dict:
@@ -18,6 +19,10 @@ def parse_resume(resume_text: str) -> dict:
     
     sections = detect_sections(cleaned_text)
     
+    
+    skills = parse_skills(
+    sections["skills"]
+    )
     education = parse_education(
     sections["education"]
     )
