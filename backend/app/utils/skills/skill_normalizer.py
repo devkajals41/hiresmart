@@ -1,30 +1,40 @@
-NORMALIZATION_MAP = {
+from rapidfuzz import fuzz
 
-    "node js": "Node.js",
+from app.utils.skills.skill_database import SKILL_DATABASE
 
-    "nodejs": "Node.js",
 
-    "expressjs": "Express",
-
-    "reactjs": "React",
-
-    "mongodb atlas": "MongoDB",
-
-    "js": "JavaScript",
-
-    "ts": "TypeScript",
-
-    "cpp": "C++",
-
-    "py": "Python",
-}
+SIMILARITY_THRESHOLD = 90
 
 
 def normalize_skill(skill: str) -> str:
+    """
+    Normalize a detected skill to the closest skill
+    in our database using fuzzy matching.
+    """
 
-    key = skill.lower().strip()
+    skill = skill.strip()
 
-    return NORMALIZATION_MAP.get(
-        key,
-        skill,
-    )
+    best_match = skill
+
+    highest_score = 0
+
+    for category in SKILL_DATABASE.values():
+
+        for db_skill in category:
+
+            score = fuzz.ratio(
+                skill.lower(),
+                db_skill.lower(),
+            )
+
+            if score > highest_score:
+
+                highest_score = score
+
+                best_match = db_skill
+
+    if highest_score >= SIMILARITY_THRESHOLD:
+
+        return best_match
+
+    return skill

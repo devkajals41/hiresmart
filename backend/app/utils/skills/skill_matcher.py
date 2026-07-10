@@ -4,27 +4,33 @@ from app.utils.skills.skill_normalizer import normalize_skill
 
 def parse_skills(skill_text: str) -> dict:
     """
-    Extract categorized skills from the Skills section.
+    Parse and normalize skills from the Skills section.
     """
 
     extracted = {}
 
-    lower_text = skill_text.lower()
+    words = skill_text.replace(",", "\n").split("\n")
+
+    candidates = [
+        normalize_skill(word.strip())
+        for word in words
+        if word.strip()
+    ]
 
     for category, skills in SKILL_DATABASE.items():
 
-        found = []
+        matched = []
 
-        for skill in skills:
+        for candidate in candidates:
 
-            if skill.lower() in lower_text:
+            for db_skill in skills:
 
-                found.append(
-                    normalize_skill(skill)
-                )
+                if candidate.lower() == db_skill.lower():
 
-        if found:
+                    matched.append(db_skill)
 
-            extracted[category] = sorted(set(found))
+        if matched:
+
+            extracted[category] = sorted(set(matched))
 
     return extracted
