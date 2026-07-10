@@ -5,6 +5,7 @@ from app.routes.profile_routes import router as profile_router
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.dashboard_routes import router as dashboard_router
 from app.routes.resume_routes import router as resume_router
+from fastapi.staticfiles import StaticFiles
 
 from app.database.mongodb import (
     connect_to_mongo,
@@ -34,7 +35,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+app.mount(
+    "/uploads",
+    StaticFiles(directory="uploads"),
+    name="uploads",
+)
 app.include_router(auth_router)
 app.include_router(profile_router)
 app.include_router(dashboard_router)

@@ -1,8 +1,9 @@
 import os
 from app.repositories.user_repository import update_resume_details
 import aiofiles
-
+from app.utils.pdf_parser import extract_text_from_pdf
 from fastapi import UploadFile, HTTPException, status
+from app.utils.resume_engine import parse_resume
 
 UPLOAD_FOLDER = "uploads"
 
@@ -36,19 +37,26 @@ async def upload_resume(
         filename,
     )
 
+    # Save uploaded file
     async with aiofiles.open(
         filepath,
         "wb",
     ) as out_file:
 
         content = await file.read()
-
         await out_file.write(content)
 
+    # Extract text from the uploaded PDF
+    resume_text = extract_text_from_pdf(filepath)
+    parsed_resume = parse_resume(resume_text)
+
+    # Save resume details in MongoDB
     await update_resume_details(
         user_id=user_id,
-        filename=filename,
+        filename=file.filename,
         filepath=filepath,
+        resume_text=resume_text,
+        parsed_resume=parsed_resume,
     )
 
     return {

@@ -29,6 +29,8 @@ async def update_resume_details(
     user_id: str,
     filename: str,
     filepath: str,
+    resume_text: str,
+    parsed_resume: dict,
 ):
     """
     Save uploaded resume information.
@@ -41,6 +43,8 @@ async def update_resume_details(
                 "resume_uploaded": True,
                 "resume_filename": filename,
                 "resume_path": filepath,
+                "resume_text": resume_text,
+                "parsed_resume": parsed_resume,
                 "uploaded_at": datetime.utcnow(),
             }
         },
