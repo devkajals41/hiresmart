@@ -6,6 +6,9 @@ import Register from "./pages/register/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Resume from "./pages/resume/Resume";
+import AtsReport from "./pages/ats/AtsReport";
+import MockInterview from "./pages/interview/MockInterview";
+import Feedback from "./pages/feedback/Feedback";
 
 function App() {
   return (
@@ -27,6 +30,31 @@ function App() {
           element={
             <ProtectedRoute>
               <Resume />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ats"
+          element={
+            <ProtectedRoute>
+              <AtsReport />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/interview"
+          element={
+            <ProtectedRoute>
+              <MockInterview />
+            </ProtectedRoute>
+          }
+        />
+        {/* AI Feedback report after a mock interview session */}
+        <Route
+          path="/feedback"
+          element={
+            <ProtectedRoute>
+              <Feedback />
             </ProtectedRoute>
           }
         />
