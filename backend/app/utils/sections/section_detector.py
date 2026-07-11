@@ -87,13 +87,10 @@ def normalize_heading(text: str) -> str:
 def detect_sections(text: str) -> dict:
     """
     Detect and split a resume into logical sections.
-
-    Returns:
-        {
-            "education": [...],
-            "projects": [...],
-            ...
-        }
+    Supports combined headings such as:
+    - Achievements & Certifications
+    - Skills and Technologies
+    - Education / Experience
     """
 
     sections = {
@@ -101,7 +98,7 @@ def detect_sections(text: str) -> dict:
         for key in SECTION_HEADERS
     }
 
-    current_section = "personal_information"
+    current_sections = ["personal_information"]
 
     for raw_line in text.splitlines():
 
@@ -112,20 +109,49 @@ def detect_sections(text: str) -> dict:
 
         normalized = normalize_heading(line)
 
-        matched_section = None
+        found_sections = []
 
-        for section_name, headings in SECTION_HEADERS.items():
+        # ----------------------------
+        # Exact Heading Match
+        # ----------------------------
+
+        for section, headings in SECTION_HEADERS.items():
 
             if normalized in headings:
 
-                matched_section = section_name
+                found_sections = [section]
                 break
 
-        if matched_section:
+        # ----------------------------
+        # Combined Heading Match
+        # ----------------------------
 
-            current_section = matched_section
+        if not found_sections:
+
+            for section, headings in SECTION_HEADERS.items():
+
+                for heading in headings:
+
+                    if heading in normalized:
+
+                        found_sections.append(section)
+                        break
+
+        # ----------------------------
+        # Heading Found
+        # ----------------------------
+
+        if found_sections:
+
+            current_sections = found_sections
             continue
 
-        sections[current_section].append(line)
+        # ----------------------------
+        # Add line to current section(s)
+        # ----------------------------
+
+        for section in current_sections:
+
+            sections[section].append(line)
 
     return sections

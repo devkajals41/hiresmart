@@ -5,29 +5,14 @@ from .helpers import (
     parse_credential_url,
 )
 
-
-def split_certification_blocks(lines: list[str]) -> list[list[str]]:
-    """
-    Split certifications into separate entries.
-    """
-
-    blocks = []
-
-    for line in lines:
-
-        line = line.strip()
-
-        if not line:
-            continue
-
-        blocks.append([line])
-
-    return blocks
+from .splitter import (
+    split_certification_blocks,
+)
 
 
 def parse_certifications(lines: list[str]) -> list:
     """
-    Parse Certifications section.
+    Parse the Certifications section.
     """
 
     certifications = []
@@ -36,13 +21,21 @@ def parse_certifications(lines: list[str]) -> list:
 
     for block in blocks:
 
-        certifications.append(
-            {
-                "name": parse_name(block),
-                "issuer": parse_issuer(block),
-                "year": parse_year(block),
-                "credential_url": parse_credential_url(block),
-            }
-        )
+        certification = {
+
+            "name": parse_name(block),
+
+            "issuer": parse_issuer(block),
+
+            "year": parse_year(block),
+
+            "credential_url": parse_credential_url(block),
+
+        }
+
+        # Skip empty entries
+        if certification["name"]:
+
+            certifications.append(certification)
 
     return certifications

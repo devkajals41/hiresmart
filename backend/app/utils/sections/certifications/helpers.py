@@ -2,23 +2,46 @@ from .constants import ISSUER_KEYWORDS
 from .patterns import YEAR_PATTERN, URL_PATTERN
 
 
+IGNORE_LINES = {
+
+    "certification",
+
+    "certificate",
+
+    "certificates",
+
+}
+
+
 def parse_name(lines: list[str]) -> str:
     """
-    Extract certification name.
+    First meaningful line is the certification title.
     """
 
-    if not lines:
-        return ""
+    for line in lines:
 
-    line = lines[0].lstrip("•- ").strip()
+        line = line.strip()
 
-    if "–" in line:
-        return line.split("–")[0].strip()
+        if not line:
+            continue
 
-    if "-" in line:
-        return line.split("-")[0].strip()
+        lower = line.lower()
 
-    return line
+        if lower in IGNORE_LINES:
+            continue
+
+        if "instructor" in lower:
+            continue
+
+        if "total hours" in lower:
+            continue
+
+        if URL_PATTERN.search(line):
+            continue
+
+        return line
+
+    return ""
 
 
 def parse_issuer(lines: list[str]) -> str:
@@ -26,20 +49,38 @@ def parse_issuer(lines: list[str]) -> str:
     Extract certification issuer.
     """
 
-    text = " ".join(lines).lower()
+    for line in lines:
 
-    for issuer in ISSUER_KEYWORDS:
+        lower = line.lower()
 
-        if issuer in text:
-            return issuer.title()
+        if "udemy" in lower:
+            return "Udemy"
+
+        if "coursera" in lower:
+            return "Coursera"
+
+        if "nptel" in lower:
+            return "NPTEL"
+
+        if "google" in lower:
+            return "Google"
+
+        if "microsoft" in lower:
+            return "Microsoft"
+
+        if "aws" in lower:
+            return "AWS"
+
+        if "oracle" in lower:
+            return "Oracle"
+
+        if "ibm" in lower:
+            return "IBM"
 
     return ""
 
 
 def parse_year(lines: list[str]) -> str:
-    """
-    Extract certification year.
-    """
 
     text = " ".join(lines)
 
@@ -49,9 +90,6 @@ def parse_year(lines: list[str]) -> str:
 
 
 def parse_credential_url(lines: list[str]) -> str:
-    """
-    Extract credential URL.
-    """
 
     text = " ".join(lines)
 
