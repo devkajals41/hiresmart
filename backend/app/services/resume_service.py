@@ -1,4 +1,5 @@
 import os
+from app.utils.ats.ats_engine import analyze_resume
 from app.repositories.user_repository import update_resume_details
 import aiofiles
 from app.utils.pdf_parser import extract_text_from_pdf
@@ -49,6 +50,9 @@ async def upload_resume(
     # Extract text from the uploaded PDF
     resume_text = extract_text_from_pdf(filepath)
     parsed_resume = parse_resume(resume_text)
+    ats_report = analyze_resume(
+    parsed_resume,
+    )
 
     # Save resume details in MongoDB
     await update_resume_details(
@@ -57,9 +61,15 @@ async def upload_resume(
         filepath=filepath,
         resume_text=resume_text,
         parsed_resume=parsed_resume,
+        ats_report=ats_report,
     )
 
     return {
-        "message": "Resume uploaded successfully.",
-        "filename": file.filename,
+    "message": "Resume uploaded successfully.",
+
+    "filename": file.filename,
+
+    "parsed_resume": parsed_resume,
+
+    "ats_report": ats_report,
     }

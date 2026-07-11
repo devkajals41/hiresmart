@@ -31,6 +31,7 @@ async def update_resume_details(
     filepath: str,
     resume_text: str,
     parsed_resume: dict,
+    ats_report: dict,
 ):
     """
     Save uploaded resume information.
@@ -45,6 +46,7 @@ async def update_resume_details(
                 "resume_path": filepath,
                 "resume_text": resume_text,
                 "parsed_resume": parsed_resume,
+                "ats_report": ats_report,
                 "uploaded_at": datetime.utcnow(),
             }
         },
