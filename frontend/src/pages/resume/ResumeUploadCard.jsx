@@ -29,12 +29,14 @@ export default function ResumeUploadCard() {
     try {
       setLoading(true);
       setError("");
-      const token = localStorage.getItem("accessToken");
-      const response = await uploadResume(selectedFile, token);
-      setUploadedFileName(response.filename);
+      
+      const response = await uploadResume(selectedFile);
+      console.log("Upload Response:", response);
+      setUploadedFileName(selectedFile.name);
       setIsUploaded(true);
       toast.success(response.message || "Resume uploaded successfully!");
       fileInputRef.current.value = "";
+      setSelectedFile(null);
     } catch (err) {
       console.error(err);
       const errMsg = err.response?.data?.detail || "Upload failed.";
@@ -45,17 +47,17 @@ export default function ResumeUploadCard() {
     }
   };
 
-  const handleViewResume = async () => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      const blob = await viewResume(token);
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, "_blank");
-    } catch (err) {
-      console.error(err);
-      toast.error("Failed to load resume file.");
-    }
-  };
+ const handleViewResume = async () => {
+  try {
+    const blob = await viewResume();
+
+    const url = window.URL.createObjectURL(blob);
+    window.open(url, "_blank");
+  } catch (err) {
+    console.error(err);
+    toast.error("Failed to load resume file.");
+  }
+};
 
   return (
     <div className="h-full rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_8px_40px_rgba(15,23,42,0.06)] flex flex-col">
@@ -212,7 +214,7 @@ export default function ResumeUploadCard() {
                 setIsUploaded(false);
                 setSelectedFile(null);
                 setError("");
-                setTimeout(() => fileInputRef.current.click(), 100);
+                setTimeout(() => { fileInputRef.current?.click();}, 100);
               }}
               className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
             >

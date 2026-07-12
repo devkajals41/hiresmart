@@ -17,6 +17,11 @@ from app.services.resume_service import (
     upload_resume,
 )
 
+from app.services.resume_service import (
+    upload_resume,
+    get_resume_report,
+)
+
 router = APIRouter(
     prefix="/api/resume",
     tags=["Resume"],
@@ -63,6 +68,19 @@ async def view_user_resume(
         )
     elif ext == ".doc":
         media_type = "application/msword"
+
+@router.get("/report")
+async def get_resume_report_route(
+    current_user=Depends(get_current_user),
+):
+    """
+    Get ATS report for the logged-in user.
+    """
+
+    return await get_resume_report(
+        str(current_user["_id"])
+    )
+
 
     return FileResponse(
         path=resume_path,

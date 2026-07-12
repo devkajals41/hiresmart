@@ -1,8 +1,9 @@
 import api from "./api";
 
-// Fetch the ATS score report for the logged-in user's uploaded resume.
-// Token is automatically attached by the api.js request interceptor.
+/**
+ * Fetch the ATS report of the logged-in user.
+ */
 export const getAtsReport = async () => {
-  const response = await api.get("/resume/ats-report");
+  const response = await api.get("/resume/report");
   return response.data;
 };

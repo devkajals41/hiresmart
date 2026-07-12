@@ -1,19 +1,24 @@
-import api from "./api";
+import axios from "axios";
 
-// ─── Auth Interceptor ────────────────────────────────────────────────────────
-// Automatically attach the JWT token from localStorage to every request.
-// This means individual service calls don't need to manually pass the token.
+const api = axios.create({
+  baseURL: "http://localhost:8000/api",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+// Automatically attach JWT token
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
   return config;
 });
 
-// ─── Response Interceptor ─────────────────────────────────────────────────────
-// If the server returns 401 (token expired / invalid), clear local storage
-// and redirect to login so the user can re-authenticate cleanly.
+// Handle unauthorized responses
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -22,8 +27,9 @@ api.interceptors.response.use(
       localStorage.removeItem("user");
       window.location.href = "/login";
     }
+
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;

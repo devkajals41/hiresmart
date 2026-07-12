@@ -1,13 +1,11 @@
 import api from "./api";
 
-export const uploadResume = async (file, token) => {
+export const uploadResume = async (file) => {
   const formData = new FormData();
-
   formData.append("file", file);
 
   const response = await api.post("/resume/upload", formData, {
     headers: {
-      Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
     },
   });
@@ -15,12 +13,10 @@ export const uploadResume = async (file, token) => {
   return response.data;
 };
 
-export const viewResume = async (token) => {
+export const viewResume = async () => {
   const response = await api.get("/resume/view", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
     responseType: "blob",
   });
+
   return response.data;
 };

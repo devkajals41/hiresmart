@@ -272,38 +272,7 @@ function PremiumCard({ children, icon: Icon, title, iconBg = "bg-slate-800 text-
   );
 }
 
-// Fallback static reports data
-const INITIAL_DEMO_DATA = {
-  overall_score: 76,
-  grade: "B",
-  level: "Intermediate",
-  sections_found: 8,
-  total_sections: 10,
-  section_scores: {
-    Education: 85,
-    Experience: 72,
-    Projects: 92,
-    Skills: 68,
-    Achievements: 60,
-    Certifications: 70,
-  },
-  skills: [
-    "React", "JavaScript", "HTML", "CSS", "Git", "GitHub", "Problem Solving"
-  ],
-  strengths: [
-    "Clean layouts and standard font styles used",
-    "Projects section is descriptively robust",
-    "Professional summary has clean phrasing",
-    "No tables, textboxes, or graphics that disrupt parser"
-  ],
-  suggestions: [
-    "Add more details about backend integrations (Node.js/APIs)",
-    "Quantify metrics under experience using percentages or dollar impact",
-    "Missing key certifications in tech domains",
-    "Integrate cloud deployment keywords like AWS or Docker"
-  ],
-  missing_sections: ["Summary Statement", "Certifications", "Publications"],
-};
+
 
 // Available keywords directory to add in UI for gamified dynamic score
 const RELEVANT_KEYWORDS = [
@@ -357,13 +326,36 @@ export default function AtsReport() {
   useEffect(() => {
     const load = async () => {
       try {
-        const token = localStorage.getItem("accessToken");
-        const data = await getAtsReport(token);
-        setReport(data);
-        setCustomScore(data.overall_score || 76);
-      } catch {
-        setReport(INITIAL_DEMO_DATA);
-        setCustomScore(INITIAL_DEMO_DATA.overall_score);
+       
+const data = await getAtsReport();
+
+const ats = data.ats_report || {};
+const resume = data.parsed_resume || {};
+
+// Flatten the skills object into an array
+const skillsObject = resume.skills || {};
+const allSkills = Object.values(skillsObject).flat();
+
+setReport({
+  overall_score: ats.overall_score || 0,
+  grade: ats.grade || "N/A",
+  level: ats.resume_level || "Beginner",
+
+  section_scores: ats.section_scores || {},
+
+  strengths: ats.strengths || [],
+  weaknesses: ats.weaknesses || [],
+  suggestions: ats.suggestions || [],
+  missing_sections: ats.missing_sections || [],
+
+  skills: allSkills,
+
+  sections_found: Object.keys(ats.section_scores || {}).length,
+
+  total_sections: Object.keys(ats.section_scores || {}).length
+});
+
+setCustomScore(ats.overall_score || 0);
       } finally {
         setLoading(false);
       }
@@ -542,7 +534,7 @@ export default function AtsReport() {
                     </div>
                     <span className="text-[13.5px] font-bold text-slate-500">Resume Level</span>
                   </div>
-                  <span className="text-[14.5px] font-black text-slate-800">{report.level}</span>
+                  <span className="text-[14.5px] font-black text-slate-800">{report.level || report.grade}</span>
                 </div>
                 <div className="border-t border-slate-200/50" />
                 <div className="flex items-center justify-between">
@@ -629,7 +621,7 @@ export default function AtsReport() {
                         key={name}
                         label={name}
                         score={score}
-                        icon={SECTION_ICONS[name] || Target}
+                        icon={  SECTION_ICONS[ name.charAt(0).toUpperCase() +name.slice(1) ] || Target}
                       />
                     ))}
                   </div>
@@ -647,7 +639,7 @@ export default function AtsReport() {
                 >
                   <div className="flex flex-col justify-between h-full gap-5">
                     <div className="flex flex-wrap gap-2.5 p-1 max-h-[220px] overflow-y-auto">
-                      {report.skills.map((skill) => (
+                      {Array.isArray(report.skills) &&report.skills.map((skill) => (
                         <motion.span
                           key={skill}
                           whileHover={{ y: -2, scale: 1.05 }}

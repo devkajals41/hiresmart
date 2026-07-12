@@ -5,7 +5,9 @@ import aiofiles
 from app.utils.pdf_parser import extract_text_from_pdf
 from fastapi import UploadFile, HTTPException, status
 from app.utils.resume_engine import parse_resume
-
+from app.repositories.user_repository import (
+    get_user_by_id,
+)
 UPLOAD_FOLDER = "uploads"
 
 ALLOWED_EXTENSIONS = [
@@ -38,23 +40,16 @@ async def upload_resume(
         filename,
     )
 
-    # Save uploaded file
-    async with aiofiles.open(
-        filepath,
-        "wb",
-    ) as out_file:
-
+    async with aiofiles.open(filepath, "wb") as out_file:
         content = await file.read()
         await out_file.write(content)
 
-    # Extract text from the uploaded PDF
     resume_text = extract_text_from_pdf(filepath)
-    parsed_resume = parse_resume(resume_text)
-    ats_report = analyze_resume(
-    parsed_resume,
-    )
 
-    # Save resume details in MongoDB
+    parsed_resume = parse_resume(resume_text)
+
+    ats_report = analyze_resume(parsed_resume)
+
     await update_resume_details(
         user_id=user_id,
         filename=file.filename,
@@ -65,11 +60,21 @@ async def upload_resume(
     )
 
     return {
-    "message": "Resume uploaded successfully.",
+        "message": "Resume uploaded successfully.",
+        "filename": file.filename,
+    }
+async def get_resume_report(
+    user_id: str,
+):
+    """
+    Return ATS report and parsed resume.
+    """
 
-    "filename": file.filename,
+    user = await get_user_by_id(user_id)
 
-    "parsed_resume": parsed_resume,
-
-    "ats_report": ats_report,
+    return {
+        "resume_uploaded": user.get("resume_uploaded", False),
+        "resume_filename": user.get("resume_filename"),
+        "parsed_resume": user.get("parsed_resume", {}),
+        "ats_report": user.get("ats_report", {}),
     }
