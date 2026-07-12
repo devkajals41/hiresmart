@@ -1,6 +1,11 @@
 import "./auth.css";
+import toast from "react-hot-toast";
 
 export default function SocialLogin({ isRegister }) {
+  const handleSocialClick = () => {
+    toast.error("Google authentication will be available in Version 2.");
+  };
+
   return (
     <>
       {/* Divider */}
@@ -11,7 +16,11 @@ export default function SocialLogin({ isRegister }) {
 
       {/* Google Button */}
 
-      <button className="auth-btn-social">
+      <button
+        type="button"
+        onClick={handleSocialClick}
+        className="auth-btn-social"
+      >
         <img
           src="https://www.svgrepo.com/show/475656/google-color.svg"
           alt="Google"

@@ -10,6 +10,7 @@ def generate_interview(
     difficulty: str,
     question_count: int,
     topic: str = "General",
+    rag_context: str = "",
 ):
     """
     Build the generation prompt and call the Groq LLM.
@@ -17,7 +18,7 @@ def generate_interview(
     Falls back to an empty list on parse error.
     """
     prompt = INTERVIEW_PROMPT.format(
-        resume=json.dumps(parsed_resume, indent=2),
+        rag_context=rag_context,
         role=role,
         topic=topic,
         difficulty=difficulty,
@@ -46,7 +47,8 @@ def evaluate_interview(
     """
     Build the evaluation prompt and call the Groq LLM.
     Returns structured feedback matching the shape expected by Feedback.jsx:
-      overall_score, general_feedback, metrics dict, breakdown list.
+      overall_score, general_feedback, technical, communication, confidence,
+      strengths, weaknesses, suggestions, breakdown list.
     Falls back to a zeroed-out structure on parse error.
     """
     prompt = FEEDBACK_PROMPT.format(
@@ -69,11 +71,11 @@ def evaluate_interview(
         return {
             "overall_score": 0,
             "general_feedback": "Could not parse AI feedback. Please try again.",
-            "metrics": {
-                "Technical Depth": 0,
-                "Communication": 0,
-                "Vocabulary Relevance": 0,
-                "Structure Clarity": 0,
-            },
+            "technical": 0,
+            "communication": 0,
+            "confidence": 0,
+            "strengths": [],
+            "weaknesses": [],
+            "suggestions": [],
             "breakdown": [],
         }

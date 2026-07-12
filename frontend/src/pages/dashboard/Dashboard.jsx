@@ -53,9 +53,7 @@ export default function Dashboard() {
 
   const loadDashboard = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-
-      const data = await getDashboardData(token);
+      const data = await getDashboardData();
 
       setDashboardData(data);
     } catch (err) {
@@ -137,7 +135,7 @@ export default function Dashboard() {
                 strokeWidth="5.5"
                 fill="transparent"
                 strokeDasharray={163.3}
-                strokeDashoffset={163.3 * (1 - 0.78)}
+                strokeDashoffset={163.3 * (1 - (dashboardData.resume.ats_score ?? 0) / 100)}
                 strokeLinecap="round"
               />
             </svg>
@@ -275,85 +273,66 @@ export default function Dashboard() {
 
             {/* List entries (Shows last 4-5 items as per mockups) */}
             <div className="space-y-3">
-              {/* Item 1 */}
-              <div className="flex items-center justify-between text-[13px] hover:bg-slate-50/50 p-1.5 rounded-lg transition">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8.5 w-8.5 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 shrink-0">
-                    <Upload size={15} />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-slate-700 leading-none">
-                      Resume uploaded
-                    </h5>
-                    <p className="text-[11px] text-slate-400 mt-1">
-                      Frontend Developer Resume.pdf
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">
-                  2 days ago
-                </span>
-              </div>
+              {dashboardData.activities && dashboardData.activities.length > 0 ? (
+                dashboardData.activities.slice(0, 5).map((act, index) => {
+                  let IconComponent = Sparkles;
+                  let bgClass = "bg-purple-50 text-purple-600";
+                  if (act.type === "resume_upload") {
+                    IconComponent = Upload;
+                    bgClass = "bg-emerald-50 text-emerald-700";
+                  } else if (act.type === "ats_improved") {
+                    IconComponent = TrendingUp;
+                    bgClass = "bg-emerald-50 text-emerald-700";
+                  } else if (act.type === "interview_complete") {
+                    IconComponent = Mic;
+                    bgClass = "bg-orange-50 text-orange-600";
+                  }
 
-              {/* Item 2 */}
-              <div className="flex items-center justify-between text-[13px] hover:bg-slate-50/50 p-1.5 rounded-lg transition">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8.5 w-8.5 items-center justify-center rounded-xl bg-purple-50 text-purple-600 shrink-0">
-                    <Sparkles size={15} />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-slate-700 leading-none">
-                      AI feedback generated
-                    </h5>
-                    <p className="text-[11px] text-slate-400 mt-1">
-                      Resume review completed
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">
-                  2 days ago
-                </span>
-              </div>
+                  const formatRelativeTime = (isoString) => {
+                    if (!isoString) return "";
+                    try {
+                      const date = new Date(isoString);
+                      const now = new Date();
+                      const diffMs = now - date;
+                      const diffMins = Math.floor(diffMs / 60000);
+                      if (diffMins < 1) return "Just now";
+                      if (diffMins < 60) return `${diffMins}m ago`;
+                      const diffHours = Math.floor(diffMins / 60);
+                      if (diffHours < 24) return `${diffHours}h ago`;
+                      const diffDays = Math.floor(diffHours / 24);
+                      if (diffDays === 1) return "Yesterday";
+                      return `${diffDays}d ago`;
+                    } catch (e) {
+                      return "";
+                    }
+                  };
 
-              {/* Item 3 */}
-              <div className="flex items-center justify-between text-[13px] hover:bg-slate-50/50 p-1.5 rounded-lg transition">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8.5 w-8.5 items-center justify-center rounded-xl bg-orange-50 text-orange-600 shrink-0">
-                    <Mic size={15} />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-slate-700 leading-none">
-                      Mock interview completed
-                    </h5>
-                    <p className="text-[11px] text-slate-400 mt-1">
-                      System Design Round
-                    </p>
-                  </div>
+                  return (
+                    <div key={index} className="flex items-center justify-between text-[13px] hover:bg-slate-50/50 p-1.5 rounded-lg transition animate-fade-in">
+                      <div className="flex items-center gap-3">
+                        <div className={`flex h-8.5 w-8.5 items-center justify-center rounded-xl shrink-0 ${bgClass}`}>
+                          <IconComponent size={15} />
+                        </div>
+                        <div>
+                          <h5 className="font-bold text-slate-700 leading-none">
+                            {act.title}
+                          </h5>
+                          <p className="text-[11px] text-slate-400 mt-1">
+                            {act.detail}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="text-[11px] font-medium text-slate-400 mr-1">
+                        {formatRelativeTime(act.timestamp)}
+                      </span>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="text-center py-10 text-slate-400 text-[12.5px] font-medium italic">
+                  No recent activities recorded yet.
                 </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">
-                  3 days ago
-                </span>
-              </div>
-
-              {/* Item 4 */}
-              <div className="flex items-center justify-between text-[13px] hover:bg-slate-50/50 p-1.5 rounded-lg transition">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8.5 w-8.5 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 shrink-0">
-                    <TrendingUp size={15} />
-                  </div>
-                  <div>
-                    <h5 className="font-bold text-slate-700 leading-none">
-                      ATS score improved
-                    </h5>
-                    <p className="text-[11px] text-slate-400 mt-1">
-                      Previous score: 72 → New score: 78
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[11px] font-medium text-slate-400 mr-1">
-                  3 days ago
-                </span>
-              </div>
+              )}
             </div>
           </div>
         </div>

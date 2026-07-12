@@ -13,12 +13,8 @@ export const loginUser = async (userData) => {
 };
 
 // Get Logged-in User
-export const getProfile = async (token) => {
-  const response = await api.get("/profile/me", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getProfile = async () => {
+  const response = await api.get("/profile/me");
 
   return response.data;
 };

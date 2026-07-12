@@ -50,6 +50,9 @@ async def upload_resume(
 
     ats_report = analyze_resume(parsed_resume)
 
+    user = await get_user_by_id(user_id)
+    old_score = user.get("ats_score") if user else None
+
     await update_resume_details(
         user_id=user_id,
         filename=file.filename,
@@ -58,6 +61,23 @@ async def upload_resume(
         parsed_resume=parsed_resume,
         ats_report=ats_report,
     )
+
+    from app.repositories.user_repository import add_user_activity
+    await add_user_activity(
+        user_id=user_id,
+        activity_type="resume_upload",
+        title="Resume uploaded",
+        detail=file.filename,
+    )
+
+    new_score = ats_report.get("overall_score", 0)
+    if old_score is not None and new_score > old_score:
+        await add_user_activity(
+            user_id=user_id,
+            activity_type="ats_improved",
+            title="ATS score improved",
+            detail=f"Previous score: {old_score} → New score: {new_score}",
+        )
 
     return {
         "message": "Resume uploaded successfully.",

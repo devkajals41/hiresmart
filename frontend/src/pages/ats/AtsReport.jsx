@@ -476,11 +476,11 @@ setCustomScore(ats.overall_score || 0);
               </button>
 
               <button
-                disabled={isDownloading}
-                onClick={handleDownloadReport}
-                className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-650 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+                disabled
+                title="PDF download coming in Version 2"
+                className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-650 to-teal-600 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 transition-all duration-300 opacity-50 cursor-not-allowed"
               >
-                <Download size={14} className={isDownloading ? "animate-bounce" : ""} />
+                <Download size={14} />
                 Export PDF
               </button>
             </div>
@@ -836,30 +836,80 @@ setCustomScore(ats.overall_score || 0);
                 </h3>
 
                 <div className="divide-y divide-slate-100">
-                  {COMPLIANCE_ITEMS.map((item, idx) => (
-                    <div key={idx} className="py-3.5 flex items-start justify-between gap-4">
-                      <div>
-                        <h4 className="text-[13.5px] font-bold text-slate-855 flex items-center gap-1.5">
-                          {item.rule}
-                        </h4>
-                        <p className="text-[12px] text-slate-500 mt-1 leading-normal">
-                          {item.detail}
-                        </p>
-                      </div>
+                  {(() => {
+                    const dynamicComplianceItems = report ? [
+                      {
+                        rule: "ATS-Friendly Layout structure",
+                        status: (report.overall_score || 0) >= 60 ? "pass" : "warning",
+                        detail: (report.overall_score || 0) >= 60 
+                          ? "Layout structure looks consistent for standard parsers." 
+                          : "Layout structure contains complex parsing blocks. Consider linear order."
+                      },
+                      {
+                        rule: "Contact details parsed",
+                        status: report.skills && report.skills.length > 0 ? "pass" : "warning",
+                        detail: report.skills && report.skills.length > 0
+                          ? "Successfully identified skill nodes and details."
+                          : "Could not parse robust skills list from resume."
+                      },
+                      {
+                        rule: "Section Completeness Check",
+                        status: report.missing_sections && report.missing_sections.length === 0 ? "pass" : "warning",
+                        detail: report.missing_sections && report.missing_sections.length === 0
+                          ? "All essential resume section tags present."
+                          : `Missing key section blocks: ${report.missing_sections.join(", ")}.`
+                      },
+                      {
+                        rule: "Action Verbs & Key Strengths",
+                        status: report.strengths && report.strengths.length > 0 ? "pass" : "warning",
+                        detail: report.strengths && report.strengths.length > 0
+                          ? `${report.strengths[0]}`
+                          : "Experience statements need stronger action verbs."
+                      },
+                      {
+                        rule: "Quantifiable Impact Milestones",
+                        status: report.weaknesses && report.weaknesses.some(w => w.toLowerCase().includes("quantif") || w.toLowerCase().includes("number") || w.toLowerCase().includes("metric")) ? "warning" : "pass",
+                        detail: report.weaknesses && report.weaknesses.some(w => w.toLowerCase().includes("quantif") || w.toLowerCase().includes("number") || w.toLowerCase().includes("metric"))
+                          ? "Quantifiable metrics could be improved in experience section."
+                          : "Good use of numeric values and business outcomes."
+                      }
+                    ] : [];
 
-                      {item.status === "pass" ? (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-[11px] font-extrabold text-emerald-855 border border-emerald-150 shrink-0">
-                          <CheckCircle size={11} className="text-emerald-600" />
-                          Passed
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-[11px] font-extrabold text-amber-700 border border-amber-250 shrink-0">
-                          <AlertCircle size={11} className="text-amber-500" />
-                          Needs Work
-                        </span>
-                      )}
-                    </div>
-                  ))}
+                    if (report && report.weaknesses) {
+                      report.weaknesses.slice(0, 2).forEach((w, idx) => {
+                        dynamicComplianceItems.push({
+                          rule: `Optimization Suggestion #${idx + 1}`,
+                          status: "warning",
+                          detail: w
+                        });
+                      });
+                    }
+
+                    return dynamicComplianceItems.map((item, idx) => (
+                      <div key={idx} className="py-3.5 flex items-start justify-between gap-4">
+                        <div>
+                          <h4 className="text-[13.5px] font-bold text-slate-855 flex items-center gap-1.5">
+                            {item.rule}
+                          </h4>
+                          <p className="text-[12px] text-slate-500 mt-1 leading-normal">
+                            {item.detail}
+                          </p>
+                        </div>
+
+                        {item.status === "pass" ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-50 text-[11px] font-extrabold text-emerald-855 border border-emerald-150 shrink-0">
+                            <CheckCircle size={11} className="text-emerald-600" />
+                            Passed
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 text-[11px] font-extrabold text-amber-700 border border-amber-250 shrink-0">
+                            <AlertCircle size={11} className="text-amber-500" />
+                            Needs Work
+                          </span>
+                        )}
+                      </div>
+                    ));
+                  })()}
                 </div>
               </motion.div>
             )}

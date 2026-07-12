@@ -1,11 +1,7 @@
 import api from "./api";
 
-export const getDashboardData = async (token) => {
-  const response = await api.get("/dashboard", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+export const getDashboardData = async () => {
+  const response = await api.get("/dashboard");
 
   return response.data;
 };

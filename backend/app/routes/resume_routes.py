@@ -69,6 +69,13 @@ async def view_user_resume(
     elif ext == ".doc":
         media_type = "application/msword"
 
+    return FileResponse(
+        path=resume_path,
+        media_type=media_type,
+        filename=current_user.get("resume_filename", f"resume{ext}"),
+    )
+
+
 @router.get("/report")
 async def get_resume_report_route(
     current_user=Depends(get_current_user),
@@ -81,9 +88,3 @@ async def get_resume_report_route(
         str(current_user["_id"])
     )
 
-
-    return FileResponse(
-        path=resume_path,
-        media_type=media_type,
-        filename=current_user.get("resume_filename", f"resume{ext}"),
-    )

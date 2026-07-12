@@ -28,7 +28,7 @@ function Register() {
       localStorage.setItem("accessToken", response.token.access_token);
       localStorage.setItem("user", JSON.stringify(response.user));
 
-      navigate("/login");
+      navigate("/dashboard");
     } catch (err) {
       if (Array.isArray(err.response?.data?.detail)) {
         setError(err.response.data.detail[0].msg);

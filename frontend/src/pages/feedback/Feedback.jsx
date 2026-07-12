@@ -171,7 +171,6 @@ export default function Feedback() {
   const [feedback, setFeedback] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
   const [displayName, setDisplayName] = useState("Candidate");
 
   useEffect(() => {
@@ -194,23 +193,11 @@ export default function Feedback() {
       }
     } catch (e) {
       console.error(e);
+      toast.error("Failed to load feedback data.");
     } finally {
       setLoading(false);
     }
   }, []);
-
-  const handleDownloadFeedback = () => {
-    setIsDownloading(true);
-    toast.loading("Generating PDF Feedback Transcript...", { id: "pdf-feedback" });
-
-    setTimeout(() => {
-      toast.success("AI_Interview_Feedback_HireSmart.pdf downloaded successfully!", {
-        id: "pdf-feedback",
-        icon: "📄",
-      });
-      setIsDownloading(false);
-    }, 1800);
-  };
 
   if (loading) {
     return (
@@ -262,11 +249,18 @@ export default function Feedback() {
     );
   }
 
-  // Map subscores
-  const techScore = feedback.metrics?.["Technical Depth"] || 90;
-  const commScore = feedback.metrics?.["Communication"] || 82;
-  const probScore = feedback.metrics?.["Vocabulary Relevance"] || 88;
-  const confScore = feedback.metrics?.["Structure Clarity"] || 78;
+  // ── Map subscores from backend flat fields (with safe fallbacks) ──
+  const overallScore  = feedback.overall_score  ?? 0;
+  const techScore     = feedback.technical       ?? overallScore;
+  const commScore     = feedback.communication   ?? overallScore;
+  const confScore     = feedback.confidence      ?? overallScore;
+  // Problem Solving: backend doesn't have a dedicated field, fall back to overall_score
+  const probScore     = overallScore;
+
+  const strengths   = feedback.strengths   ?? [];
+  const weaknesses  = feedback.weaknesses  ?? [];
+  const suggestions = feedback.suggestions ?? [];
+  const breakdown   = feedback.breakdown   ?? [];
 
   return (
     <DashboardLayout>
@@ -312,12 +306,13 @@ export default function Feedback() {
                 View Full Interview
               </button>
 
+              {/* Download button — disabled in V1, real PDF generation comes in V2 */}
               <button
-                disabled={isDownloading}
-                onClick={handleDownloadFeedback}
-                className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-650 to-teal-650 hover:from-emerald-700 hover:to-teal-700 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 hover:shadow-lg transition-all duration-300 disabled:opacity-50 focus:outline-none"
+                disabled
+                title="PDF download coming in Version 2"
+                className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-650 to-teal-650 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 transition-all duration-300 opacity-50 cursor-not-allowed focus:outline-none"
               >
-                <Download size={14} className={isDownloading ? "animate-bounce" : ""} />
+                <Download size={14} />
                 Download Report
               </button>
             </div>
@@ -334,16 +329,16 @@ export default function Feedback() {
                 <span className="text-[11.5px] font-extrabold text-slate-400 uppercase tracking-widest block mb-3.5">
                   Overall rating
                 </span>
-                <ScoreRing score={feedback.overall_score} />
+                <ScoreRing score={overallScore} />
               </div>
 
               {/* Center message */}
               <div className="md:col-span-5 text-center md:text-left space-y-3.5">
                 <div className="space-y-1">
                   <h3 className="text-[22px] font-black text-slate-800 leading-tight">
-                    {feedback.overall_score >= 85
+                    {overallScore >= 85
                       ? `Exceptional Work, ${displayName}! 🏆`
-                      : feedback.overall_score >= 75
+                      : overallScore >= 75
                       ? `Great Job, ${displayName}! 🎉`
                       : `Keep Practicing, ${displayName}! 💪`}
                   </h3>
@@ -352,12 +347,12 @@ export default function Feedback() {
                   </p>
                 </div>
 
+                {/* AI Generated label — replaces fake ranking */}
                 <div className="flex items-center justify-center md:justify-start gap-2.5">
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-50 text-[11px] font-extrabold text-emerald-800 border border-emerald-150 rounded-lg">
                     <Sparkles size={11} className="animate-pulse" />
-                    Top 18%
+                    AI Generated Evaluation
                   </span>
-                  <span className="text-[11.5px] text-slate-400 font-bold">Among all registered users</span>
                 </div>
               </div>
 
@@ -456,7 +451,7 @@ export default function Feedback() {
                   </div>
                 </div>
 
-                {/* Problem Solving */}
+                {/* Problem Solving — uses overall_score as proxy */}
                 <div className="text-center space-y-3">
                   <div className="h-13 w-13 rounded-full bg-amber-50 text-amber-700 border border-amber-100 flex items-center justify-center mx-auto shadow-sm shadow-amber-50/20">
                     <Target size={19} />
@@ -487,7 +482,7 @@ export default function Feedback() {
               </div>
             </motion.div>
 
-            {/* Right What went well List */}
+            {/* Right — What Went Well (from backend strengths) */}
             <motion.div
               variants={itemVariants}
               whileHover={{ y: -4 }}
@@ -504,22 +499,16 @@ export default function Feedback() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 py-1 items-center">
                   <div className="sm:col-span-8 space-y-3">
-                    <div className="flex items-start gap-2.5 text-[13px] font-semibold text-slate-650">
-                      <Check size={14} className="text-emerald-500 stroke-[3.5] shrink-0 mt-1" />
-                      <span>Clear and well-structured answers</span>
-                    </div>
-                    <div className="flex items-start gap-2.5 text-[13px] font-semibold text-slate-655">
-                      <Check size={14} className="text-emerald-500 stroke-[3.5] shrink-0 mt-1" />
-                      <span>Strong understanding of core concepts</span>
-                    </div>
-                    <div className="flex items-start gap-2.5 text-[13px] font-semibold text-slate-655">
-                      <Check size={14} className="text-emerald-500 stroke-[3.5] shrink-0 mt-1" />
-                      <span>Good examples and code references usage</span>
-                    </div>
-                    <div className="flex items-start gap-2.5 text-[13px] font-semibold text-slate-655">
-                      <Check size={14} className="text-emerald-500 stroke-[3.5] shrink-0 mt-1" />
-                      <span>Confident and structured approach</span>
-                    </div>
+                    {strengths.length > 0 ? (
+                      strengths.map((s, i) => (
+                        <div key={i} className="flex items-start gap-2.5 text-[13px] font-semibold text-slate-650">
+                          <Check size={14} className="text-emerald-500 stroke-[3.5] shrink-0 mt-1" />
+                          <span>{s}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-[13px] text-slate-400 font-medium italic">No strengths data available.</p>
+                    )}
                   </div>
 
                   {/* Thumbs up badge graphic */}
@@ -537,7 +526,7 @@ export default function Feedback() {
             </motion.div>
           </div>
 
-          {/* 3. Areas to Improve & Keep it up! */}
+          {/* 3. Areas to Improve & Suggestions */}
           <motion.div
             variants={itemVariants}
             className="rounded-3xl border border-white/60 bg-white/80 backdrop-blur-xl p-6.5 shadow-xl relative"
@@ -550,46 +539,65 @@ export default function Feedback() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-4.5">
-              {/* Card 1: Time */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/50 flex gap-3.5 items-start hover:bg-white hover:border-slate-300 transition-all duration-300">
-                <div className="p-2.5 bg-amber-50 text-amber-650 border border-amber-100 rounded-xl shrink-0">
-                  <Clock size={16} />
-                </div>
-                <div>
-                  <h4 className="text-[13px] font-black text-slate-800">Time Management</h4>
-                  <p className="text-[12px] text-slate-500 mt-1 leading-normal font-semibold">
-                    Try to be more concise and manage time effectively.
-                  </p>
-                </div>
-              </div>
+              {/* Weakness cards from backend */}
+              {weaknesses.length > 0
+                ? weaknesses.slice(0, 2).map((w, i) => {
+                    const icons = [Clock, MessageSquare, Target];
+                    const colors = [
+                      { bg: "bg-amber-50", text: "text-amber-650", border: "border-amber-100", icon: Clock },
+                      { bg: "bg-purple-50", text: "text-purple-700", border: "border-purple-100", icon: MessageSquare },
+                      { bg: "bg-blue-50", text: "text-blue-700", border: "border-blue-100", icon: Target },
+                    ];
+                    const c = colors[i % colors.length];
+                    const Icon = c.icon;
+                    return (
+                      <div
+                        key={i}
+                        className="p-4 rounded-2xl bg-slate-50 border border-slate-200/50 flex gap-3.5 items-start hover:bg-white hover:border-slate-300 transition-all duration-300"
+                      >
+                        <div className={`p-2.5 ${c.bg} ${c.text} border ${c.border} rounded-xl shrink-0`}>
+                          <Icon size={16} />
+                        </div>
+                        <div>
+                          <h4 className="text-[13px] font-black text-slate-800">Area {i + 1}</h4>
+                          <p className="text-[12px] text-slate-500 mt-1 leading-normal font-semibold">{w}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                : (
+                  // Fallback if no weaknesses returned
+                  <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/50 flex gap-3.5 items-start lg:col-span-2">
+                    <div className="p-2.5 bg-amber-50 text-amber-650 border border-amber-100 rounded-xl shrink-0">
+                      <Clock size={16} />
+                    </div>
+                    <div>
+                      <h4 className="text-[13px] font-black text-slate-800">Keep Improving</h4>
+                      <p className="text-[12px] text-slate-500 mt-1 leading-normal font-semibold">
+                        Continue practising to sharpen your interview skills further.
+                      </p>
+                    </div>
+                  </div>
+                )
+              }
 
-              {/* Card 2: Depth */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/50 flex gap-3.5 items-start hover:bg-white hover:border-slate-300 transition-all duration-300">
-                <div className="p-2.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-xl shrink-0">
-                  <MessageSquare size={15} />
+              {/* Suggestion cards from backend (up to 2 suggestions shown) */}
+              {suggestions.slice(0, 1).map((s, i) => (
+                <div
+                  key={i}
+                  className="p-4 rounded-2xl bg-slate-50 border border-slate-200/50 flex gap-3.5 items-start hover:bg-white hover:border-slate-300 transition-all duration-300"
+                >
+                  <div className="p-2.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-xl shrink-0">
+                    <Target size={16} />
+                  </div>
+                  <div>
+                    <h4 className="text-[13px] font-black text-slate-800">Tip</h4>
+                    <p className="text-[12px] text-slate-500 mt-1 leading-normal font-semibold">{s}</p>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-[13px] font-black text-slate-800">Answer Depth</h4>
-                  <p className="text-[12px] text-slate-500 mt-1 leading-normal font-semibold">
-                    Add more depth and details in your explanations.
-                  </p>
-                </div>
-              </div>
+              ))}
 
-              {/* Card 3: Examples */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/50 flex gap-3.5 items-start hover:bg-white hover:border-slate-300 transition-all duration-300">
-                <div className="p-2.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-xl shrink-0">
-                  <Target size={16} />
-                </div>
-                <div>
-                  <h4 className="text-[13px] font-black text-slate-800">Real-world Examples</h4>
-                  <p className="text-[12px] text-slate-500 mt-1 leading-normal font-semibold">
-                    Include more real-life examples to strengthen your answers.
-                  </p>
-                </div>
-              </div>
-
-              {/* Card 4: Encouragement Banner */}
+              {/* Encouragement Banner — always shown */}
               <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex gap-3.5 items-start shadow-md relative overflow-hidden group">
                 <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-white/10 rounded-full blur-xl" />
                 <div className="p-2.5 bg-white/15 border border-white/20 rounded-xl shrink-0 text-white">
@@ -640,37 +648,60 @@ export default function Feedback() {
               </div>
 
               <div className="space-y-4">
-                {feedback.breakdown?.map((item, idx) => (
-                  <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-4.5 space-y-3.5">
-                    <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-slate-100">
-                      <div className="flex items-start gap-2.5">
-                        <span className="h-6 w-6 rounded-lg bg-slate-100 text-slate-700 font-black text-[12px] flex items-center justify-center shrink-0">
-                          {idx + 1}
+                {breakdown.length > 0 ? (
+                  breakdown.map((item, idx) => (
+                    <div key={idx} className="rounded-2xl border border-slate-200 bg-white p-4.5 space-y-3.5">
+                      {/* Question + Score header */}
+                      <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-slate-100">
+                        <div className="flex items-start gap-2.5">
+                          <span className="h-6 w-6 rounded-lg bg-slate-100 text-slate-700 font-black text-[12px] flex items-center justify-center shrink-0">
+                            {idx + 1}
+                          </span>
+                          <p className="text-[13.5px] font-bold text-slate-800">{item.question ?? "—"}</p>
+                        </div>
+                        <span className="px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-[11px] font-black shrink-0">
+                          Score: {item.score ?? "—"}%
                         </span>
-                        <p className="text-[13.5px] font-bold text-slate-800">{item.question}</p>
-                      </div>
-                      <span className="px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-800 text-[11px] font-black shrink-0">
-                        Score: {item.score}%
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-150/40">
-                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Your response</span>
-                        <p className="text-[12.5px] text-slate-600 leading-relaxed italic">
-                          "{item.answer}"
-                        </p>
                       </div>
 
-                      <div className="bg-emerald-50/15 p-3.5 rounded-xl border border-emerald-100/20">
-                        <span className="text-[10px] font-black text-emerald-800 uppercase tracking-widest block mb-1">AI suggestion details</span>
-                        <p className="text-[12.5px] text-slate-655 leading-relaxed">
-                          {item.comments}
-                        </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Candidate Answer */}
+                        <div className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-150/40">
+                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Your response</span>
+                          <p className="text-[12.5px] text-slate-600 leading-relaxed italic">
+                            "{item.answer ?? "No answer recorded."}"
+                          </p>
+                        </div>
+
+                        {/* AI Feedback + Model Answer */}
+                        <div className="bg-emerald-50/15 p-3.5 rounded-xl border border-emerald-100/20 space-y-3">
+                          <div>
+                            <span className="text-[10px] font-black text-emerald-800 uppercase tracking-widest block mb-1">AI Feedback</span>
+                            <p className="text-[12.5px] text-slate-655 leading-relaxed">
+                              {item.comments ?? "No comments available."}
+                            </p>
+                          </div>
+
+                          {item.model_answer && (
+                            <div className="pt-3 border-t border-dashed border-emerald-100/50">
+                              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">
+                                Model Answer
+                              </span>
+                              <p className="text-[12px] text-emerald-850 leading-relaxed font-semibold italic bg-emerald-50/40 p-2.5 rounded-lg border border-emerald-100/20">
+                                {item.model_answer}
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
+                  ))
+                ) : (
+                  <div className="text-center py-10 text-slate-400">
+                    <MessageSquare size={32} className="mx-auto mb-3 opacity-40" />
+                    <p className="text-[13px] font-semibold">No breakdown data available.</p>
                   </div>
-                ))}
+                )}
               </div>
             </motion.div>
           </div>

@@ -1,172 +1,123 @@
-from app.utils.text_cleaner import clean_text
-from app.utils.resume_document import ResumeDocument
+import json
+from app.ai.gemini_client import generate_response
 
-# ----------------------------
-# Entity Parsers
-# ----------------------------
+PARSE_RESUME_PROMPT = """
+You are a highly accurate Resume Parser. Extract all relevant details from the following resume text and format it into a single valid JSON object.
 
-from app.utils.entities.name_parser import parse_name
-from app.utils.entities.contact_parser import parse_contact
-from app.utils.entities.social_parser import parse_social
+Resume Text:
+{resume_text}
 
-# ----------------------------
-# Section Parsers
-# ----------------------------
+Output JSON Format:
+{{
+    "name": "Candidate Full Name",
+    "email": "primary_email@address.com",
+    "emails": ["list", "of", "all", "found", "emails"],
+    "phone": "primary_phone",
+    "phones": ["list", "of", "all", "found", "phones"],
+    "github": "github_profile_url",
+    "linkedin": "linkedin_profile_url",
+    "portfolio": "portfolio_url",
+    "leetcode": "leetcode_profile_url",
+    "hackerrank": "hackerrank_profile_url",
+    "codeforces": "codeforces_profile_url",
+    "codechef": "codechef_profile_url",
+    "geeksforgeeks": "geeksforgeeks_profile_url",
+    "education": [
+        {{
+            "institution": "University/College Name",
+            "degree": "Degree (e.g. B.Tech in CSE)",
+            "board": "Board Name if applicable or null",
+            "cgpa": "CGPA if applicable or null",
+            "percentage": "Percentage if applicable or null",
+            "duration": "Duration (e.g., 2018 - 2022)"
+        }}
+    ],
+    "experience": [
+        {{
+            "company": "Company Name",
+            "role": "Role (e.g., Software Engineer)",
+            "duration": "Duration (e.g., June 2022 - Present)",
+            "description": "Short summary of work done"
+        }}
+    ],
+    "projects": [
+        {{
+            "title": "Project Title",
+            "description": "Short project details",
+            "technologies": ["list", "of", "tech", "used"],
+            "github": "project_github_url_if_any",
+            "live_demo": "live_demo_url_if_any",
+            "duration": "Duration",
+            "achievements": "Key project metric/achievement if any"
+        }}
+    ],
+    "skills": {{
+        "Languages": ["Python", "JavaScript"],
+        "Frameworks": ["React", "Express"],
+        "Databases": ["MongoDB"],
+        "Tools": ["Git", "Docker"]
+    }},
+    "certifications": [
+        {{
+            "name": "Certification Title",
+            "issuer": "Issuing Authority",
+            "year": "Year of completion",
+            "credential_url": "Credential URL if any"
+        }}
+    ],
+    "achievements": [
+        {{
+            "title": "Achievement Title",
+            "description": "Detail of achievement",
+            "year": "Year",
+            "score": "Score or ranking if any"
+        }}
+    ],
+    "positions": [
+        {{
+            "role": "Leadership/Volunteering Role",
+            "organization": "Organization Name",
+            "duration": "Duration"
+        }}
+    ]
+}}
 
-from app.utils.sections.education.education_parser import (
-    parse_education,
-)
-
-from app.utils.sections.experience.experience_parser import (
-    parse_experience,
-)
-
-from app.utils.sections.projects.project_parser import (
-    parse_projects,
-)
-
-from app.utils.sections.certifications.certification_parser import (
-    parse_certifications,
-)
-
-from app.utils.sections.achievements.achievement_parser import (
-    parse_achievements,
-)
-
-from app.utils.sections.positions.position_parser import (
-    parse_positions,
-)
-
-# ----------------------------
-# Skill Engine
-# ----------------------------
-
-from app.utils.skills.skill_engine import parse_skills
-
+Rules:
+- Return ONLY valid JSON. No markdown formatting, no code fences.
+- Extract as much information as possible from the text.
+- If a field is not found in the text, return empty string for strings, empty array [] for lists, and empty object {{}} for dicts.
+"""
 
 def parse_resume(resume_text: str) -> dict:
     """
-    Main Resume Intelligence Engine.
-
-    Pipeline:
-    PDF
-        ↓
-    Clean Text
-        ↓
-    Detect Sections
-        ↓
-    Parse Entities
-        ↓
-    Parse Resume Sections
-        ↓
-    Return Structured Resume
+    Main Resume Intelligence Engine powered by LLM.
     """
-
-    # ----------------------------
-    # Clean Resume Text
-    # ----------------------------
-
-    cleaned_text = clean_text(resume_text)
-
-    # ----------------------------
-    # Build Resume Document
-    # ----------------------------
-
-    document = ResumeDocument(cleaned_text)
-
-    # ----------------------------
-    # Personal Information
-    # ----------------------------
-
-    name = parse_name(cleaned_text)
-
-    contact = parse_contact(cleaned_text)
-
-    social = parse_social(cleaned_text)
-
-    # ----------------------------
-    # Resume Sections
-    # ----------------------------
-
-    education = parse_education(
-        document.education
-    )
-
-    experience = parse_experience(
-        document.experience
-    )
-
-    projects = parse_projects(
-        document.projects
-    )
-
-    certifications = parse_certifications(
-        document.certifications
-    )
-
-    skills = parse_skills(
-        document.skills,
-        cleaned_text,
-    )
-    
-    achievements = parse_achievements(
-        document.achievements
-    )
-
-    positions = parse_positions(
-        document.positions
-    )
-
-    # ----------------------------
-    # Final Structured Resume
-    # ----------------------------
-
-    parsed_resume = {
-
-        # Personal Information
-
-        "name": name,
-
-        "email": contact["email"],
-
-        "emails": contact["emails"],
-
-        "phone": contact["phone"],
-
-        "phones": contact["phones"],
-
-        "github": social["github"],
-
-        "linkedin": social["linkedin"],
-
-        "portfolio": social["portfolio"],
-
-        "leetcode": social["leetcode"],
-
-        "hackerrank": social["hackerrank"],
-
-        "codeforces": social["codeforces"],
-
-        "codechef": social["codechef"],
-
-        "geeksforgeeks": social["geeksforgeeks"],
-
-        # Resume Sections
-
-        "education": education,
-
-        "experience": experience,
-
-        "projects": projects,
-
-        "skills": skills,
-
-        "certifications": certifications,
-        
-        "achievements": achievements,
-
-        "positions": positions,
-
-    }
-
-    return parsed_resume
+    try:
+        prompt = PARSE_RESUME_PROMPT.format(resume_text=resume_text)
+        response = generate_response(prompt, temperature=0.1)
+        response = response.replace("```json", "").replace("```", "").strip()
+        return json.loads(response)
+    except Exception:
+        # Fallback to empty structured resume
+        return {
+            "name": "",
+            "email": "",
+            "emails": [],
+            "phone": "",
+            "phones": [],
+            "github": "",
+            "linkedin": "",
+            "portfolio": "",
+            "leetcode": "",
+            "hackerrank": "",
+            "codeforces": "",
+            "codechef": "",
+            "geeksforgeeks": "",
+            "education": [],
+            "experience": [],
+            "projects": [],
+            "skills": {},
+            "certifications": [],
+            "achievements": [],
+            "positions": [],
+        }

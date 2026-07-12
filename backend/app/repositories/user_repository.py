@@ -47,7 +47,52 @@ async def update_resume_details(
                 "resume_text": resume_text,
                 "parsed_resume": parsed_resume,
                 "ats_report": ats_report,
+                "ats_score": ats_report.get("overall_score", 0),
                 "uploaded_at": datetime.utcnow(),
             }
         },
     )
+
+
+async def add_user_activity(user_id: str, activity_type: str, title: str, detail: str):
+    """
+    Append an activity log item to the user's activities list.
+    """
+    activity = {
+        "type": activity_type,
+        "title": title,
+        "detail": detail,
+        "timestamp": datetime.utcnow().isoformat(),
+    }
+    return await mongodb.database.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {
+            "$push": {
+                "activities": {
+                    "$each": [activity],
+                    "$position": 0,  # Keep latest on top
+                    "$slice": 20,    # Cap to last 20 activities
+                }
+            }
+        },
+    )
+
+
+async def increment_user_counters(user_id: str, mock_interviews: int = 0, feedback_reports: int = 0):
+    """
+    Increment interview/feedback stats for user.
+    """
+    update_dict = {}
+    if mock_interviews > 0:
+        update_dict["mock_interviews_count"] = mock_interviews
+    if feedback_reports > 0:
+        update_dict["feedback_reports_count"] = feedback_reports
+
+    if not update_dict:
+        return None
+
+    return await mongodb.database.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$inc": update_dict},
+    )
+

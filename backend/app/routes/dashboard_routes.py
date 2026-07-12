@@ -24,10 +24,11 @@ async def get_dashboard(
         },
         "resume": {
             "uploaded": current_user["resume_uploaded"],
-            "ats_score": current_user["ats_score"],
+            "ats_score": current_user.get("ats_score"),
         },
         "stats": {
-            "mock_interviews": 0,
-            "feedback_reports": 0,
+            "mock_interviews": current_user.get("mock_interviews_count", 0),
+            "feedback_reports": current_user.get("feedback_reports_count", 0),
         },
+        "activities": current_user.get("activities", []),
     }

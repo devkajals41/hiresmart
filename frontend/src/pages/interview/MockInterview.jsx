@@ -225,6 +225,7 @@ export default function MockInterview() {
   // interview running states
   const [isInterviewing, setIsInterviewing] = useState(false);
   const [questions, setQuestions] = useState([]);
+  const [loadingInterview, setLoadingInterview] = useState(false);
   const [answers, setAnswers] = useState([]);
   const [currentIdx, setCurrentIdx] = useState(0);
   
@@ -253,12 +254,28 @@ export default function MockInterview() {
   const TopicIcon = activeTopicObj.icon;
 
   const handleStartInterview = async () => {
+    if (!role) {
+    toast.error("Please select a role.");
+    return;
+}
+
+if (!difficulty) {
+    toast.error("Please select difficulty.");
+    return;
+}
+
+if (!questionCount) {
+    toast.error("Please select question count.");
+    return;
+}
+    setLoadingInterview(true);
     setIsEvaluating(false);
     setFeedback(null);
     setAnswers([]);
     setCurrentIdx(0);
     setTimeElapsed(0);
     setNotes("");
+    
     const initialSecs = questionCount * 120; // 2 mins per question
     setTimeRemaining(initialSecs);
 
@@ -276,11 +293,26 @@ export default function MockInterview() {
       });
       // Backend returns { questions: [...] } — each item can be a string or { question, type }
       const rawQuestions = data.questions || activeQuestions;
-      setQuestions(rawQuestions.map((q) => (typeof q === "object" ? q.question : q)));
+
+const generatedQuestions = rawQuestions.map((q) =>
+  typeof q === "object" ? q.question : q
+);
+
+setQuestions(generatedQuestions);
+
+// Save for later use
+localStorage.setItem(
+  "currentInterview",
+  JSON.stringify(generatedQuestions)
+);
     } catch {
       // Graceful fallback to local demo questions
       setQuestions(activeQuestions);
-    }
+    }finally {
+
+    setLoadingInterview(false);
+
+}
 
     setIsInterviewing(true);
     startTimer(initialSecs);
@@ -358,6 +390,8 @@ export default function MockInterview() {
       localStorage.setItem("latest_feedback", JSON.stringify(data));
       setTimeout(() => {
         setIsEvaluating(false);
+        localStorage.removeItem("currentInterview");
+        localStorage.removeItem("interviewAnswers");
         navigate("/feedback");
       }, 5000);
     };
@@ -582,11 +616,17 @@ export default function MockInterview() {
                     <div className="relative">
                       <textarea
                         value={answers[currentIdx] || ""}
-                        onChange={(e) => {
-                          const newAnswers = [...answers];
-                          newAnswers[currentIdx] = e.target.value;
-                          setAnswers(newAnswers);
-                        }}
+                       onChange={(e) => {
+    const newAnswers = [...answers];
+    newAnswers[currentIdx] = e.target.value;
+
+    setAnswers(newAnswers);
+
+    localStorage.setItem(
+        "interviewAnswers",
+        JSON.stringify(newAnswers)
+    );
+}}
                         placeholder="Type your answer here..."
                         className="w-full h-52 bg-slate-50/50 border border-slate-200 rounded-2xl p-4 text-[13.5px] text-slate-750 focus:outline-none focus:border-emerald-500 focus:bg-white transition-all resize-none"
                       />
@@ -934,12 +974,22 @@ export default function MockInterview() {
 
                   <div className="pt-2">
                     <button
-                      onClick={handleStartInterview}
-                      className="w-full flex items-center justify-center gap-2.5 py-4 rounded-xl bg-gradient-to-r from-emerald-650 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold text-[14px] shadow-lg shadow-emerald-700/10 transition-all duration-300"
-                    >
-                      <Play size={15} fill="currentColor" />
-                      Begin Interview Session
-                    </button>
+    onClick={handleStartInterview}
+    disabled={loadingInterview}
+    className={`w-full flex items-center justify-center gap-2.5 py-4 rounded-xl font-extrabold text-[14px] transition-all duration-300
+
+    ${
+        loadingInterview
+        ? "bg-slate-300 cursor-not-allowed"
+        : "bg-gradient-to-r from-emerald-650 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-700/10"
+    }`}
+>
+    <Play size={15} fill="currentColor"/>
+
+    {loadingInterview
+        ? "Generating Interview..."
+        : "Begin Interview Session"}
+</button>
                   </div>
                 </motion.div>
 
