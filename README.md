@@ -8,13 +8,16 @@ The platform combines **Natural Language Processing (NLP)**, **Retrieval-Augment
 
 Built with **React**, **FastAPI**, **MongoDB Atlas**, **Cloudinary**, **SpaCy**, **RapidFuzz**, and **Groq**, HireSmart follows a scalable full-stack architecture designed for real-world deployment.
 
-## 🚀 Live Demo
+## 🔗 Live Links
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-success?style=for-the-badge&logo=vercel)](https://hiresmart-amber.vercel.app/)
+🌐 **Frontend (Vercel)**  
+https://hiresmart-amber.vercel.app
 
-[![Backend API](https://img.shields.io/badge/Backend-Render-blue?style=for-the-badge&logo=render)](https://hiresmart-backend-49j2.onrender.com)
+⚡ **Backend API (Render)**  
+https://hiresmart-backend-49j2.onrender.com
 
-[![Swagger Docs](https://img.shields.io/badge/API-Swagger-green?style=for-the-badge&logo=fastapi)](https://hiresmart-backend-49j2.onrender.com/docs)
+📖 **Swagger API Documentation**  
+https://hiresmart-backend-49j2.onrender.com/docs
 
 ## 🛠️ Tech Stack
 
