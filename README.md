@@ -639,7 +639,7 @@ Follow the steps below to run HireSmart locally.
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/<your-github-username>/HireSmart.git
+git clone https://github.com/devkajals41/HireSmart.git
 cd HireSmart
 ```
 
