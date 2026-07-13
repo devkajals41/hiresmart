@@ -8,6 +8,18 @@ The platform combines **Natural Language Processing (NLP)**, **Retrieval-Augment
 
 Built with **React**, **FastAPI**, **MongoDB Atlas**, **Cloudinary**, **SpaCy**, **RapidFuzz**, and **Groq**, HireSmart follows a scalable full-stack architecture designed for real-world deployment.
 
+<p align="center">
+
+AI-powered Resume Analysis • ATS Scoring • Resume-Aware RAG • Mock Interviews • AI Feedback
+
+</p>
+
+<p align="center">
+
+Built with React • FastAPI • MongoDB Atlas • SpaCy • Gemini • Groq
+
+</p>
+
 ## 🔗 Live Links
 
 🌐 **Frontend (Vercel)**  
