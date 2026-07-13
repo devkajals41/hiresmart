@@ -3,7 +3,7 @@ import AtsReport from "./pages/ats/AtsReport";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Feedback from "./pages/feedback/Feedback";
 import MockInterview from "./pages/interview/MockInterview";
-import Landing from "./pages/Landing/Landing";
+import Landing from "./pages/landing/Landing";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Resume from "./pages/resume/Resume";
