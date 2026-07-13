@@ -31,7 +31,6 @@ export default function ResumeUploadCard() {
       setError("");
       
       const response = await uploadResume(selectedFile);
-      console.log("Upload Response:", response);
       setUploadedFileName(selectedFile.name);
       setIsUploaded(true);
       toast.success(response.message || "Resume uploaded successfully!");
