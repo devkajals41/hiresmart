@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import AuthIllustration from "../../features/auth/AuthIllustration";
 import AuthLayout from "../../features/auth/AuthLayout";
 import LoginForm from "../../features/auth/LoginForm";
@@ -47,12 +47,12 @@ export default function Login() {
 
 			<p className="mt-8 text-center text-sm text-slate-500">
 				Don't have an account?{" "}
-				<a
-					href="/register"
-					className="font-semibold text-emerald-700 hover:underline"
-				>
-					Sign Up
-				</a>
+            <Link
+             to="/register"
+             className="font-semibold text-emerald-700 hover:underline"
+            >
+            Sign Up
+            </Link>
 			</p>
 		</AuthLayout>
 	);
