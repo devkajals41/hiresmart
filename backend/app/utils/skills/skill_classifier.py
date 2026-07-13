@@ -23,10 +23,7 @@ def classify_skills(skills: list[str]) -> dict:
                 break
 
     return {
-
         category: sorted(set(values))
-
         for category, values in categorized.items()
-
         if values
     }

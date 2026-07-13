@@ -1,6 +1,5 @@
 from app.utils.common.text_utils import remove_empty
 
-
 IGNORE_LINES = {
     "certification",
     "certificate",

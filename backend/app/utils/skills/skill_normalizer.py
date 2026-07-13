@@ -7,49 +7,29 @@ from app.utils.skills.skill_database import SKILL_DATABASE
 # ---------------------------------------------------
 
 MANUAL_ALIASES = {
-
     "reactjs": "React",
     "react.js": "React",
-
     "nodejs": "Node.js",
     "node js": "Node.js",
     "node": "Node.js",
-
     "express": "Express.js",
     "expressjs": "Express.js",
-
     "js": "JavaScript",
-
     "ts": "TypeScript",
-
     "tailwind": "Tailwind CSS",
-
     "mui": "Material UI",
-
     "gcp": "Google Cloud Platform",
-
     "aws": "Amazon Web Services",
-
     "ml": "Machine Learning",
-
     "dl": "Deep Learning",
-
     "nlp": "Natural Language Processing",
-
     "cv": "Computer Vision",
-
     "rag": "Retrieval Augmented Generation",
-
     "llm": "Large Language Models",
-
     "oop": "Object Oriented Programming",
-
     "dbms": "Database Management System",
-
     "os": "Operating Systems",
-
     "cn": "Computer Networks",
-
 }
 
 
@@ -77,11 +57,8 @@ for category in SKILL_DATABASE.values():
 
 
 ALIASES = {
-
     **AUTO_ALIASES,
-
     **MANUAL_ALIASES,
-
 }
 
 

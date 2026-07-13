@@ -1,10 +1,14 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
 from app.utils.jwt_handler import (
     create_access_token,
     verify_access_token,
 )
 
 payload = {
-    "sub": "kajal@gmail.com",
+    "sub": "user@example.com",
     "user_id": "123456789",
 }
 

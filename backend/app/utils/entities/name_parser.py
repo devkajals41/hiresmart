@@ -1,6 +1,5 @@
 import re
 
-
 NAME_LABELS = [
     "name",
     "candidate name",
@@ -17,11 +16,7 @@ def parse_name(text: str) -> str:
     2. Otherwise use first valid line.
     """
 
-    lines = [
-        line.strip()
-        for line in text.splitlines()
-        if line.strip()
-    ]
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
 
     # -------------------------
     # Strategy 1

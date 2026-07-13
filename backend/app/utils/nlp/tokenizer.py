@@ -8,8 +8,4 @@ def tokenize(text: str) -> list[str]:
 
     doc = create_doc(text)
 
-    return [
-        token.text
-        for token in doc
-        if not token.is_space
-    ]
+    return [token.text for token in doc if not token.is_space]

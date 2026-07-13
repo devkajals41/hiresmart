@@ -1,9 +1,9 @@
 import { Sparkles } from "lucide-react";
 
 function Badge({ children, className = "" }) {
-  return (
-    <div
-      className={`
+	return (
+		<div
+			className={`
         inline-flex
         items-center
         gap-2
@@ -26,12 +26,12 @@ function Badge({ children, className = "" }) {
 
         ${className}
       `}
-    >
-      <Sparkles size={14} />
+		>
+			<Sparkles size={14} />
 
-      {children}
-    </div>
-  );
+			{children}
+		</div>
+	);
 }
 
 export default Badge;

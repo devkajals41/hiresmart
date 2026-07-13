@@ -1,5 +1,4 @@
 FRONTEND_SKILLS = [
-
     # Markup
     "HTML",
     "HTML5",
@@ -8,7 +7,6 @@ FRONTEND_SKILLS = [
     "SASS",
     "SCSS",
     "LESS",
-
     # Frameworks
     "React",
     "Next.js",
@@ -17,14 +15,12 @@ FRONTEND_SKILLS = [
     "Angular",
     "Svelte",
     "SolidJS",
-
     # State Management
     "Redux",
     "Redux Toolkit",
     "MobX",
     "Zustand",
     "Recoil",
-
     # Styling
     "Bootstrap",
     "Tailwind CSS",
@@ -34,29 +30,24 @@ FRONTEND_SKILLS = [
     "Ant Design",
     "Semantic UI",
     "Bulma",
-
     # Build Tools
     "Webpack",
     "Vite",
     "Parcel",
     "Babel",
-
     # Testing
     "Jest",
     "Cypress",
     "Playwright",
     "Vitest",
-
     # APIs
     "Axios",
     "Fetch API",
     "React Query",
     "TanStack Query",
-
     # Routing
     "React Router",
     "Vue Router",
-
     # Misc
     "PWA",
     "Responsive Design",

@@ -1,6 +1,5 @@
 import re
 
-
 SOCIAL_PATTERNS = {
     "github": re.compile(
         r"(?:https?://)?(?:www\.)?github\.com/[A-Za-z0-9_.-]+",

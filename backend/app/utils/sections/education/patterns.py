@@ -10,6 +10,4 @@ PERCENTAGE_PATTERN = re.compile(
     re.IGNORECASE,
 )
 
-YEAR_PATTERN = re.compile(
-    r"\d{4}\s*[–-]\s*\d{4}"
-)
+YEAR_PATTERN = re.compile(r"\d{4}\s*[–-]\s*\d{4}")

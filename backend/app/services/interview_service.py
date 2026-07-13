@@ -26,8 +26,9 @@ async def generate_interview_service(
 
     # Initialize RAG SimpleRetriever
     from app.rag.retriever import SimpleRetriever
+
     retriever = SimpleRetriever(parsed_resume)
-    
+
     # Retrieve top 3 chunks matching the role and topic
     retrieved_chunks = retriever.retrieve(f"{role} {topic}", top_k=3)
     rag_context = "\n\n".join(retrieved_chunks)
@@ -68,7 +69,11 @@ async def evaluate_interview_service(
         role=role,
     )
 
-    from app.repositories.user_repository import increment_user_counters, add_user_activity
+    from app.repositories.user_repository import (
+        increment_user_counters,
+        add_user_activity,
+    )
+
     await increment_user_counters(user_id, mock_interviews=1, feedback_reports=1)
     await add_user_activity(
         user_id=user_id,

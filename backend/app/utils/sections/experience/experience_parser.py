@@ -52,9 +52,7 @@ def parse_experience(lines: list[str]) -> list:
         experiences.append(
             {
                 "company": parse_company(block),
-                "role": normalize_role(
-                    parse_role(block)
-                ),
+                "role": normalize_role(parse_role(block)),
                 "duration": parse_duration(block),
                 "description": parse_description(block),
             }

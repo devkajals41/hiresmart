@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from app.routes.interview_routes import (
     router as interview_router,
 )
+from app.config.config import settings
 
 from app.database.mongodb import (
     connect_to_mongo,
@@ -31,11 +32,11 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    # allow_origins=[
-    #     "http://localhost:5173",
-    # ],
-    
-    allow_origins=["*"],
+    # Read allowed origins from settings (derived from ALLOWED_ORIGINS environment variable)
+    # Default is ["http://localhost:5173"] for running locally on your PC.
+    # To run locally, you don't need to change anything.
+    # For deployment, add ALLOWED_ORIGINS=http://localhost:5173,https://<your-deployed-frontend-domain> to the .env file or your host's environment settings.
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -50,6 +51,7 @@ app.include_router(profile_router)
 app.include_router(dashboard_router)
 app.include_router(resume_router)
 app.include_router(interview_router)
+
 
 @app.get("/")
 async def root():

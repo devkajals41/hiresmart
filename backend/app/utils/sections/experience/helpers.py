@@ -15,10 +15,7 @@ def parse_role(lines: list[str]) -> str:
 
         lower = line.lower()
 
-        if any(
-            role in lower
-            for role in ROLE_KEYWORDS
-        ):
+        if any(role in lower for role in ROLE_KEYWORDS):
             return line
 
     return ""
@@ -33,10 +30,7 @@ def parse_company(lines: list[str]) -> str:
 
         lower = line.lower()
 
-        if any(
-            keyword in lower
-            for keyword in COMPANY_KEYWORDS
-        ):
+        if any(keyword in lower for keyword in COMPANY_KEYWORDS):
             return line
 
     return ""

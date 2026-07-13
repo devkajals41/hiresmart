@@ -6,15 +6,9 @@ from fastapi import (
     HTTPException,
     status,
 )
-from fastapi.responses import FileResponse
-import os
 
 from app.dependencies.auth_dependency import (
     get_current_user,
-)
-
-from app.services.resume_service import (
-    upload_resume,
 )
 
 from app.services.resume_service import (
@@ -48,32 +42,18 @@ async def view_user_resume(
     current_user=Depends(get_current_user),
 ):
     """
-    Serve the logged-in user's uploaded resume.
+    Return the Cloudinary URL of the uploaded resume.
     """
-    resume_path = current_user.get("resume_path")
-    if not resume_path or not os.path.exists(resume_path):
+
+    resume_url = current_user.get("resume_url")
+
+    if not resume_url:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Resume file not found.",
+            detail="Resume not found.",
         )
 
-    # Determine media type based on extension
-    ext = os.path.splitext(resume_path)[1].lower()
-    media_type = "application/octet-stream"
-    if ext == ".pdf":
-        media_type = "application/pdf"
-    elif ext == ".docx":
-        media_type = (
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        )
-    elif ext == ".doc":
-        media_type = "application/msword"
-
-    return FileResponse(
-        path=resume_path,
-        media_type=media_type,
-        filename=current_user.get("resume_filename", f"resume{ext}"),
-    )
+    return {"resume_url": resume_url}
 
 
 @router.get("/report")
@@ -84,7 +64,4 @@ async def get_resume_report_route(
     Get ATS report for the logged-in user.
     """
 
-    return await get_resume_report(
-        str(current_user["_id"])
-    )
-
+    return await get_resume_report(str(current_user["_id"]))

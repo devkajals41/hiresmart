@@ -1,5 +1,4 @@
 CYBERSECURITY_SKILLS = [
-
     # Core Security
     "Cyber Security",
     "Information Security",
@@ -9,7 +8,6 @@ CYBERSECURITY_SKILLS = [
     "Web Security",
     "Endpoint Security",
     "Mobile Security",
-
     # Ethical Hacking
     "Ethical Hacking",
     "Penetration Testing",
@@ -20,7 +18,6 @@ CYBERSECURITY_SKILLS = [
     "Security Auditing",
     "Threat Modeling",
     "Incident Response",
-
     # Security Standards
     "OWASP",
     "OWASP Top 10",
@@ -28,7 +25,6 @@ CYBERSECURITY_SKILLS = [
     "NIST",
     "ISO 27001",
     "PCI DSS",
-
     # Networking
     "Firewalls",
     "IDS",
@@ -36,7 +32,6 @@ CYBERSECURITY_SKILLS = [
     "VPN",
     "Proxy",
     "DNS Security",
-
     # Cryptography
     "Cryptography",
     "Encryption",
@@ -47,7 +42,6 @@ CYBERSECURITY_SKILLS = [
     "Digital Signatures",
     "SSL",
     "TLS",
-
     # Security Tools
     "Burp Suite",
     "Wireshark",
@@ -59,19 +53,16 @@ CYBERSECURITY_SKILLS = [
     "Aircrack-ng",
     "OWASP ZAP",
     "Kali Linux",
-
     # Authentication
     "OAuth",
     "OAuth2",
     "JWT",
     "Multi-Factor Authentication",
     "Single Sign-On",
-
     # Secure Development
     "Secure Coding",
     "Static Analysis",
     "Dynamic Analysis",
     "SAST",
     "DAST",
-
 ]

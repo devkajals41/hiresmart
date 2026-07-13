@@ -1,9 +1,9 @@
 from app.utils.ats.score_weights import SECTION_WEIGHTS
 
-
 # ----------------------------------------
 # Contact
 # ----------------------------------------
+
 
 def score_contact(parsed_resume):
 
@@ -31,11 +31,10 @@ def score_contact(parsed_resume):
 # Education
 # ----------------------------------------
 
+
 def score_education(parsed_resume):
 
-    education = parsed_resume.get(
-        "education", []
-    )
+    education = parsed_resume.get("education", [])
 
     if not education:
         return 0
@@ -65,6 +64,7 @@ def score_education(parsed_resume):
 # ----------------------------------------
 # Experience
 # ----------------------------------------
+
 
 def score_experience(parsed_resume):
 
@@ -102,6 +102,7 @@ def score_experience(parsed_resume):
 # Projects
 # ----------------------------------------
 
+
 def score_projects(parsed_resume):
 
     projects = parsed_resume.get(
@@ -125,10 +126,7 @@ def score_projects(parsed_resume):
         if project.get("technologies"):
             score += 5
 
-        if (
-            project.get("github")
-            or project.get("demo")
-        ):
+        if project.get("github") or project.get("demo"):
             score += 5
 
     return min(
@@ -141,6 +139,7 @@ def score_projects(parsed_resume):
 # Skills
 # ----------------------------------------
 
+
 def score_skills(parsed_resume):
 
     skills = parsed_resume.get(
@@ -151,10 +150,7 @@ def score_skills(parsed_resume):
     if not skills:
         return 0
 
-    total = sum(
-        len(values)
-        for values in skills.values()
-    )
+    total = sum(len(values) for values in skills.values())
 
     if total >= 25:
         return 20
@@ -177,6 +173,7 @@ def score_skills(parsed_resume):
 # ----------------------------------------
 # Certifications
 # ----------------------------------------
+
 
 def score_certifications(parsed_resume):
 
@@ -201,6 +198,7 @@ def score_certifications(parsed_resume):
 # Achievements
 # ----------------------------------------
 
+
 def score_achievements(parsed_resume):
 
     achievements = parsed_resume.get(
@@ -223,6 +221,7 @@ def score_achievements(parsed_resume):
 # ----------------------------------------
 # Positions
 # ----------------------------------------
+
 
 def score_positions(parsed_resume):
 

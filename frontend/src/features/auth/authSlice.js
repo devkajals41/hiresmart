@@ -1,101 +1,101 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "./authAPI";
 
 const initialState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  loading: false,
-  error: null,
+	user: null,
+	token: null,
+	isAuthenticated: false,
+	loading: false,
+	error: null,
 };
 
 // Register
 export const register = createAsyncThunk(
-  "auth/register",
-  async (userData, thunkAPI) => {
-    try {
-      return await registerUser(userData);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.detail || "Registration failed",
-      );
-    }
-  },
+	"auth/register",
+	async (userData, thunkAPI) => {
+		try {
+			return await registerUser(userData);
+		} catch (error) {
+			return thunkAPI.rejectWithValue(
+				error.response?.data?.detail || "Registration failed",
+			);
+		}
+	},
 );
 
 // Login
 export const login = createAsyncThunk(
-  "auth/login",
-  async (credentials, thunkAPI) => {
-    try {
-      return await loginUser(credentials);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.detail || "Login failed",
-      );
-    }
-  },
+	"auth/login",
+	async (credentials, thunkAPI) => {
+		try {
+			return await loginUser(credentials);
+		} catch (error) {
+			return thunkAPI.rejectWithValue(
+				error.response?.data?.detail || "Login failed",
+			);
+		}
+	},
 );
 
 const authSlice = createSlice({
-  name: "auth",
+	name: "auth",
 
-  initialState,
+	initialState,
 
-  reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      state.error = null;
+	reducers: {
+		logout: (state) => {
+			state.user = null;
+			state.token = null;
+			state.isAuthenticated = false;
+			state.error = null;
 
-      localStorage.removeItem("token");
-    },
-  },
+			localStorage.removeItem("token");
+		},
+	},
 
-  extraReducers: (builder) => {
-    builder
+	extraReducers: (builder) => {
+		builder
 
-      // Register
-      .addCase(register.pending, (state) => {
-        state.loading = true;
-      })
+			// Register
+			.addCase(register.pending, (state) => {
+				state.loading = true;
+			})
 
-      .addCase(register.fulfilled, (state, action) => {
-        state.loading = false;
+			.addCase(register.fulfilled, (state, action) => {
+				state.loading = false;
 
-        state.user = action.payload.user;
-        state.token = action.payload.token.access_token;
-        state.isAuthenticated = true;
+				state.user = action.payload.user;
+				state.token = action.payload.token.access_token;
+				state.isAuthenticated = true;
 
-        localStorage.setItem("token", action.payload.token.access_token);
-      })
+				localStorage.setItem("token", action.payload.token.access_token);
+			})
 
-      .addCase(register.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
+			.addCase(register.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload;
+			})
 
-      // Login
-      .addCase(login.pending, (state) => {
-        state.loading = true;
-      })
+			// Login
+			.addCase(login.pending, (state) => {
+				state.loading = true;
+			})
 
-      .addCase(login.fulfilled, (state, action) => {
-        state.loading = false;
+			.addCase(login.fulfilled, (state, action) => {
+				state.loading = false;
 
-        state.user = action.payload.user;
-        state.token = action.payload.token.access_token;
-        state.isAuthenticated = true;
+				state.user = action.payload.user;
+				state.token = action.payload.token.access_token;
+				state.isAuthenticated = true;
 
-        localStorage.setItem("token", action.payload.token.access_token);
-      })
+				localStorage.setItem("token", action.payload.token.access_token);
+			})
 
-      .addCase(login.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
-  },
+			.addCase(login.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload;
+			});
+	},
 });
 
 export const { logout } = authSlice.actions;

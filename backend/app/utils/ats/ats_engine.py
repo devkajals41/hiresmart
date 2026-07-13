@@ -61,6 +61,7 @@ Rules:
 - Provide highly realistic, custom feedback based on the candidate's actual skills, experience, and projects. Don't return generic placeholder suggestions if possible.
 """
 
+
 def analyze_resume(
     parsed_resume: dict,
     job_description: str = None,
@@ -80,11 +81,13 @@ def analyze_resume(
     suggestions = []
 
     try:
-        prompt = ATS_ANALYSIS_PROMPT.format(parsed_resume=json.dumps(parsed_resume, indent=2))
+        prompt = ATS_ANALYSIS_PROMPT.format(
+            parsed_resume=json.dumps(parsed_resume, indent=2)
+        )
         response = generate_response(prompt, temperature=0.2)
         response = response.replace("```json", "").replace("```", "").strip()
         data = json.loads(response)
-        
+
         strengths = data.get("strengths", [])
         weaknesses = data.get("weaknesses", [])
         suggestions = data.get("suggestions", [])
@@ -98,7 +101,7 @@ def analyze_resume(
     grade = get_resume_grade(overall_score)
 
     missing_sections = get_missing_sections(parsed_resume)
-     
+
     job_match = None
 
     if job_description:

@@ -8,7 +8,15 @@ from app.utils.resume_engine import parse_resume
 from app.repositories.user_repository import (
     get_user_by_id,
 )
+from app.services.cloudinary_service import (
+    upload_resume as upload_resume_to_cloudinary,
+    delete_resume,
+)
+
+from app.repositories.user_repository import add_user_activity
+
 UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 ALLOWED_EXTENSIONS = [
     ".pdf",
@@ -44,25 +52,38 @@ async def upload_resume(
         content = await file.read()
         await out_file.write(content)
 
+    user = await get_user_by_id(user_id)
+
+    old_score = user.get("ats_score") if user else None
+
+    cloudinary_file = upload_resume_to_cloudinary(filepath)
+
+    resume_url = cloudinary_file["url"]
+
+    resume_public_id = cloudinary_file["public_id"]
+
     resume_text = extract_text_from_pdf(filepath)
 
     parsed_resume = parse_resume(resume_text)
 
     ats_report = analyze_resume(parsed_resume)
 
-    user = await get_user_by_id(user_id)
-    old_score = user.get("ats_score") if user else None
-
     await update_resume_details(
         user_id=user_id,
         filename=file.filename,
-        filepath=filepath,
+        resume_url=resume_url,
+        resume_public_id=resume_public_id,
         resume_text=resume_text,
         parsed_resume=parsed_resume,
         ats_report=ats_report,
     )
 
-    from app.repositories.user_repository import add_user_activity
+    if user:
+        old_public_id = user.get("resume_public_id")
+
+        if old_public_id:
+            delete_resume(old_public_id)
+
     await add_user_activity(
         user_id=user_id,
         activity_type="resume_upload",
@@ -78,11 +99,15 @@ async def upload_resume(
             title="ATS score improved",
             detail=f"Previous score: {old_score} → New score: {new_score}",
         )
+    if os.path.exists(filepath):
+        os.remove(filepath)
 
     return {
         "message": "Resume uploaded successfully.",
         "filename": file.filename,
     }
+
+
 async def get_resume_report(
     user_id: str,
 ):

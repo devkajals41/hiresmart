@@ -12,17 +12,9 @@ def calculate_job_match(
     parsed_jd,
 ):
 
-    resume_skills = flatten_skills(
+    resume_skills = flatten_skills(parsed_resume["skills"])
 
-        parsed_resume["skills"]
-
-    )
-
-    jd_skills = flatten_skills(
-
-        parsed_jd["skills"]
-
-    )
+    jd_skills = flatten_skills(parsed_jd["skills"])
 
     if len(jd_skills) == 0:
 
@@ -30,36 +22,14 @@ def calculate_job_match(
 
     else:
 
-        matched = len(
+        matched = len(resume_skills.intersection(jd_skills))
 
-            resume_skills.intersection(
-                jd_skills
-            )
-
-        )
-
-        score = round(
-
-            matched
-            /
-            len(jd_skills)
-
-            * 100
-
-        )
+        score = round(matched / len(jd_skills) * 100)
 
     return {
-
         "job_match_score": score,
-
-        "missing_skills":
-
-        find_missing_skills(
-
+        "missing_skills": find_missing_skills(
             parsed_resume["skills"],
-
             parsed_jd["skills"],
-
         ),
-
     }

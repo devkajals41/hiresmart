@@ -31,9 +31,8 @@ def split_project_blocks(lines: list[str]) -> list[list[str]]:
             continue
 
         # New project starts at a bullet/title line
-        if (
-            (line.startswith("•") and "–" in line)
-            or (line.startswith("•") and "-" in line)
+        if (line.startswith("•") and "–" in line) or (
+            line.startswith("•") and "-" in line
         ):
 
             if current:
@@ -64,9 +63,7 @@ def parse_projects(lines: list[str]) -> list:
 
         projects.append(
             {
-                "title": normalize_title(
-                    parse_title(block)
-                ),
+                "title": normalize_title(parse_title(block)),
                 "description": parse_description(block),
                 "technologies": parse_technologies(block),
                 "github": parse_github(block),

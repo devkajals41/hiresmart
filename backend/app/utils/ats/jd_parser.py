@@ -12,9 +12,6 @@ def parse_job_description(job_description: str):
     )
 
     return {
-
         "skills": skills,
-
         "text": job_description,
-
     }

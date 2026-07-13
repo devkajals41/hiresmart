@@ -22,15 +22,10 @@ def parse_certifications(lines: list[str]) -> list:
     for block in blocks:
 
         certification = {
-
             "name": parse_name(block),
-
             "issuer": parse_issuer(block),
-
             "year": parse_year(block),
-
             "credential_url": parse_credential_url(block),
-
         }
 
         # Skip empty entries

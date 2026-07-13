@@ -93,10 +93,7 @@ def detect_sections(text: str) -> dict:
     - Education / Experience
     """
 
-    sections = {
-        key: []
-        for key in SECTION_HEADERS
-    }
+    sections = {key: [] for key in SECTION_HEADERS}
 
     current_sections = ["personal_information"]
 

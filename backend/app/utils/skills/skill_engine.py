@@ -27,9 +27,7 @@ def extract_candidates(text: str):
 
     # Regex Candidates
     regex_candidates = [
-        word.strip()
-        for word in SKILL_SPLIT_PATTERN.split(text)
-        if word.strip()
+        word.strip() for word in SKILL_SPLIT_PATTERN.split(text) if word.strip()
     ]
 
     candidates.extend(regex_candidates)

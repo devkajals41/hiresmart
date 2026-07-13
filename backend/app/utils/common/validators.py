@@ -1,6 +1,5 @@
 import re
 
-
 URL_PATTERN = re.compile(
     r"https?://\S+",
     re.IGNORECASE,

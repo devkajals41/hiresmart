@@ -2,7 +2,6 @@ from groq import Groq
 
 from app.config.config import settings
 
-
 client = None
 
 if hasattr(settings, "GROQ_API_KEY") and settings.GROQ_API_KEY:
@@ -18,9 +17,7 @@ def generate_response(
     """
 
     if client is None:
-        raise RuntimeError(
-            "GROQ_API_KEY is not configured."
-        )
+        raise RuntimeError("GROQ_API_KEY is not configured.")
 
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",

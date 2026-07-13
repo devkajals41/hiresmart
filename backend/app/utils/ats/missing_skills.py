@@ -8,20 +8,8 @@ def find_missing_skills(
     jd_skills,
 ):
 
-    resume = flatten_skills(
-        resume_skills
-    )
+    resume = flatten_skills(resume_skills)
 
-    jd = flatten_skills(
-        jd_skills
-    )
+    jd = flatten_skills(jd_skills)
 
-    return sorted(
-
-        list(
-
-            jd - resume
-
-        )
-
-    )
+    return sorted(list(jd - resume))

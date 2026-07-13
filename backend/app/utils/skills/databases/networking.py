@@ -1,33 +1,17 @@
 NETWORKING_SKILLS = [
-
     "Computer Networks",
-
     "TCP/IP",
-
     "UDP",
-
     "HTTP",
-
     "HTTPS",
-
     "FTP",
-
     "SSH",
-
     "DNS",
-
     "DHCP",
-
     "SMTP",
-
     "Routing",
-
     "Switching",
-
     "VPN",
-
     "Cisco",
-
     "OSI Model",
-
 ]

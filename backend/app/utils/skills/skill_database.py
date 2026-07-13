@@ -62,39 +62,21 @@ from app.utils.skills.databases.soft_skills import (
     SOFT_SKILLS,
 )
 
-
 SKILL_DATABASE = {
-
     "Programming Languages": PROGRAMMING_LANGUAGES,
-
     "Frontend": FRONTEND_SKILLS,
-
     "Backend": BACKEND_SKILLS,
-
     "Database": DATABASE_SKILLS,
-
     "Cloud": CLOUD_SKILLS,
-
     "DevOps": DEVOPS_SKILLS,
-
     "AI / ML": AI_ML_SKILLS,
-
     "Data Science": DATA_SCIENCE_SKILLS,
-
     "Blockchain": BLOCKCHAIN_SKILLS,
-
     "Mobile": MOBILE_SKILLS,
-
     "Testing": TESTING_SKILLS,
-
     "Cybersecurity": CYBERSECURITY_SKILLS,
-
     "Networking": NETWORKING_SKILLS,
-
     "Operating Systems": OPERATING_SYSTEM_SKILLS,
-
     "Tools": TOOLS_SKILLS,
-
     "Soft Skills": SOFT_SKILLS,
-
 }

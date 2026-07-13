@@ -1,5 +1,3 @@
-import re
-
 from .constants import (
     DEGREE_KEYWORDS,
     BOARD_KEYWORDS,
@@ -22,10 +20,7 @@ def parse_institution(lines: list[str]) -> str:
 
         lower = line.lower()
 
-        if any(
-            keyword in lower
-            for keyword in INSTITUTION_KEYWORDS
-        ):
+        if any(keyword in lower for keyword in INSTITUTION_KEYWORDS):
             return line
 
     return ""
@@ -40,10 +35,7 @@ def parse_degree(lines: list[str]) -> str:
 
         lower = line.lower()
 
-        if any(
-            keyword in lower
-            for keyword in DEGREE_KEYWORDS
-        ):
+        if any(keyword in lower for keyword in DEGREE_KEYWORDS):
             return line
 
     return ""

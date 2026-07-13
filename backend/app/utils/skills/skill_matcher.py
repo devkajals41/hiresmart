@@ -43,9 +43,7 @@ def parse_skills(
 
     section_candidates = extract_candidate_skills(skill_lines)
 
-    resume_candidates = extract_candidate_skills(
-        resume_text.split("\n")
-    )
+    resume_candidates = extract_candidate_skills(resume_text.split("\n"))
 
     all_candidates = []
 
@@ -77,8 +75,6 @@ def parse_skills(
 
         if matched:
 
-            extracted[category] = sorted(
-                set(matched)
-            )
+            extracted[category] = sorted(set(matched))
 
     return extracted

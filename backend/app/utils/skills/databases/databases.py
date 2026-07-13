@@ -1,5 +1,4 @@
 DATABASE_SKILLS = [
-
     "MongoDB",
     "MySQL",
     "PostgreSQL",

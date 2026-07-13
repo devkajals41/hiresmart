@@ -28,7 +28,8 @@ async def get_user_by_id(user_id: str):
 async def update_resume_details(
     user_id: str,
     filename: str,
-    filepath: str,
+    resume_url: str,
+    resume_public_id: str,
     resume_text: str,
     parsed_resume: dict,
     ats_report: dict,
@@ -43,7 +44,8 @@ async def update_resume_details(
             "$set": {
                 "resume_uploaded": True,
                 "resume_filename": filename,
-                "resume_path": filepath,
+                "resume_url": resume_url,
+                "resume_public_id": resume_public_id,
                 "resume_text": resume_text,
                 "parsed_resume": parsed_resume,
                 "ats_report": ats_report,
@@ -71,14 +73,16 @@ async def add_user_activity(user_id: str, activity_type: str, title: str, detail
                 "activities": {
                     "$each": [activity],
                     "$position": 0,  # Keep latest on top
-                    "$slice": 20,    # Cap to last 20 activities
+                    "$slice": 20,  # Cap to last 20 activities
                 }
             }
         },
     )
 
 
-async def increment_user_counters(user_id: str, mock_interviews: int = 0, feedback_reports: int = 0):
+async def increment_user_counters(
+    user_id: str, mock_interviews: int = 0, feedback_reports: int = 0
+):
     """
     Increment interview/feedback stats for user.
     """
@@ -95,4 +99,3 @@ async def increment_user_counters(user_id: str, mock_interviews: int = 0, feedba
         {"_id": ObjectId(user_id)},
         {"$inc": update_dict},
     )
-

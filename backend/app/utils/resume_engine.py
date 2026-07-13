@@ -88,6 +88,7 @@ Rules:
 - If a field is not found in the text, return empty string for strings, empty array [] for lists, and empty object {{}} for dicts.
 """
 
+
 def parse_resume(resume_text: str) -> dict:
     """
     Main Resume Intelligence Engine powered by LLM.

@@ -1,5 +1,4 @@
 BACKEND_SKILLS = [
-
     "Node.js",
     "Express.js",
     "NestJS",
@@ -15,43 +14,29 @@ BACKEND_SKILLS = [
     "Gin",
     "Fiber",
     "Phoenix",
-
     "REST API",
     "RESTful API",
     "GraphQL",
     "gRPC",
-
     "JWT",
     "OAuth",
     "OAuth2",
     "Session Authentication",
-
     "Socket.IO",
     "WebSockets",
-
     "RabbitMQ",
     "Kafka",
-
     "Microservices",
-
     "MVC",
-
     "Mongoose",
     "Prisma",
     "Sequelize",
     "Hibernate",
     "SQLAlchemy",
-
     "Redis",
-
     "Nginx",
-
     "Apache",
-
     "Cron Jobs",
-
     "Background Jobs",
-
     "Celery",
-
 ]

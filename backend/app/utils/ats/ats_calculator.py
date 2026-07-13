@@ -16,33 +16,19 @@ def calculate_ats_score(parsed_resume: dict) -> dict:
     """
 
     section_scores = {
-
         "contact": score_contact(parsed_resume),
-
         "education": score_education(parsed_resume),
-
         "experience": score_experience(parsed_resume),
-
         "projects": score_projects(parsed_resume),
-
         "skills": score_skills(parsed_resume),
-
         "certifications": score_certifications(parsed_resume),
-
         "achievements": score_achievements(parsed_resume),
-
         "positions": score_positions(parsed_resume),
-
     }
 
-    overall_score = sum(
-        section_scores.values()
-    )
+    overall_score = sum(section_scores.values())
 
     return {
-
         "overall_score": overall_score,
-
         "section_scores": section_scores,
-
     }

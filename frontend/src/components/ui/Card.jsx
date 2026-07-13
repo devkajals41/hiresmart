@@ -1,7 +1,7 @@
 function Card({ children, className = "", hover = true }) {
-  return (
-    <div
-      className={`
+	return (
+		<div
+			className={`
         rounded-[var(--radius-lg)]
         bg-[var(--surface)]
         border border-[var(--border)]
@@ -12,10 +12,10 @@ function Card({ children, className = "", hover = true }) {
 
         ${className}
       `}
-    >
-      {children}
-    </div>
-  );
+		>
+			{children}
+		</div>
+	);
 }
 
 export default Card;

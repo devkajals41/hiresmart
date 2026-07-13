@@ -23,8 +23,6 @@ def tokenize(text: str) -> list[str]:
         if token.is_stop:
             continue
 
-        candidates.append(
-            token.lemma_.lower()
-        )
+        candidates.append(token.lemma_.lower())
 
     return candidates

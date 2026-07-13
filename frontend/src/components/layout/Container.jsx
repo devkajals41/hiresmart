@@ -1,7 +1,7 @@
 function Container({ children, className = "" }) {
-  return (
-    <div
-      className={`
+	return (
+		<div
+			className={`
         mx-auto
         w-full
         max-w-[1180px]
@@ -13,10 +13,10 @@ function Container({ children, className = "" }) {
 
         ${className}
       `}
-    >
-      {children}
-    </div>
-  );
+		>
+			{children}
+		</div>
+	);
 }
 
 export default Container;

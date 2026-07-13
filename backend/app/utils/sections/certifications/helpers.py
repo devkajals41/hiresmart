@@ -1,15 +1,9 @@
-from .constants import ISSUER_KEYWORDS
 from .patterns import YEAR_PATTERN, URL_PATTERN
 
-
 IGNORE_LINES = {
-
     "certification",
-
     "certificate",
-
     "certificates",
-
 }
 
 

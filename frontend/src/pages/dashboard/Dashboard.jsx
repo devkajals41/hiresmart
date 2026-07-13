@@ -1,423 +1,430 @@
-import { useEffect, useState } from "react";
-import { getDashboardData } from "../../services/dashboardService";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import {
-  Upload,
-  Calendar,
-  Sparkles,
-  ArrowRight,
-  TrendingUp,
-  FileText,
-  MessageSquare,
-  Mic,
-  Target,
-  CheckCircle,
+	ArrowRight,
+	Calendar,
+	CheckCircle,
+	FileText,
+	MessageSquare,
+	Mic,
+	Sparkles,
+	Target,
+	TrendingUp,
+	Upload,
 } from "lucide-react";
-import DashboardLayout from "../../components/layout/DashboardLayout";
-import { selectUser } from "../../features/auth/authSelectors";
-
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import bottomIllustration from "../../assets/illustrations/bottomillusdash.png";
 // Main illustrations from assets
 import topIllustration from "../../assets/illustrations/topillusdash.png";
-import bottomIllustration from "../../assets/illustrations/bottomillusdash.png";
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import { selectUser } from "../../features/auth/authSelectors";
+import { getDashboardData } from "../../services/dashboardService";
 
 export default function Dashboard() {
-  const navigate = useNavigate();
-  const reduxUser = useSelector(selectUser);
+	const navigate = useNavigate();
+	const reduxUser = useSelector(selectUser);
 
-  // Parse active user name from localStorage
-  let localUser = null;
-  try {
-    const stored = localStorage.getItem("user");
-    if (stored) localUser = JSON.parse(stored);
-  } catch (error) {
-    console.error("Error reading user details:", error);
-  }
+	// Parse active user name from localStorage
+	let localUser = null;
+	try {
+		const stored = localStorage.getItem("user");
+		if (stored) localUser = JSON.parse(stored);
+	} catch (error) {
+		console.error("Error reading user details:", error);
+	}
 
-  const [dashboardData, setDashboardData] = useState(null);
+	const [dashboardData, setDashboardData] = useState(null);
 
-  const displayName =
-    dashboardData?.user?.name || reduxUser?.name || localUser?.name || "User";
-  useEffect(() => {
-    loadDashboard();
-  }, []);
-  useEffect(() => {
-    if (
-      dashboardData &&
-      dashboardData.resume &&
-      !dashboardData.resume.uploaded
-    ) {
-      navigate("/resume");
-    }
-  }, [dashboardData, navigate]);
+	const displayName =
+		dashboardData?.user?.name || reduxUser?.name || localUser?.name || "User";
+	useEffect(() => {
+		loadDashboard();
+	}, []);
+	useEffect(() => {
+		if (
+			dashboardData &&
+			dashboardData.resume &&
+			!dashboardData.resume.uploaded
+		) {
+			navigate("/resume");
+		}
+	}, [dashboardData, navigate]);
 
-  const loadDashboard = async () => {
-    try {
-      const data = await getDashboardData();
+	const loadDashboard = async () => {
+		try {
+			const data = await getDashboardData();
 
-      setDashboardData(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+			setDashboardData(data);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
-  if (!dashboardData) {
-    return (
-      <DashboardLayout>
-        <div className="flex h-[80vh] items-center justify-center">
-          <p className="text-slate-500">Loading dashboard...</p>
-        </div>
-      </DashboardLayout>
-    );
-  }
-  return (
-    <DashboardLayout>
-      {/* 1. Header greeting area with illustration */}
-      <div className="bg-gradient-to-r from-emerald-50/50 to-teal-50/20 border border-slate-100 rounded-2xl p-5 flex items-center justify-between h-[105px] shrink-0 overflow-hidden relative shadow-sm">
-        <div className="shrink-0">
-          <h2 className="auth-heading text-[26px] leading-tight">
-            Welcome back, {displayName}!
-          </h2>
-          <p className="auth-subheading text-[13.5px] mt-0.5">
-            Let's continue improving your profile.
-          </p>
-        </div>
+	if (!dashboardData) {
+		return (
+			<DashboardLayout>
+				<div className="flex h-[80vh] items-center justify-center">
+					<p className="text-slate-500">Loading dashboard...</p>
+				</div>
+			</DashboardLayout>
+		);
+	}
+	return (
+		<DashboardLayout>
+			{/* 1. Header greeting area with illustration */}
+			<div className="bg-gradient-to-r from-emerald-50/50 to-teal-50/20 border border-slate-100 rounded-2xl p-5 flex items-center justify-between h-[105px] shrink-0 overflow-hidden relative shadow-sm">
+				<div className="shrink-0">
+					<h2 className="auth-heading text-[26px] leading-tight">
+						Welcome back, {displayName}!
+					</h2>
+					<p className="auth-subheading text-[13.5px] mt-0.5">
+						Let's continue improving your profile.
+					</p>
+				</div>
 
-        {/* Top greeting illustration banner */}
-        <img
-          src={topIllustration}
-          alt="Welcome illustration"
-          className="h-[105px] object-contain self-end shrink-0 select-none pointer-events-none"
-        />
-      </div>
+				{/* Top greeting illustration banner */}
+				<img
+					src={topIllustration}
+					alt="Welcome illustration"
+					className="h-[105px] object-contain self-end shrink-0 select-none pointer-events-none"
+				/>
+			</div>
 
-      {/* 2. Top row metrics cards */}
-      <div className="grid grid-cols-4 gap-4 h-[115px] shrink-0">
-        {/* Card 1: ATS Score */}
-        <div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
-          <div className="flex flex-col justify-between h-full">
-            <div className="flex items-center gap-2 text-slate-400">
-              <TrendingUp size={16} className="text-emerald-600" />
-              <span className="text-[12px] font-semibold tracking-wide">
-                ATS Score
-              </span>
-            </div>
-            <div>
-              <div className="flex items-baseline gap-1.5 mt-1">
-                <span className="text-[28px] font-extrabold text-slate-800 leading-none">
-                  {dashboardData.resume.ats_score ?? "--"}
-                </span>
-                <span className="text-[14px] font-semibold text-slate-400">
-                  / 100
-                </span>
-              </div>
-              <span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 rounded-full">
-                ● Good Score
-              </span>
-            </div>
-          </div>
+			{/* 2. Top row metrics cards */}
+			<div className="grid grid-cols-4 gap-4 h-[115px] shrink-0">
+				{/* Card 1: ATS Score */}
+				<div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
+					<div className="flex flex-col justify-between h-full">
+						<div className="flex items-center gap-2 text-slate-400">
+							<TrendingUp size={16} className="text-emerald-600" />
+							<span className="text-[12px] font-semibold tracking-wide">
+								ATS Score
+							</span>
+						</div>
+						<div>
+							<div className="flex items-baseline gap-1.5 mt-1">
+								<span className="text-[28px] font-extrabold text-slate-800 leading-none">
+									{dashboardData.resume.ats_score ?? "--"}
+								</span>
+								<span className="text-[14px] font-semibold text-slate-400">
+									/ 100
+								</span>
+							</div>
+							<span className="inline-block mt-2 px-2 py-0.5 text-[10px] font-bold text-emerald-800 bg-emerald-50 rounded-full">
+								● Good Score
+							</span>
+						</div>
+					</div>
 
-          <div className="relative h-16 w-16 flex items-center justify-center shrink-0">
-            <svg className="w-full h-full transform -rotate-90">
-              <circle
-                cx="32"
-                cy="32"
-                r="26"
-                className="stroke-slate-100"
-                strokeWidth="5.5"
-                fill="transparent"
-              />
-              <circle
-                cx="32"
-                cy="32"
-                r="26"
-                className="stroke-emerald-600"
-                strokeWidth="5.5"
-                fill="transparent"
-                strokeDasharray={163.3}
-                strokeDashoffset={163.3 * (1 - (dashboardData.resume.ats_score ?? 0) / 100)}
-                strokeLinecap="round"
-              />
-            </svg>
-            <span className="absolute text-[12px] font-bold text-slate-700">
-              {dashboardData.resume.ats_score ?? "--"}%
-            </span>
-          </div>
-        </div>
+					<div className="relative h-16 w-16 flex items-center justify-center shrink-0">
+						<svg className="w-full h-full transform -rotate-90">
+							<circle
+								cx="32"
+								cy="32"
+								r="26"
+								className="stroke-slate-100"
+								strokeWidth="5.5"
+								fill="transparent"
+							/>
+							<circle
+								cx="32"
+								cy="32"
+								r="26"
+								className="stroke-emerald-600"
+								strokeWidth="5.5"
+								fill="transparent"
+								strokeDasharray={163.3}
+								strokeDashoffset={
+									163.3 * (1 - (dashboardData.resume.ats_score ?? 0) / 100)
+								}
+								strokeLinecap="round"
+							/>
+						</svg>
+						<span className="absolute text-[12px] font-bold text-slate-700">
+							{dashboardData.resume.ats_score ?? "--"}%
+						</span>
+					</div>
+				</div>
 
-        {/* Card 2: Resume Uploaded */}
-        <div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
-          <div className="flex flex-col justify-between h-full">
-            <div className="flex items-center gap-2 text-slate-400">
-              <FileText size={16} className="text-teal-600" />
-              <span className="text-[12px] font-semibold tracking-wide">
-                Resume Uploaded
-              </span>
-            </div>
-            <div>
-              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
-                {dashboardData.resume.uploaded ? 1 : 0}
-              </span>
-              <div className="flex items-center gap-1.5 mt-2.5">
-                <span className="text-[10px] text-slate-400 font-medium">
-                  {dashboardData.resume.uploaded
-                    ? "Resume uploaded"
-                    : "No resume uploaded"}
-                </span>
-                <CheckCircle
-                  size={12}
-                  className="text-emerald-500 fill-emerald-50"
-                />
-              </div>
-            </div>
-          </div>
+				{/* Card 2: Resume Uploaded */}
+				<div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
+					<div className="flex flex-col justify-between h-full">
+						<div className="flex items-center gap-2 text-slate-400">
+							<FileText size={16} className="text-teal-600" />
+							<span className="text-[12px] font-semibold tracking-wide">
+								Resume Uploaded
+							</span>
+						</div>
+						<div>
+							<span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
+								{dashboardData.resume.uploaded ? 1 : 0}
+							</span>
+							<div className="flex items-center gap-1.5 mt-2.5">
+								<span className="text-[10px] text-slate-400 font-medium">
+									{dashboardData.resume.uploaded
+										? "Resume uploaded"
+										: "No resume uploaded"}
+								</span>
+								<CheckCircle
+									size={12}
+									className="text-emerald-500 fill-emerald-50"
+								/>
+							</div>
+						</div>
+					</div>
 
-          <div className="h-14 w-12 border border-slate-100 bg-slate-50/50 rounded-lg flex items-center justify-center shadow-inner relative shrink-0">
-            <FileText size={20} className="text-slate-300" />
-            <div className="absolute -bottom-1 -right-1 h-4.5 w-4.5 bg-emerald-500 rounded-full flex items-center justify-center border border-white">
-              <CheckCircle size={10} className="text-white" />
-            </div>
-          </div>
-        </div>
+					<div className="h-14 w-12 border border-slate-100 bg-slate-50/50 rounded-lg flex items-center justify-center shadow-inner relative shrink-0">
+						<FileText size={20} className="text-slate-300" />
+						<div className="absolute -bottom-1 -right-1 h-4.5 w-4.5 bg-emerald-500 rounded-full flex items-center justify-center border border-white">
+							<CheckCircle size={10} className="text-white" />
+						</div>
+					</div>
+				</div>
 
-        {/* Card 3: Mock Interviews */}
-        <div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
-          <div className="flex flex-col justify-between h-full">
-            <div className="flex items-center gap-2 text-slate-400">
-              <Mic size={16} className="text-orange-500" />
-              <span className="text-[12px] font-semibold tracking-wide">
-                Mock Interviews
-              </span>
-            </div>
-            <div>
-              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
-                {dashboardData.stats.mock_interviews}
-              </span>
-              <span className="text-[10px] text-slate-400 font-medium block mt-2.5">
-                Interviews taken
-              </span>
-            </div>
-          </div>
+				{/* Card 3: Mock Interviews */}
+				<div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
+					<div className="flex flex-col justify-between h-full">
+						<div className="flex items-center gap-2 text-slate-400">
+							<Mic size={16} className="text-orange-500" />
+							<span className="text-[12px] font-semibold tracking-wide">
+								Mock Interviews
+							</span>
+						</div>
+						<div>
+							<span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
+								{dashboardData.stats.mock_interviews}
+							</span>
+							<span className="text-[10px] text-slate-400 font-medium block mt-2.5">
+								Interviews taken
+							</span>
+						</div>
+					</div>
 
-          <div className="w-16 h-10 self-end mb-1 shrink-0">
-            <svg className="w-full h-full">
-              <path
-                d="M 5,30 Q 20,20 35,28 T 65,10"
-                fill="transparent"
-                stroke="#f97316"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <circle
-                cx="65"
-                cy="10"
-                r="3.5"
-                className="fill-orange-500 stroke-white"
-                strokeWidth="1"
-              />
-            </svg>
-          </div>
-        </div>
+					<div className="w-16 h-10 self-end mb-1 shrink-0">
+						<svg className="w-full h-full">
+							<path
+								d="M 5,30 Q 20,20 35,28 T 65,10"
+								fill="transparent"
+								stroke="#f97316"
+								strokeWidth="2.5"
+								strokeLinecap="round"
+							/>
+							<circle
+								cx="65"
+								cy="10"
+								r="3.5"
+								className="fill-orange-500 stroke-white"
+								strokeWidth="1"
+							/>
+						</svg>
+					</div>
+				</div>
 
-        {/* Card 4: AI Feedback */}
-        <div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
-          <div className="flex flex-col justify-between h-full">
-            <div className="flex items-center gap-2 text-slate-400">
-              <MessageSquare size={16} className="text-cyan-500" />
-              <span className="text-[12px] font-semibold tracking-wide">
-                AI Feedback
-              </span>
-            </div>
-            <div>
-              <span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
-                {dashboardData.stats.feedback_reports}
-              </span>
-              <span className="text-[10px] text-slate-400 font-medium block mt-2.5">
-                Feedback received
-              </span>
-            </div>
-          </div>
+				{/* Card 4: AI Feedback */}
+				<div className="bg-white rounded-2xl border border-slate-100 p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow duration-200">
+					<div className="flex flex-col justify-between h-full">
+						<div className="flex items-center gap-2 text-slate-400">
+							<MessageSquare size={16} className="text-cyan-500" />
+							<span className="text-[12px] font-semibold tracking-wide">
+								AI Feedback
+							</span>
+						</div>
+						<div>
+							<span className="text-[28px] font-extrabold text-slate-800 leading-none block mt-1">
+								{dashboardData.stats.feedback_reports}
+							</span>
+							<span className="text-[10px] text-slate-400 font-medium block mt-2.5">
+								Feedback received
+							</span>
+						</div>
+					</div>
 
-          <div className="w-16 h-10 self-end mb-1 shrink-0">
-            <svg className="w-full h-full">
-              <path
-                d="M 5,30 Q 18,28 32,18 T 65,12"
-                fill="transparent"
-                stroke="#10b981"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <circle
-                cx="65"
-                cy="12"
-                r="3.5"
-                className="fill-emerald-500 stroke-white"
-                strokeWidth="1"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
+					<div className="w-16 h-10 self-end mb-1 shrink-0">
+						<svg className="w-full h-full">
+							<path
+								d="M 5,30 Q 18,28 32,18 T 65,12"
+								fill="transparent"
+								stroke="#10b981"
+								strokeWidth="2.5"
+								strokeLinecap="round"
+							/>
+							<circle
+								cx="65"
+								cy="12"
+								r="3.5"
+								className="fill-emerald-500 stroke-white"
+								strokeWidth="1"
+							/>
+						</svg>
+					</div>
+				</div>
+			</div>
 
-      {/* 3. Middle split columns */}
-      <div className="grid grid-cols-5 gap-4">
-        {/* Left Column: Recent Activity (Grid cols: 3) */}
-        <div className="col-span-3 bg-white rounded-2xl border border-slate-100 p-4 flex flex-col justify-between shadow-sm min-h-0">
-          <div>
-            <div className="flex items-center gap-2 mb-3 border-b border-slate-50 pb-2.5">
-              <Calendar size={18} className="text-emerald-700" />
-              <h3 className="text-[15px] font-bold text-slate-800">
-                Recent Activity
-              </h3>
-            </div>
+			{/* 3. Middle split columns */}
+			<div className="grid grid-cols-5 gap-4">
+				{/* Left Column: Recent Activity (Grid cols: 3) */}
+				<div className="col-span-3 bg-white rounded-2xl border border-slate-100 p-4 flex flex-col justify-between shadow-sm min-h-0">
+					<div>
+						<div className="flex items-center gap-2 mb-3 border-b border-slate-50 pb-2.5">
+							<Calendar size={18} className="text-emerald-700" />
+							<h3 className="text-[15px] font-bold text-slate-800">
+								Recent Activity
+							</h3>
+						</div>
 
-            {/* List entries (Shows last 4-5 items as per mockups) */}
-            <div className="space-y-3">
-              {dashboardData.activities && dashboardData.activities.length > 0 ? (
-                dashboardData.activities.slice(0, 5).map((act, index) => {
-                  let IconComponent = Sparkles;
-                  let bgClass = "bg-purple-50 text-purple-600";
-                  if (act.type === "resume_upload") {
-                    IconComponent = Upload;
-                    bgClass = "bg-emerald-50 text-emerald-700";
-                  } else if (act.type === "ats_improved") {
-                    IconComponent = TrendingUp;
-                    bgClass = "bg-emerald-50 text-emerald-700";
-                  } else if (act.type === "interview_complete") {
-                    IconComponent = Mic;
-                    bgClass = "bg-orange-50 text-orange-600";
-                  }
+						{/* List entries (Shows last 4-5 items as per mockups) */}
+						<div className="space-y-3">
+							{dashboardData.activities &&
+							dashboardData.activities.length > 0 ? (
+								dashboardData.activities.slice(0, 5).map((act, index) => {
+									let IconComponent = Sparkles;
+									let bgClass = "bg-purple-50 text-purple-600";
+									if (act.type === "resume_upload") {
+										IconComponent = Upload;
+										bgClass = "bg-emerald-50 text-emerald-700";
+									} else if (act.type === "ats_improved") {
+										IconComponent = TrendingUp;
+										bgClass = "bg-emerald-50 text-emerald-700";
+									} else if (act.type === "interview_complete") {
+										IconComponent = Mic;
+										bgClass = "bg-orange-50 text-orange-600";
+									}
 
-                  const formatRelativeTime = (isoString) => {
-                    if (!isoString) return "";
-                    try {
-                      const date = new Date(isoString);
-                      const now = new Date();
-                      const diffMs = now - date;
-                      const diffMins = Math.floor(diffMs / 60000);
-                      if (diffMins < 1) return "Just now";
-                      if (diffMins < 60) return `${diffMins}m ago`;
-                      const diffHours = Math.floor(diffMins / 60);
-                      if (diffHours < 24) return `${diffHours}h ago`;
-                      const diffDays = Math.floor(diffHours / 24);
-                      if (diffDays === 1) return "Yesterday";
-                      return `${diffDays}d ago`;
-                    } catch (e) {
-                      return "";
-                    }
-                  };
+									const formatRelativeTime = (isoString) => {
+										if (!isoString) return "";
+										try {
+											const date = new Date(isoString);
+											const now = new Date();
+											const diffMs = now - date;
+											const diffMins = Math.floor(diffMs / 60000);
+											if (diffMins < 1) return "Just now";
+											if (diffMins < 60) return `${diffMins}m ago`;
+											const diffHours = Math.floor(diffMins / 60);
+											if (diffHours < 24) return `${diffHours}h ago`;
+											const diffDays = Math.floor(diffHours / 24);
+											if (diffDays === 1) return "Yesterday";
+											return `${diffDays}d ago`;
+										} catch {
+											return "";
+										}
+									};
 
-                  return (
-                    <div key={index} className="flex items-center justify-between text-[13px] hover:bg-slate-50/50 p-1.5 rounded-lg transition animate-fade-in">
-                      <div className="flex items-center gap-3">
-                        <div className={`flex h-8.5 w-8.5 items-center justify-center rounded-xl shrink-0 ${bgClass}`}>
-                          <IconComponent size={15} />
-                        </div>
-                        <div>
-                          <h5 className="font-bold text-slate-700 leading-none">
-                            {act.title}
-                          </h5>
-                          <p className="text-[11px] text-slate-400 mt-1">
-                            {act.detail}
-                          </p>
-                        </div>
-                      </div>
-                      <span className="text-[11px] font-medium text-slate-400 mr-1">
-                        {formatRelativeTime(act.timestamp)}
-                      </span>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="text-center py-10 text-slate-400 text-[12.5px] font-medium italic">
-                  No recent activities recorded yet.
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+									return (
+										<div
+											key={index}
+											className="flex items-center justify-between text-[13px] hover:bg-slate-50/50 p-1.5 rounded-lg transition animate-fade-in"
+										>
+											<div className="flex items-center gap-3">
+												<div
+													className={`flex h-8.5 w-8.5 items-center justify-center rounded-xl shrink-0 ${bgClass}`}
+												>
+													<IconComponent size={15} />
+												</div>
+												<div>
+													<h5 className="font-bold text-slate-700 leading-none">
+														{act.title}
+													</h5>
+													<p className="text-[11px] text-slate-400 mt-1">
+														{act.detail}
+													</p>
+												</div>
+											</div>
+											<span className="text-[11px] font-medium text-slate-400 mr-1">
+												{formatRelativeTime(act.timestamp)}
+											</span>
+										</div>
+									);
+								})
+							) : (
+								<div className="text-center py-10 text-slate-400 text-[12.5px] font-medium italic">
+									No recent activities recorded yet.
+								</div>
+							)}
+						</div>
+					</div>
+				</div>
 
-        {/* Right Column: Next Steps (Grid cols: 2) */}
-        <div className="col-span-2 bg-white rounded-2xl border border-slate-100 p-4 flex flex-col justify-between shadow-sm min-h-0">
-          <div className="flex items-center gap-2 mb-3 border-b border-slate-50 pb-2.5">
-            <Target size={18} className="text-emerald-700" />
-            <h3 className="text-[15px] font-bold text-slate-800">Next Steps</h3>
-          </div>
+				{/* Right Column: Next Steps (Grid cols: 2) */}
+				<div className="col-span-2 bg-white rounded-2xl border border-slate-100 p-4 flex flex-col justify-between shadow-sm min-h-0">
+					<div className="flex items-center gap-2 mb-3 border-b border-slate-50 pb-2.5">
+						<Target size={18} className="text-emerald-700" />
+						<h3 className="text-[15px] font-bold text-slate-800">Next Steps</h3>
+					</div>
 
-          {/* Action cards list */}
-          <div className="space-y-3 flex-1 flex flex-col justify-around">
-            {/* Step 1: Improve Resume */}
-            <div className="bg-slate-50/60 hover:bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between gap-4 transition duration-200">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 shrink-0">
-                  <FileText size={15} />
-                </div>
-                <div>
-                  <h6 className="text-[12.5px] font-bold text-slate-700">
-                    Improve Your Resume
-                  </h6>
-                  <p className="text-[10px] text-slate-400 leading-tight">
-                    Get AI suggestions to make your resume stronger.
-                  </p>
-                </div>
-              </div>
-              <button className="flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-white border border-slate-200 hover:bg-emerald-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
-                <span>Get Feedback</span>
-                <ArrowRight size={12} />
-              </button>
-            </div>
+					{/* Action cards list */}
+					<div className="space-y-3 flex-1 flex flex-col justify-around">
+						{/* Step 1: Improve Resume */}
+						<div className="bg-slate-50/60 hover:bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between gap-4 transition duration-200">
+							<div className="flex items-center gap-2.5">
+								<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 shrink-0">
+									<FileText size={15} />
+								</div>
+								<div>
+									<h6 className="text-[12.5px] font-bold text-slate-700">
+										Improve Your Resume
+									</h6>
+									<p className="text-[10px] text-slate-400 leading-tight">
+										Get AI suggestions to make your resume stronger.
+									</p>
+								</div>
+							</div>
+							<button className="flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-white border border-slate-200 hover:bg-emerald-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
+								<span>Get Feedback</span>
+								<ArrowRight size={12} />
+							</button>
+						</div>
 
-            {/* Step 2: Practice Interviews */}
-            <div className="bg-slate-50/60 hover:bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between gap-4 transition duration-200">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shrink-0">
-                  <Mic size={15} />
-                </div>
-                <div>
-                  <h6 className="text-[12.5px] font-bold text-slate-700">
-                    Practice Interviews
-                  </h6>
-                  <p className="text-[10px] text-slate-400 leading-tight">
-                    Take mock interviews and improve confidence.
-                  </p>
-                </div>
-              </div>
-              <button className="flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
-                <span>Start Practice</span>
-                <ArrowRight size={12} />
-              </button>
-            </div>
+						{/* Step 2: Practice Interviews */}
+						<div className="bg-slate-50/60 hover:bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between gap-4 transition duration-200">
+							<div className="flex items-center gap-2.5">
+								<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 shrink-0">
+									<Mic size={15} />
+								</div>
+								<div>
+									<h6 className="text-[12.5px] font-bold text-slate-700">
+										Practice Interviews
+									</h6>
+									<p className="text-[10px] text-slate-400 leading-tight">
+										Take mock interviews and improve confidence.
+									</p>
+								</div>
+							</div>
+							<button className="flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-white border border-slate-200 hover:bg-amber-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
+								<span>Start Practice</span>
+								<ArrowRight size={12} />
+							</button>
+						</div>
 
-            {/* Step 3: Track Progress */}
-            <div className="bg-slate-50/60 hover:bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between gap-4 transition duration-200">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 shrink-0">
-                  <TrendingUp size={15} />
-                </div>
-                <div>
-                  <h6 className="text-[12.5px] font-bold text-slate-700">
-                    Track Your Progress
-                  </h6>
-                  <p className="text-[10px] text-slate-400 leading-tight">
-                    Keep improving and boost your placement rates.
-                  </p>
-                </div>
-              </div>
-              <button className="flex items-center gap-1 text-[11px] font-bold text-indigo-800 bg-white border border-slate-200 hover:bg-indigo-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
-                <span>View Progress</span>
-                <ArrowRight size={12} />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+						{/* Step 3: Track Progress */}
+						<div className="bg-slate-50/60 hover:bg-slate-50 border border-slate-100 rounded-xl p-2.5 flex items-center justify-between gap-4 transition duration-200">
+							<div className="flex items-center gap-2.5">
+								<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 shrink-0">
+									<TrendingUp size={15} />
+								</div>
+								<div>
+									<h6 className="text-[12.5px] font-bold text-slate-700">
+										Track Your Progress
+									</h6>
+									<p className="text-[10px] text-slate-400 leading-tight">
+										Keep improving and boost your placement rates.
+									</p>
+								</div>
+							</div>
+							<button className="flex items-center gap-1 text-[11px] font-bold text-indigo-800 bg-white border border-slate-200 hover:bg-indigo-50 rounded-lg px-2 py-1.5 transition whitespace-nowrap">
+								<span>View Progress</span>
+								<ArrowRight size={12} />
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 
-      {/* 4. Bottom illustration banner image */}
-      <img
-        src={bottomIllustration}
-        alt="Small improvements today lead to big opportunities tomorrow"
-        className="w-full h-[90px] rounded-2xl object-cover object-center select-none shadow-sm pointer-events-none"
-      />
-    </DashboardLayout>
-  );
+			{/* 4. Bottom illustration banner image */}
+			<img
+				src={bottomIllustration}
+				alt="Small improvements today lead to big opportunities tomorrow"
+				className="w-full h-[90px] rounded-2xl object-cover object-center select-none shadow-sm pointer-events-none"
+			/>
+		</DashboardLayout>
+	);
 }

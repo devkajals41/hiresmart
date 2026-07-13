@@ -1,10 +1,11 @@
 import re
 import math
 
+
 class SimpleRetriever:
     """
     A lightweight, pure-Python RAG Retriever.
-    Uses TF-IDF term matching and cosine similarity to find the most relevant 
+    Uses TF-IDF term matching and cosine similarity to find the most relevant
     resume chunks based on the target job role and interview topic.
     """
 
@@ -52,7 +53,7 @@ class SimpleRetriever:
         """
         Split text into lowercase alphabetic words.
         """
-        return re.findall(r'[a-z0-9]+', text.lower())
+        return re.findall(r"[a-z0-9]+", text.lower())
 
     def _compute_tf(self, tokens: list[str]) -> dict[str, float]:
         """
@@ -64,15 +65,17 @@ class SimpleRetriever:
         total = len(tokens) if tokens else 1
         return {k: v / total for k, v in tf.items()}
 
-    def _compute_cosine_similarity(self, vec1: dict[str, float], vec2: dict[str, float]) -> float:
+    def _compute_cosine_similarity(
+        self, vec1: dict[str, float], vec2: dict[str, float]
+    ) -> float:
         """
         Compute cosine similarity between two term-frequency dictionaries.
         """
         intersection = set(vec1.keys()) & set(vec2.keys())
         numerator = sum([vec1[x] * vec2[x] for x in intersection])
 
-        sum1 = sum([val ** 2 for val in vec1.values()])
-        sum2 = sum([val ** 2 for val in vec2.values()])
+        sum1 = sum([val**2 for val in vec1.values()])
+        sum2 = sum([val**2 for val in vec2.values()])
         denominator = math.sqrt(sum1) * math.sqrt(sum2)
 
         if not denominator:
@@ -101,7 +104,7 @@ class SimpleRetriever:
 
         # Retrieve top K chunks (minimum similarity of 0.05 to avoid irrelevant items)
         results = [chunk for score, chunk in ranked_chunks[:top_k] if score > 0.05]
-        
+
         # If no similarity was found, return default overview chunks
         if not results:
             results = self.chunks[:top_k]

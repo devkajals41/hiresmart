@@ -1,12 +1,12 @@
 function Button({
-  children,
-  variant = "primary",
-  className = "",
-  type = "button",
-  ...props
+	children,
+	variant = "primary",
+	className = "",
+	type = "button",
+	...props
 }) {
-  const variants = {
-    primary: `
+	const variants = {
+		primary: `
       bg-emerald-700
       text-white
       shadow-md shadow-emerald-200/70
@@ -15,7 +15,7 @@ function Button({
       hover:shadow-xl hover:shadow-emerald-300/40
     `,
 
-    secondary: `
+		secondary: `
       bg-white
       border border-slate-200
       text-slate-800
@@ -24,12 +24,12 @@ function Button({
       hover:-translate-y-0.5
       hover:shadow-lg
     `,
-  };
+	};
 
-  return (
-    <button
-      type={type}
-      className={`
+	return (
+		<button
+			type={type}
+			className={`
         inline-flex
         items-center
         justify-center
@@ -57,11 +57,11 @@ function Button({
         ${variants[variant]}
         ${className}
       `}
-      {...props}
-    >
-      {children}
-    </button>
-  );
+			{...props}
+		>
+			{children}
+		</button>
+	);
 }
 
 export default Button;
