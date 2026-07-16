@@ -1,5 +1,5 @@
 import json
-from app.ai.gemini_client import generate_response
+from app.ai.groq_client import generate_response
 
 from app.utils.ats.ats_calculator import (
     calculate_ats_score,

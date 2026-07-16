@@ -1,6 +1,6 @@
 import json
 
-from app.ai.gemini_client import generate_response
+from app.ai.groq_client import generate_response
 from app.ai.prompts import INTERVIEW_PROMPT, FEEDBACK_PROMPT
 
 

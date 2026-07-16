@@ -1,5 +1,5 @@
 import json
-from app.ai.gemini_client import generate_response
+from app.ai.groq_client import generate_response
 
 PARSE_RESUME_PROMPT = """
 You are a highly accurate Resume Parser. Extract all relevant details from the following resume text and format it into a single valid JSON object.

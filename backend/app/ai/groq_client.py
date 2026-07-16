@@ -1,3 +1,5 @@
+"""Groq client used by the application's LLM-powered features."""
+
 from groq import Groq
 
 from app.config.config import settings
@@ -13,7 +15,7 @@ def generate_response(
     temperature: float = 0.7,
 ):
     """
-    Generate a response using Groq.
+    Generate a response with Groq's Llama 3.3 70B model.
     """
 
     if client is None:

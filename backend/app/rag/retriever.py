@@ -5,8 +5,8 @@ import math
 class SimpleRetriever:
     """
     A lightweight, pure-Python RAG Retriever.
-    Uses TF-IDF term matching and cosine similarity to find the most relevant
-    resume chunks based on the target job role and interview topic.
+    Uses term-frequency matching and cosine similarity to find the most
+    relevant resume chunks based on the target job role and interview topic.
     """
 
     def __init__(self, parsed_resume: dict):

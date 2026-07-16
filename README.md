@@ -16,7 +16,7 @@ AI-powered Resume Analysis • ATS Scoring • Resume-Aware RAG • Mock Intervi
 
 <p align="center">
 
-Built with React • FastAPI • MongoDB Atlas • SpaCy • Gemini • Groq
+Built with React • FastAPI • MongoDB Atlas • SpaCy • RapidFuzz • Groq
 
 </p>
 
@@ -54,7 +54,6 @@ https://hiresmart-backend-49j2.onrender.com/docs
 ![SpaCy](https://img.shields.io/badge/SpaCy-NLP-09A3D5?style=for-the-badge)
 ![RapidFuzz](https://img.shields.io/badge/RapidFuzz-String_Matching-orange?style=for-the-badge)
 ![RAG](https://img.shields.io/badge/RAG-Retrieval_Augmented_Generation-purple?style=for-the-badge)
-![Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?style=for-the-badge&logo=google)
 ![Groq](https://img.shields.io/badge/Groq-LLM_API-black?style=for-the-badge)
 
 ### Cloud & Deployment
@@ -80,7 +79,8 @@ https://hiresmart-backend-49j2.onrender.com/docs
 - Upload resumes in **PDF/DOC/DOCX** format
 - Secure resume storage using **Cloudinary**
 - Automatic resume text extraction with **PyMuPDF**
-- Intelligent resume parsing using **SpaCy NLP**
+- LLM-based resume parsing into structured JSON
+- SpaCy-assisted skill tokenization and RapidFuzz skill matching
 - Contact information extraction
 - Education, Experience, Projects & Certifications detection
 - Technical skill extraction and categorization
@@ -291,8 +291,8 @@ HireSmart follows a modular client-server architecture that combines NLP, Retrie
                                    │
                                    ▼
                       ┌──────────────────────────────┐
-                      │ Gemini / Groq Large Language │
-                      │ Models                       │
+                      │       Groq Large Language    │
+                      │       Model                  │
                       └──────────┬───────────────────┘
                                  │
                                  ▼
@@ -310,10 +310,11 @@ HireSmart follows a modular client-server architecture that combines NLP, Retrie
 - **FastAPI** exposes asynchronous REST APIs for authentication, resume analysis, and interview workflows.
 - **MongoDB Atlas** stores user profiles, parsed resumes, ATS reports, interview history, and feedback.
 - **Cloudinary** securely stores uploaded resumes while MongoDB stores their metadata.
-- **SpaCy**, **RapidFuzz**, and **PyMuPDF** process resumes to extract structured information.
+- **PyMuPDF** extracts resume text; the Groq LLM transforms it into structured JSON.
+- **SpaCy** assists skill tokenization and **RapidFuzz** normalizes matched skills against the built-in skill database.
 - A custom **ATS Engine** evaluates resume quality and generates actionable improvement suggestions.
 - A **Retrieval-Augmented Generation (RAG)** layer retrieves relevant resume context before prompting the LLM.
-- **Gemini/Groq** generate personalized interview questions and evaluate candidate responses.
+- **Groq** generates personalized interview questions, ATS feedback, and candidate-response evaluations.
 
 # ⚙️ End-to-End Workflow
 
@@ -340,7 +341,7 @@ HireSmart processes every resume through a multi-stage AI pipeline that combines
 
 ## Step 3 — NLP-Based Resume Parsing
 
-HireSmart analyzes the extracted resume using **SpaCy NLP** to identify and organize important information.
+HireSmart sends the extracted resume text to the Groq LLM, which returns a structured JSON representation.
 
 The parser extracts:
 
@@ -353,7 +354,7 @@ The parser extracts:
 - Certifications
 - Contact Details
 
-RapidFuzz performs fuzzy matching against predefined technical skill databases to improve extraction accuracy.
+SpaCy tokenization and RapidFuzz fuzzy matching are available in the skill-processing utilities to normalize skill candidates against predefined technical-skill databases.
 
 ---
 
@@ -406,7 +407,7 @@ The candidate selects:
 - Difficulty Level
 - Interview Topic
 
-HireSmart generates personalized interview questions using **Gemini/Groq** based on:
+HireSmart generates personalized interview questions using **Groq** based on:
 
 - Resume context (RAG)
 - Selected job role
@@ -510,7 +511,7 @@ Unlike a simple keyword matcher, the scoring engine combines structural analysis
 
 ## 🧠 Natural Language Processing (NLP)
 
-SpaCy powers the resume understanding layer.
+The Groq LLM performs the primary resume-to-JSON transformation. SpaCy and RapidFuzz are supporting utilities for skill tokenization and fuzzy skill normalization; they are not the primary resume parser.
 
 NLP is used to:
 
@@ -555,7 +556,6 @@ HireSmart integrates modern LLMs to power intelligent interview generation and e
 
 Current integrations include:
 
-- Google Gemini
 - Groq API
 
 The LLM is responsible for:
@@ -606,7 +606,7 @@ Cloudinary Storage
 PyMuPDF Text Extraction
       │
       ▼
-SpaCy NLP Parsing
+Groq LLM Resume Parsing
       │
       ▼
 RapidFuzz Skill Matching
@@ -618,7 +618,7 @@ ATS Scoring Engine
 Resume Context Retrieval (RAG)
       │
       ▼
-Gemini / Groq
+Groq LLM
       │
       ▼
 Interview Generation
@@ -689,7 +689,6 @@ JWT_SECRET=
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=1440
 
-GEMINI_API_KEY=
 GROQ_API_KEY=
 
 CLOUDINARY_CLOUD_NAME=
@@ -928,7 +927,6 @@ JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=1440
 
 # AI APIs
-GEMINI_API_KEY=
 GROQ_API_KEY=
 
 # Cloudinary

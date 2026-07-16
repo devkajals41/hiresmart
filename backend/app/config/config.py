@@ -17,7 +17,6 @@ class Settings:
     JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 1440))
 
-    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
 
     CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME", "")
