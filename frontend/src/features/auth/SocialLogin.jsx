@@ -1,13 +1,16 @@
 import "./auth.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 
 const GOOGLE_SCRIPT_ID = "google-identity-services";
 
 export default function SocialLogin({ isRegister, onGoogleLogin, loading = false }) {
-	const initializedRef = useRef(false);
-	const [isReady, setIsReady] = useState(false);
-	const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const buttonRef = useRef(null);
+const initializedRef = useRef(false);
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+console.log("Google Client ID:", googleClientId);
+console.log("Environment:", import.meta.env);
 
 	useEffect(() => {
 		if (!googleClientId) {
@@ -15,7 +18,7 @@ export default function SocialLogin({ isRegister, onGoogleLogin, loading = false
 		}
 
 		const initializeGoogle = () => {
-			if (initializedRef.current || !window.google?.accounts?.id) {
+			if (initializedRef.current || !window.google?.accounts?.id || !buttonRef.current) {
 				return;
 			}
 
@@ -31,8 +34,15 @@ export default function SocialLogin({ isRegister, onGoogleLogin, loading = false
 				},
 			});
 
+			window.google.accounts.id.renderButton(buttonRef.current, {
+				theme: "outline",
+				size: "large",
+				shape: "rectangular",
+				text: isRegister ? "signup_with" : "signin_with",
+				width: 360,
+			});
+
 			initializedRef.current = true;
-			setIsReady(true);
 		};
 
 		if (window.google?.accounts?.id) {
@@ -62,24 +72,6 @@ export default function SocialLogin({ isRegister, onGoogleLogin, loading = false
 		};
 	}, [googleClientId, onGoogleLogin]);
 
-	const handleSocialClick = () => {
-		if (!googleClientId) {
-			toast.error("Set VITE_GOOGLE_CLIENT_ID to enable Google sign-in.");
-			return;
-		}
-
-		if (!window.google?.accounts?.id || !isReady) {
-			toast.error("Google sign-in is still loading. Please try again.");
-			return;
-		}
-
-		window.google.accounts.id.prompt((notification) => {
-			if (notification.isNotDisplayed()) {
-				toast.error("Google sign-in could not be displayed in this browser.");
-			}
-		});
-	};
-
 	return (
 		<>
 			{/* Divider */}
@@ -90,24 +82,16 @@ export default function SocialLogin({ isRegister, onGoogleLogin, loading = false
 
 			{/* Google Button */}
 
-			<button
-				type="button"
-				onClick={handleSocialClick}
-				disabled={loading}
-				className="auth-btn-social"
-			>
-				<img
-					src="https://www.svgrepo.com/show/475656/google-color.svg"
-					alt="Google"
-					className="h-5 w-5"
-				/>
+			<div
+				ref={buttonRef}
+				className={loading ? "pointer-events-none opacity-60" : ""}
+			/>
 
-				{loading
-					? "Connecting..."
-					: isRegister
-						? "Sign up with Google"
-						: "Continue with Google"}
-			</button>
+			{!googleClientId && (
+				<p className="mt-3 text-center text-sm text-amber-600">
+					Set VITE_GOOGLE_CLIENT_ID to enable Google sign-in.
+				</p>
+			)}
 		</>
 	);
 }
