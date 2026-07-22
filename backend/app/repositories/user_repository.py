@@ -18,6 +18,16 @@ async def create_user(user_document: dict):
     return await mongodb.database.users.insert_one(user_document)
 
 
+async def update_user_by_email(email: str, update_data: dict):
+    """
+    Update a user record identified by email.
+    """
+    return await mongodb.database.users.update_one(
+        {"email": email},
+        {"$set": update_data},
+    )
+
+
 async def get_user_by_id(user_id: str):
     """
     Find user by MongoDB ObjectId.

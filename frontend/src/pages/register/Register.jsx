@@ -5,7 +5,7 @@ import AuthLayout from "../../features/auth/AuthLayout";
 import RegisterForm from "../../features/auth/RegisterForm";
 import SocialLogin from "../../features/auth/SocialLogin";
 
-import { registerUser } from "../../services/authService";
+import { googleLogin, registerUser } from "../../services/authService";
 
 function Register() {
 	const navigate = useNavigate();
@@ -38,11 +38,34 @@ function Register() {
 			setLoading(false);
 		}
 	};
+
+	const handleGoogleRegister = async (credential) => {
+		try {
+			setLoading(true);
+			setError("");
+
+			const response = await googleLogin({ credential });
+
+			localStorage.setItem("accessToken", response.token.access_token);
+			localStorage.setItem("user", JSON.stringify(response.user));
+
+			navigate("/dashboard");
+		} catch (err) {
+			setError(err.response?.data?.detail || "Google sign-up failed.");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<AuthLayout illustration={<AuthIllustration />}>
 			<RegisterForm onSubmit={handleRegister} loading={loading} error={error} />
 
-			<SocialLogin />
+			<SocialLogin
+				isRegister
+				onGoogleLogin={handleGoogleRegister}
+				loading={loading}
+			/>
 
 			<p className="mt-8 text-center text-sm text-slate-500">
 				Already have an account?{" "}

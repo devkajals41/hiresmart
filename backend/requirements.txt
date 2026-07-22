@@ -9,6 +9,7 @@ python-multipart==0.0.32
 python-jose==3.5.0
 passlib==1.7.4
 bcrypt==4.0.1
+google-auth==2.43.0
 aiofiles==25.1.0
 pymupdf==1.28.0
 cloudinary==1.45.0

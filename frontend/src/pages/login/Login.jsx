@@ -5,7 +5,7 @@ import AuthLayout from "../../features/auth/AuthLayout";
 import LoginForm from "../../features/auth/LoginForm";
 import SocialLogin from "../../features/auth/SocialLogin";
 
-import { loginUser } from "../../services/authService";
+import { googleLogin, loginUser } from "../../services/authService";
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -39,20 +39,42 @@ export default function Login() {
 		}
 	};
 
+	const handleGoogleLogin = async (credential) => {
+		try {
+			setLoading(true);
+			setError("");
+
+			const response = await googleLogin({ credential });
+
+			localStorage.setItem("accessToken", response.token.access_token);
+			localStorage.setItem("user", JSON.stringify(response.user));
+
+			navigate("/dashboard");
+		} catch (err) {
+			setError(err.response?.data?.detail || "Google sign-in failed.");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<AuthLayout illustration={<AuthIllustration />}>
 			<LoginForm onSubmit={handleLogin} loading={loading} error={error} />
 
-			<SocialLogin isRegister={false} />
+			<SocialLogin
+				isRegister={false}
+				onGoogleLogin={handleGoogleLogin}
+				loading={loading}
+			/>
 
 			<p className="mt-8 text-center text-sm text-slate-500">
 				Don't have an account?{" "}
-            <Link
-             to="/register"
-             className="font-semibold text-emerald-700 hover:underline"
-            >
-            Sign Up
-            </Link>
+				<Link
+					to="/register"
+					className="font-semibold text-emerald-700 hover:underline"
+				>
+					Sign Up
+				</Link>
 			</p>
 		</AuthLayout>
 	);

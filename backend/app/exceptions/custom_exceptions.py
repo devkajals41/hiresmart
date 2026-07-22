@@ -16,6 +16,14 @@ class InvalidCredentialsException(HTTPException):
         )
 
 
+class GoogleAuthenticationException(HTTPException):
+    def __init__(self, detail: str = "Google sign-in failed."):
+        super().__init__(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=detail,
+        )
+
+
 class UserNotFoundException(HTTPException):
     def __init__(self):
         super().__init__(

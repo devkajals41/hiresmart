@@ -67,6 +67,7 @@ https://hiresmart-backend-49j2.onrender.com/docs
 ### 🔐 Authentication & Security
 
 - Secure JWT-based user authentication
+- Email/password sign-in plus Google sign-in via Google Identity Services
 - Password hashing using Passlib & Bcrypt
 - Protected API routes with authentication middleware
 - Persistent login sessions
@@ -925,6 +926,7 @@ DATABASE_NAME=
 JWT_SECRET=
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=1440
+GOOGLE_CLIENT_ID=
 
 # AI APIs
 GROQ_API_KEY=
@@ -933,6 +935,15 @@ GROQ_API_KEY=
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
+```
+
+## Frontend (`frontend/.env`)
+
+Create a `.env` file inside the `frontend` directory with the following variables:
+
+```env
+VITE_API_URL=http://localhost:8000/api
+VITE_GOOGLE_CLIENT_ID=
 ```
 
 ---
