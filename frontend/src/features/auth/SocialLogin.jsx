@@ -5,9 +5,9 @@ import toast from "react-hot-toast";
 const GOOGLE_SCRIPT_ID = "google-identity-services";
 
 export default function SocialLogin({ isRegister, onGoogleLogin, loading = false }) {
-const buttonRef = useRef(null);
-const initializedRef = useRef(false);
-const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+	const buttonRef = useRef(null);
+	const initializedRef = useRef(false);
+	const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 
 	useEffect(() => {

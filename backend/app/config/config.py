@@ -27,11 +27,20 @@ class Settings:
     # CORS Allowed Origins
     # For local development: defaults to "http://localhost:5173"
     # For production deployment: set the ALLOWED_ORIGINS env var in .env or the hosting environment to your frontend domain (e.g. "https://your-domain.com")
-    ALLOWED_ORIGINS = [
+    _configured_origins = [
         o.strip()
-        for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+        for o in os.getenv("ALLOWED_ORIGINS", "").split(",")
         if o.strip()
     ]
+    _local_origins = [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://127.0.0.1:3000",
+    ]
+    ALLOWED_ORIGINS = list(dict.fromkeys(_configured_origins + _local_origins))
 
 
 settings = Settings()
