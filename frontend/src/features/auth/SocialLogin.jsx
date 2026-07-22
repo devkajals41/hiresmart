@@ -9,8 +9,6 @@ const buttonRef = useRef(null);
 const initializedRef = useRef(false);
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-console.log("Google Client ID:", googleClientId);
-console.log("Environment:", import.meta.env);
 
 	useEffect(() => {
 		if (!googleClientId) {
