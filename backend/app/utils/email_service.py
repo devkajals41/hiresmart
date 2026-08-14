@@ -37,5 +37,12 @@ def send_password_reset_email(recipient_email: str, reset_link: str) -> None:
         method="POST",
     )
 
-    with urllib.request.urlopen(req, timeout=10) as response:
-        response.read()
+    try:
+        with urllib.request.urlopen(req, timeout=10) as response:
+            response.read()
+    except urllib.error.HTTPError as e:
+        try:
+            error_body = e.read().decode("utf-8")
+            raise Exception(f"{e.code} - {error_body}")
+        except Exception:
+            raise e
