@@ -232,10 +232,10 @@ async def request_password_reset(payload: ForgotPasswordRequest) -> ForgotPasswo
     reset_link = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password/{token}"
     try:
         await asyncio.to_thread(send_password_reset_email, payload.email, reset_link)
-    except Exception:
+    except Exception as e:
         await clear_password_reset_token(payload.email)
         raise PasswordResetRequestException(
-            "Unable to send the reset email right now. Please try again."
+            f"Email delivery failed ({str(e)}). Please check your SMTP settings or App Password."
         )
 
     if is_email_delivery_configured():
