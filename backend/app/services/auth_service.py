@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime, timedelta, timezone
 import hashlib
 import secrets
@@ -230,7 +231,7 @@ async def request_password_reset(payload: ForgotPasswordRequest) -> ForgotPasswo
 
     reset_link = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password/{token}"
     try:
-        send_password_reset_email(payload.email, reset_link)
+        await asyncio.to_thread(send_password_reset_email, payload.email, reset_link)
     except Exception:
         await clear_password_reset_token(payload.email)
         raise PasswordResetRequestException(
