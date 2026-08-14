@@ -4,7 +4,9 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Feedback from "./pages/feedback/Feedback";
 import MockInterview from "./pages/interview/MockInterview";
 import Landing from "./pages/landing/Landing";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import Login from "./pages/login/Login";
+import ResetPassword from "./pages/auth/ResetPassword";
 import Register from "./pages/register/Register";
 import Resume from "./pages/resume/Resume";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -15,6 +17,8 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Landing />} />
 				<Route path="/login" element={<Login />} />
+				<Route path="/forgot-password" element={<ForgotPassword />} />
+				<Route path="/reset-password/:token" element={<ResetPassword />} />
 				<Route path="/register" element={<Register />} />
 				<Route
 					path="/dashboard"

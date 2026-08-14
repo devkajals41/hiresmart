@@ -24,6 +24,16 @@ class GoogleAuthenticationException(HTTPException):
         )
 
 
+class PasswordResetRequestException(HTTPException):
+    def __init__(self, detail: str = "Unable to process password reset request."):
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
+
+
+class PasswordResetTokenException(HTTPException):
+    def __init__(self, detail: str = "Invalid or expired password reset token."):
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)
+
+
 class UserNotFoundException(HTTPException):
     def __init__(self):
         super().__init__(

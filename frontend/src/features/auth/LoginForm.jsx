@@ -1,5 +1,6 @@
 import { ArrowRight, Eye, EyeOff, Home, Lock, Mail } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./auth.css";
 
 export default function LoginForm({ onSubmit, loading, error }) {
@@ -82,9 +83,9 @@ export default function LoginForm({ onSubmit, loading, error }) {
 				<div className="mb-2 flex items-center justify-between">
 					<label className="auth-label mb-0!">Password</label>
 
-					<button type="button" className="auth-link text-[13px]">
+					<Link to="/forgot-password" className="auth-link text-[13px]">
 						Forgot password?
-					</button>
+					</Link>
 				</div>
 
 				<div className="auth-input-group">

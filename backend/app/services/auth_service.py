@@ -1,8 +1,14 @@
+from datetime import datetime, timedelta, timezone
+import hashlib
+import secrets
+
 from app.models.user_model import create_user_document
 from app.repositories.user_repository import (
     get_user_by_email,
+    get_user_by_password_reset_token_hash,
     create_user,
     update_user_by_email,
+    clear_password_reset_token,
 )
 from app.schemas.user_schema import (
     UserRegister,
@@ -11,6 +17,10 @@ from app.schemas.user_schema import (
     UserResponse,
     TokenResponse,
     AuthResponse,
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+    ForgotPasswordResponse,
+    ResetPasswordResponse,
 )
 from app.utils.jwt_handler import create_access_token
 from app.utils.password_handler import (
@@ -21,8 +31,14 @@ from app.exceptions.custom_exceptions import (
     InvalidCredentialsException,
     EmailAlreadyExistsException,
     GoogleAuthenticationException,
+    PasswordResetRequestException,
+    PasswordResetTokenException,
 )
 from app.config.config import settings
+from app.utils.email_service import (
+    is_email_delivery_configured,
+    send_password_reset_email,
+)
 
 from google.auth.exceptions import GoogleAuthError
 from google.auth.transport import requests as google_requests
@@ -169,3 +185,89 @@ async def google_login_user(payload: GoogleLogin) -> AuthResponse:
     user_document["_id"] = result.inserted_id
 
     return _build_auth_response(user_document, "Google signup successful.")
+
+
+def _hash_reset_token(token: str) -> str:
+    return hashlib.sha256(token.encode("utf-8")).hexdigest()
+
+
+def _to_utc_datetime(value):
+    if value is None:
+        return None
+
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+
+    return value.astimezone(timezone.utc)
+
+
+async def request_password_reset(payload: ForgotPasswordRequest) -> ForgotPasswordResponse:
+    user = await get_user_by_email(payload.email)
+
+    if not user:
+        raise PasswordResetRequestException(
+            "If an account exists for that email, password reset instructions will be sent."
+        )
+
+    if user.get("auth_provider") == "google" and not user.get("password"):
+        raise PasswordResetRequestException(
+            "This account uses Google sign-in. It does not have a local password to reset."
+        )
+
+    token = secrets.token_urlsafe(32)
+    token_hash = _hash_reset_token(token)
+    expires_at = datetime.now(timezone.utc) + timedelta(
+        minutes=settings.PASSWORD_RESET_TOKEN_EXPIRE_MINUTES
+    )
+
+    await update_user_by_email(
+        payload.email,
+        {
+            "password_reset_token_hash": token_hash,
+            "password_reset_expires_at": expires_at,
+        },
+    )
+
+    reset_link = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password/{token}"
+    try:
+        send_password_reset_email(payload.email, reset_link)
+    except Exception:
+        await clear_password_reset_token(payload.email)
+        raise PasswordResetRequestException(
+            "Unable to send the reset email right now. Please try again."
+        )
+
+    if is_email_delivery_configured():
+        return ForgotPasswordResponse(
+            message="Password reset instructions have been sent to your email."
+        )
+
+    return ForgotPasswordResponse(
+        message="Password reset instructions are ready.",
+        reset_link=reset_link,
+    )
+
+
+async def reset_password(payload: ResetPasswordRequest) -> ResetPasswordResponse:
+    token_hash = _hash_reset_token(payload.token)
+    user = await get_user_by_password_reset_token_hash(token_hash)
+
+    if not user:
+        raise PasswordResetTokenException()
+
+    expires_at = _to_utc_datetime(user.get("password_reset_expires_at"))
+    if not expires_at or expires_at < datetime.now(timezone.utc):
+        raise PasswordResetTokenException("This password reset link has expired.")
+
+    hashed_password = hash_password(payload.password)
+
+    await update_user_by_email(
+        user["email"],
+        {
+            "password": hashed_password,
+            "auth_provider": user.get("auth_provider") or "local",
+        },
+    )
+    await clear_password_reset_token(user["email"])
+
+    return ResetPasswordResponse(message="Password updated successfully.")

@@ -72,6 +72,13 @@ https://hiresmart-backend-49j2.onrender.com/docs
 - Protected API routes with authentication middleware
 - Persistent login sessions
 - Secure environment variable management
+- Password reset flow with tokenized email links and local dev fallback links when SMTP is not configured
+
+### 🔁 Password Reset Setup
+
+To enable real password-reset emails in production, set `FRONTEND_URL` and the SMTP variables in `backend/.env`. For Gmail or Google Workspace, use an app password, set `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, and keep `SMTP_USERNAME` as the full email address.
+
+If SMTP is not configured, the backend still generates a local reset link so you can test the flow without email delivery.
 
 ---
 

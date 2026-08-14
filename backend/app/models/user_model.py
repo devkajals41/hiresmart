@@ -19,6 +19,8 @@ def create_user_document(
         "auth_provider": auth_provider,
         "google_sub": google_sub,
         "google_picture": google_picture,
+        "password_reset_token_hash": None,
+        "password_reset_expires_at": None,
         "resume_uploaded": False,
         "resume_filename": None,
         "resume_path": None,

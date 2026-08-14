@@ -11,6 +11,15 @@ async def get_user_by_email(email: str):
     return await mongodb.database.users.find_one({"email": email})
 
 
+async def get_user_by_password_reset_token_hash(token_hash: str):
+    """
+    Find a user by password reset token hash.
+    """
+    return await mongodb.database.users.find_one(
+        {"password_reset_token_hash": token_hash}
+    )
+
+
 async def create_user(user_document: dict):
     """
     Insert a new user.
@@ -25,6 +34,21 @@ async def update_user_by_email(email: str, update_data: dict):
     return await mongodb.database.users.update_one(
         {"email": email},
         {"$set": update_data},
+    )
+
+
+async def clear_password_reset_token(email: str):
+    """
+    Remove any stored password reset token for a user.
+    """
+    return await mongodb.database.users.update_one(
+        {"email": email},
+        {
+            "$set": {
+                "password_reset_token_hash": None,
+                "password_reset_expires_at": None,
+            }
+        },
     )
 
 
