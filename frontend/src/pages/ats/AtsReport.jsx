@@ -265,7 +265,7 @@ function PremiumCard({
 			whileHover={{ y: -4, boxShadow: "0 20px 40px rgba(15,23,42,0.04)" }}
 			className="rounded-2xl border border-white/60 bg-white/70 backdrop-blur-xl p-5 shadow-md hover:border-slate-200 transition-all duration-355 relative overflow-hidden flex flex-col h-full"
 		>
-			<div className="flex items-center justify-between gap-2.5 mb-5 pb-3.5 border-b border-slate-150/60">
+			<div className="flex items-center justify-between gap-2.5 mb-5 pb-3.5 border-b border-slate-200/60">
 				<div className="flex items-center gap-2.5">
 					<div
 						className={`flex h-9 w-9 items-center justify-center rounded-xl shadow-sm shrink-0 ${iconBg}`}
@@ -415,7 +415,7 @@ export default function AtsReport() {
 			<DashboardLayout>
 				<div className="flex h-[80vh] items-center justify-center bg-slate-50/10">
 					<div className="flex flex-col items-center gap-4 relative">
-						<div className="h-12 w-12 border-4 border-slate-100 border-t-emerald-650 rounded-full animate-spin shadow-lg" />
+						<div className="h-12 w-12 border-4 border-slate-100 border-t-emerald-600 rounded-full animate-spin shadow-lg" />
 						<p className="text-slate-500 text-[14px] font-extrabold tracking-wide animate-pulse">
 							Parsing resume files & mapping ATS benchmarks...
 						</p>
@@ -469,7 +469,7 @@ export default function AtsReport() {
 						<div className="flex items-center gap-3">
 							<button
 								onClick={() => navigate("/dashboard")}
-								className="flex items-center gap-2 px-4.5 py-2.5 rounded-xl border border-slate-200/80 bg-white/80 hover:bg-slate-50 text-[13px] font-extrabold text-slate-650 transition-all duration-300 hover:border-slate-350 shadow-sm"
+								className="flex items-center gap-2 px-4.5 py-2.5 rounded-xl border border-slate-200/80 bg-white/80 hover:bg-slate-50 text-[13px] font-extrabold text-slate-650 transition-all duration-300 hover:border-slate-300 shadow-sm"
 							>
 								<ArrowLeft size={14} />
 								Dashboard
@@ -486,7 +486,7 @@ export default function AtsReport() {
 							<button
 								disabled
 								title="PDF download coming in Version 2"
-								className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-650 to-teal-600 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 transition-all duration-300 opacity-50 cursor-not-allowed"
+								className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 transition-all duration-300 opacity-50 cursor-not-allowed"
 							>
 								<Download size={14} />
 								Export PDF
@@ -519,7 +519,7 @@ export default function AtsReport() {
 									>
 										<Sparkles
 											size={13}
-											className="animate-pulse text-emerald-650"
+											className="animate-pulse text-emerald-600"
 										/>
 										{getDynamicGrade(customScore).label}
 									</span>
@@ -594,7 +594,7 @@ export default function AtsReport() {
 						variants={itemVariants}
 						className="flex justify-center border-b border-slate-200"
 					>
-						<div className="flex gap-2 p-1.5 bg-slate-100/80 rounded-2xl border border-slate-250/20 backdrop-blur-md">
+						<div className="flex gap-2 p-1.5 bg-slate-100/80 rounded-2xl border border-slate-200/20 backdrop-blur-md">
 							<button
 								onClick={() => setActiveTab("overview")}
 								className={`px-5 py-2.5 rounded-xl text-[13px] font-black tracking-wide transition-all duration-300 ${
@@ -817,7 +817,7 @@ export default function AtsReport() {
 										{filteredKeywords.map((kw) => (
 											<div
 												key={kw.name}
-												className="flex items-center justify-between p-3 rounded-xl border border-slate-150/60 hover:border-emerald-300 hover:bg-emerald-50/20 cursor-pointer transition-all group"
+												className="flex items-center justify-between p-3 rounded-xl border border-slate-200/60 hover:border-emerald-300 hover:bg-emerald-50/20 cursor-pointer transition-all group"
 												onClick={() => handleAddKeyword(kw)}
 											>
 												<div>
@@ -829,7 +829,7 @@ export default function AtsReport() {
 													</span>
 												</div>
 												<div className="flex items-center gap-1.5 shrink-0">
-													<span className="text-[10.5px] font-extrabold text-emerald-650 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5">
+													<span className="text-[10.5px] font-extrabold text-emerald-600 bg-emerald-50 border border-emerald-100 rounded px-1.5 py-0.5">
 														+{kw.scoreBonus}%
 													</span>
 													<div className="h-6 w-6 rounded-md bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-all">
@@ -886,7 +886,7 @@ export default function AtsReport() {
 												</div>
 											</div>
 										) : (
-											<div className="mt-8 border border-dashed border-slate-200 rounded-xl p-5 text-center text-[12.5px] text-slate-450">
+											<div className="mt-8 border border-dashed border-slate-200 rounded-xl p-5 text-center text-[12.5px] text-slate-400">
 												Select suggested keywords on the left to inject them
 												into the simulator and boost score!
 											</div>

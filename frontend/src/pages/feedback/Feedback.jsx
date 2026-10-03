@@ -228,7 +228,7 @@ export default function Feedback() {
 					<motion.div
 						initial={{ opacity: 0, scale: 0.95 }}
 						animate={{ opacity: 1, scale: 1 }}
-						className="max-w-md w-full bg-white rounded-3xl border border-slate-150 p-8 text-center shadow-xl space-y-5 relative z-10"
+						className="max-w-md w-full bg-white rounded-3xl border border-slate-200 p-8 text-center shadow-xl space-y-5 relative z-10"
 					>
 						<div className="h-16 w-16 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-2xl flex items-center justify-center mx-auto shadow-inner">
 							<MessageSquare size={32} />
@@ -237,7 +237,7 @@ export default function Feedback() {
 							<h3 className="text-[19px] font-black text-slate-805">
 								No Feedback Report Yet
 							</h3>
-							<p className="text-[13px] text-slate-450 leading-relaxed">
+							<p className="text-[13px] text-slate-400 leading-relaxed">
 								Take an AI-powered mock interview to generate automated feedback
 								transcripts, overall ratings, and target model solutions.
 							</p>
@@ -309,7 +309,7 @@ export default function Feedback() {
 						<div className="flex items-center gap-3">
 							<button
 								onClick={() => setIsDetailsOpen(true)}
-								className="flex items-center gap-2.5 px-4.5 py-2.5 rounded-xl border border-slate-200/80 bg-white/80 hover:bg-slate-50 text-[13px] font-extrabold text-slate-655 transition-all shadow-sm focus:outline-none"
+								className="flex items-center gap-2.5 px-4.5 py-2.5 rounded-xl border border-slate-200/80 bg-white/80 hover:bg-slate-50 text-[13px] font-extrabold text-slate-600 transition-all shadow-sm focus:outline-none"
 							>
 								<Play size={14} fill="currentColor" />
 								View Full Interview
@@ -319,7 +319,7 @@ export default function Feedback() {
 							<button
 								disabled
 								title="PDF download coming in Version 2"
-								className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-650 to-teal-650 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 transition-all duration-300 opacity-50 cursor-not-allowed focus:outline-none"
+								className="flex items-center gap-2.5 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-[13px] font-extrabold shadow-md shadow-emerald-700/10 transition-all duration-300 opacity-50 cursor-not-allowed focus:outline-none"
 							>
 								<Download size={14} />
 								Download Report
@@ -334,7 +334,7 @@ export default function Feedback() {
 					>
 						<div className="grid grid-cols-1 md:grid-cols-12 gap-6.5 items-center">
 							{/* Ring Left */}
-							<div className="md:col-span-4 flex flex-col items-center border-r-0 md:border-r border-slate-150/70 pr-0 md:pr-8 border-dashed">
+							<div className="md:col-span-4 flex flex-col items-center border-r-0 md:border-r border-slate-200/70 pr-0 md:pr-8 border-dashed">
 								<span className="text-[11.5px] font-extrabold text-slate-400 uppercase tracking-widest block mb-3.5">
 									Overall rating
 								</span>
@@ -485,7 +485,7 @@ export default function Feedback() {
 							whileHover={{ y: -4 }}
 							className="rounded-3xl border border-white/60 bg-white/80 backdrop-blur-xl p-6.5 shadow-lg relative flex flex-col justify-between"
 						>
-							<div className="pb-3 border-b border-slate-150/70 mb-5">
+							<div className="pb-3 border-b border-slate-200/70 mb-5">
 								<h3 className="text-[15.5px] font-black text-slate-805">
 									Performance Breakdown
 								</h3>
@@ -572,7 +572,7 @@ export default function Feedback() {
 							className="rounded-3xl border border-white/60 bg-white/80 backdrop-blur-xl p-6.5 shadow-lg relative flex flex-col justify-between"
 						>
 							<div>
-								<div className="pb-3 border-b border-slate-150/70 mb-4 flex items-center justify-between">
+								<div className="pb-3 border-b border-slate-200/70 mb-4 flex items-center justify-between">
 									<div>
 										<h3 className="text-[15.5px] font-black text-slate-805">
 											What Went Well
@@ -630,7 +630,7 @@ export default function Feedback() {
 						variants={itemVariants}
 						className="rounded-3xl border border-white/60 bg-white/80 backdrop-blur-xl p-6.5 shadow-xl relative"
 					>
-						<div className="pb-3 border-b border-slate-150/70 mb-5 flex items-center gap-2">
+						<div className="pb-3 border-b border-slate-200/70 mb-5 flex items-center gap-2">
 							<div className="p-1 bg-amber-50 rounded-lg text-amber-600 border border-amber-100">
 								<AlertCircle size={15} />
 							</div>
@@ -761,7 +761,7 @@ export default function Feedback() {
 							transition={{ type: "spring", duration: 0.4 }}
 							className="bg-white rounded-3xl p-6.5 max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl relative z-10 border border-slate-100"
 						>
-							<div className="flex items-center justify-between pb-4.5 border-b border-slate-150 mb-5">
+							<div className="flex items-center justify-between pb-4.5 border-b border-slate-200 mb-5">
 								<div>
 									<h3 className="text-[17px] font-black text-slate-805">
 										Interview Questions & Model Answers
@@ -802,7 +802,7 @@ export default function Feedback() {
 
 											<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 												{/* Candidate Answer */}
-												<div className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-150/40">
+												<div className="bg-slate-50/50 p-3.5 rounded-xl border border-slate-200/40">
 													<span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">
 														Your response
 													</span>
@@ -817,7 +817,7 @@ export default function Feedback() {
 														<span className="text-[10px] font-black text-emerald-800 uppercase tracking-widest block mb-1">
 															AI Feedback
 														</span>
-														<p className="text-[12.5px] text-slate-655 leading-relaxed">
+														<p className="text-[12.5px] text-slate-600 leading-relaxed">
 															{item.comments ?? "No comments available."}
 														</p>
 													</div>
