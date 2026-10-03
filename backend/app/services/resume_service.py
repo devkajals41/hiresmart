@@ -64,6 +64,14 @@ async def upload_resume(
 
     resume_text = extract_text_from_pdf(filepath)
 
+    if not resume_text or not resume_text.strip():
+        if os.path.exists(filepath):
+            os.remove(filepath)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Unable to extract text from your resume. Please ensure you are uploading a non-scanned PDF with selectable text.",
+        )
+
     parsed_resume = parse_resume(resume_text)
 
     ats_report = analyze_resume(parsed_resume)

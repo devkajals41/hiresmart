@@ -1,5 +1,9 @@
 import json
+import re
+import logging
 from app.ai.groq_client import generate_response
+
+logger = logging.getLogger(__name__)
 
 PARSE_RESUME_PROMPT = """
 You are a highly accurate Resume Parser. Extract all relevant details from the following resume text and format it into a single valid JSON object.
@@ -93,32 +97,47 @@ def parse_resume(resume_text: str) -> dict:
     """
     Main Resume Intelligence Engine powered by LLM.
     """
+    if not resume_text or not resume_text.strip():
+        logger.warning("Empty resume text provided to parse_resume.")
+        return get_empty_resume()
+
     try:
         prompt = PARSE_RESUME_PROMPT.format(resume_text=resume_text)
         response = generate_response(prompt, temperature=0.1)
-        response = response.replace("```json", "").replace("```", "").strip()
-        return json.loads(response)
-    except Exception:
-        # Fallback to empty structured resume
-        return {
-            "name": "",
-            "email": "",
-            "emails": [],
-            "phone": "",
-            "phones": [],
-            "github": "",
-            "linkedin": "",
-            "portfolio": "",
-            "leetcode": "",
-            "hackerrank": "",
-            "codeforces": "",
-            "codechef": "",
-            "geeksforgeeks": "",
-            "education": [],
-            "experience": [],
-            "projects": [],
-            "skills": {},
-            "certifications": [],
-            "achievements": [],
-            "positions": [],
-        }
+
+        # Regex extraction to handle potential introductory markdown or code fences
+        match = re.search(r"\{.*\}", response, re.DOTALL)
+        if match:
+            json_str = match.group(0)
+            return json.loads(json_str)
+
+        cleaned = response.replace("```json", "").replace("```", "").strip()
+        return json.loads(cleaned)
+    except Exception as e:
+        logger.error(f"Resume parsing error: {e}", exc_info=True)
+        return get_empty_resume()
+
+
+def get_empty_resume() -> dict:
+    return {
+        "name": "",
+        "email": "",
+        "emails": [],
+        "phone": "",
+        "phones": [],
+        "github": "",
+        "linkedin": "",
+        "portfolio": "",
+        "leetcode": "",
+        "hackerrank": "",
+        "codeforces": "",
+        "codechef": "",
+        "geeksforgeeks": "",
+        "education": [],
+        "experience": [],
+        "projects": [],
+        "skills": {},
+        "certifications": [],
+        "achievements": [],
+        "positions": [],
+    }
